@@ -1,0 +1,51 @@
+.user {
+	display: flex;
+	justify-content: flex-end;
+	gap: 2rem;
+}
+
+.user button {
+	display: none;
+	border: none;
+	height: 100%;
+	background: transparent;
+	cursor: pointer;
+}
+
+.user button:hover {
+	border: none;
+	background: transparent;
+}
+
+.theme-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: var(--color-light);
+	height: 1.6rem;
+	width: 4.2rem;
+	border-radius: var(--border-radius-1);
+}
+
+.font {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	width: 50%;
+	height: 100%;
+	color: var(--color-dark);
+}
+
+.active {
+	background: var(--color-primary);
+	color: white;
+	border-radius: var(--border-radius-1);
+}
+
+.user .profile {
+	display: flex;
+	align-items: flex-start;
+	gap: 2rem;
+	text-align: right;
+}

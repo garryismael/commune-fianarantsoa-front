@@ -1,0 +1,83 @@
+.sales-analytics {
+	margin-top: 2rem;
+}
+
+h2 {
+	margin-bottom: 0.8rem;
+	color: var(--color-dark);
+}
+
+.right-info h3 {
+	color: var(--color-dark-variant);
+}
+
+.sales {
+	display: flex;
+	flex-direction: column;
+	gap: 0.7rem;
+	margin-bottom: 0.7rem;
+}
+
+.sale {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	background: var(--color-white);
+	padding: 1.4rem var(--card-padding);
+	border-radius: var(--border-radius-3);
+	box-shadow: var(--box-shadow);
+	transition: all 300ms ease;
+}
+
+.sale:hover {
+	box-shadow: none;
+}
+
+.sale .icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1.3rem;
+	height: 40px;
+	width: 40px;
+	color: var(--color-white);
+	border-radius: 50%;
+}
+
+.right-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin: 0;
+	width: 100%;
+}
+
+.add-product {
+	background-color: transparent;
+	border: 2px dashed var(--color-primary);
+	color: var(--color-primary);
+	padding: 1.4rem var(--card-padding);
+	border-radius: var(--border-radius-3);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.add-product:hover {
+	background-color: var(--color-primary);
+	color: var(--color-white);
+}
+
+.add-product div {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.add-product div h3 {
+	font-weight: 600;
+}
+
+.message {
+	width: calc(100% - 5rem);
+}
