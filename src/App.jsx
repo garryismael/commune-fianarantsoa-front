@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Layout } from "./components/Layout";
+import Guard from "./components/Guard";
 import Home from "./pages/Home";
+import LoginPage from "./pages/Login";
 import NewProduct from "./pages/Product/Add";
 import Product from "./pages/Product/Detail";
 import ProductList from "./pages/Product/List";
@@ -12,7 +13,7 @@ import UserList from "./pages/User/List";
 function App() {
 	return (
 		<Routes>
-			<Route path="/" element={<Layout/>}>
+			<Route path="/" element={<Guard/>}>
 				<Route index element={<Home />} />
 				<Route path='/users' element={<UserList />} />
 				<Route path='/user/:userId' element={<User />} />
@@ -21,6 +22,7 @@ function App() {
 				<Route path='/product/:productId' element={<Product />} />
 				<Route path='/newproduct' element={<NewProduct />} />
 			</Route>
+			<Route path="login" element={<LoginPage/>}/>
 		</Routes>
 	);
 }

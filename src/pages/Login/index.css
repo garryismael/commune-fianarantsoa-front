@@ -1,0 +1,17 @@
+.login-form{
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px;
+}
+
+.login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.button-login {
+    margin-top: 20px;
+    height: 40px;
+}

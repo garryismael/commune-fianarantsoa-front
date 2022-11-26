@@ -4,7 +4,7 @@ import Sidebar from "../SideBar";
 import Topbar from "../TopBar";
 import "./index.css";
 
-export const Layout = () => {
+const Layout = () => {
 	return (
 		<>
 			<Topbar />
@@ -15,3 +15,5 @@ export const Layout = () => {
 		</>
 	);
 };
+
+export default Layout
