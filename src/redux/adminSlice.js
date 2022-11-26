@@ -13,11 +13,11 @@ const adminSlice = createSlice({
 			state.admins.push(action.payload);
 		},
 		removeAdmin: (state, action) => {
-			state.admins = state.admins.filter(admin => admin.id != action.payload);
+			state.admins = state.admins.filter(admin => admin.id !== action.payload);
 		},
 		updateAdmin: (state, action) => {
 			state.admins = state.admins.map((admin) => {
-				if (admin.id == action.payload.id) {
+				if (admin.id === action.payload.id) {
 					return action.payload
 				}
 				return admin;
