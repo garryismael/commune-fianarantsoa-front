@@ -1,11 +1,10 @@
-import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import Layout from './Layout';
 
 const Guard = () => {
 	const location = useLocation();
-	const user = useSelector((state) => state.auth.user);
-	return user !== null ? (
+	const token = localStorage.getItem("token");
+	return token ? (
 		<Layout />
 	) : (
 		<Navigate

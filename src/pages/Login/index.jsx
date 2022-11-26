@@ -20,11 +20,13 @@ const LoginPage = () => {
             <TextField
               id="email"
               label="Email"
+              name="email"
               variant="outlined"
               onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               id="mot_de_passe"
+              name="mot_de_passe"
               label="Mot de passe"
               variant="outlined"
               type='password'

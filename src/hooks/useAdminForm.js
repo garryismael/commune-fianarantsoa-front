@@ -1,12 +1,14 @@
 import { useState } from "react";
 
-const useAdminForm = () => {
+const useAdminForm = (data) => {
   const [values, setValues] = useState({
-    nom: "",
-    prenom: "",
-    adresse: "",
-    email: "",
-    contact: "",
+    nom: data?.nom,
+    prenom: data?.prenom,
+    adresse: data?.adresse,
+    email: data?.email,
+    contact: data?.contact,
+    est_admin: data?.est_admin,
+    mot_de_passe: "",
   });
 
   const onChange = (e) => {

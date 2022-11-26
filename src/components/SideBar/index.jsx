@@ -50,10 +50,10 @@ function Sidebar() {
 				<div className='sidebarMenu'>
 					<h3 className='sidebarTitle'>Quick Menu</h3>
 					<ul className='sidebarList'>
-						<Link to='/users' className='link'>
+						<Link to='/admins' className='link'>
 							<li className='sidebarListItem'>
 								<FontAwesomeIcon icon={faUser} className='sidebarIcon' />
-								Users
+								Admin
 							</li>
 						</Link>
 						<Link to='/products' className='link'>
