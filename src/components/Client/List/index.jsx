@@ -1,55 +1,56 @@
 import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Modal, TableHead } from "@mui/material";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableFooter from "@mui/material/TableFooter";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import * as React from "react";
+import {
+	Button,
+	Modal,
+	Paper,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableFooter,
+	TableHead,
+	TablePagination,
+	TableRow
+} from "@mui/material";
+import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { style } from "../../../constants";
-import { columnsAdmin } from "../../../constants/table";
-import useAdmin from "../../../hooks/useAdmin";
+import { columnsClient } from "../../../constants/table";
+import useClient from "../../../hooks/useClient";
 import useModal from "../../../hooks/useModal";
-import { removeAdmin } from "../../../redux/adminSlice";
-import { deleteAdmin } from "../../../services/admin";
+import { removeClient } from "../../../redux/clientSlice";
+import { deleteClient } from "../../../services/client";
 import TablePaginationActions from "../../Pagination";
+import { ClientAdd, ClientEdit } from "../Form";
 
-import { AdminAdd, AdminEdit } from "../Form";
-import "./index.css";
-
-
-export default function AdminList() {
+const ClientList = () => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
-	const [user, setUser] = useState();
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
 	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
+	const [client, setClient] = useState();
 
-	const [admins] = useAdmin();
+	const [admins] = useClient();
 	const dispatch = useDispatch();
 
 	const onEdit = (row) => {
-		setUser(row);
+		setClient(row);
 		handleOpenEdit();
 	};
 
 	const handleDelete = async (id) => {
 		if (window.confirm("Voulez vous vraiment supprimer?")) {
 			try {
-				await deleteAdmin(id);
-				dispatch(removeAdmin(id));
+				await deleteClient(id);
+				dispatch(removeClient(id));
 			} catch (errors) {
 				console.error(errors);
 			}
 		}
 	};
+
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
 		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - admins.length) : 0;
@@ -80,7 +81,7 @@ export default function AdminList() {
 						aria-label='custom pagination table'>
 						<TableHead>
 							<TableRow>
-								{columnsAdmin.map((column) => (
+								{columnsClient.map((column) => (
 									<TableCell
 										key={column.id}
 										align={column.align}
@@ -107,8 +108,12 @@ export default function AdminList() {
 									</TableCell>
 									<TableCell>{row.prenom}</TableCell>
 									<TableCell>{row.adresse}</TableCell>
-									<TableCell>{row.email}</TableCell>
 									<TableCell>{row.contact}</TableCell>
+									<TableCell>{row.groupe.nom}</TableCell>
+									<TableCell>{row.groupe.zone.nom}</TableCell>
+									<TableCell>
+										{row.groupe.type_marche.nom}
+									</TableCell>
 									<TableCell>
 										<div className='actions'>
 											<FontAwesomeIcon
@@ -171,21 +176,23 @@ export default function AdminList() {
 			<Modal
 				open={openAdd}
 				onClose={handleCloseAdd}
-				aria-labelledby='modal-edit-title'
-				aria-describedby='modal-edit-description'>
+				aria-labelledby='modal-add-title'
+				aria-describedby='modal-add-description'>
 				<Box sx={style}>
-					<AdminAdd handleClose={handleCloseAdd} />
+					<ClientAdd handleClose={handleCloseAdd} />
 				</Box>
 			</Modal>
 			<Modal
 				open={openEdit}
 				onClose={handleCloseEdit}
-				aria-labelledby='modal-add-title'
-				aria-describedby='modal-add-description'>
+				aria-labelledby='modal-edit-title'
+				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<AdminEdit user={user} handleClose={handleCloseEdit} />
+					<ClientEdit client={client} handleClose={handleCloseEdit} />
 				</Box>
 			</Modal>
 		</>
 	);
-}
+};
+
+export default ClientList;

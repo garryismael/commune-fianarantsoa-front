@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import useLogout from "../../hooks/useLogout";
 import "./index.css";
 
 function Sidebar() {
+	const se_connecter = useLogout();
+
 	return (
 		<section id='sidebar'>
 			<Link href='#' className='brand'>
@@ -16,15 +19,15 @@ function Sidebar() {
 					</Link>
 				</li>
 				<li>
-					<Link to='/admins'>
-						<i className='bx bxs-shopping-bag-alt'></i>
-						<span className='text'>Admin</span>
+					<Link to='/clients'>
+						<i className='bx bxs-doughnut-chart'></i>
+						<span className='text'>Client</span>
 					</Link>
 				</li>
 				<li>
-					<Link href='#'>
-						<i className='bx bxs-doughnut-chart'></i>
-						<span className='text'>Analytics</span>
+					<Link to='/admins'>
+						<i className='bx bxs-shopping-bag-alt'></i>
+						<span className='text'>Utilisateur</span>
 					</Link>
 				</li>
 				<li>
@@ -50,7 +53,9 @@ function Sidebar() {
 				<li>
 					<Link href='#' className='logout'>
 						<i className='bx bxs-log-out-circle'></i>
-						<span className='text'>Logout</span>
+						<span className='text' onClick={se_connecter}>
+							Logout
+						</span>
 					</Link>
 				</li>
 			</ul>
