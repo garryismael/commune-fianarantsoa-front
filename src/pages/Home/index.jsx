@@ -1,21 +1,168 @@
-import Chart from '../../components/Chart';
-import FeaturedInfo from '../../components/FeaturedInfo';
-import WidgetLg from '../../components/WidgetLg';
-import WidgetSm from '../../components/WidgetSm';
-import { userData } from "../../dummyData";
-import './index.css';
+import { Link } from "react-router-dom";
+import PeopleImg from "../../assets/img/people.png";
+import "./index.css";
 
 function Home() {
-  return (
-    <div className="home">
-      <FeaturedInfo />
-      <Chart data={userData} title="User Analytics" grid dataKey="Active User"/>
-      <div className="homeWidgets">
-        <WidgetSm/>
-        <WidgetLg/>
-      </div>
-    </div>
-  );
+	return (
+		<>
+			<div className='head-title'>
+				<div className='left'>
+					<h1>Dashboard</h1>
+					<ul className='breadcrumb'>
+						<li>
+							<Link to='#'>Dashboard</Link>
+						</li>
+						<li>
+							<i className='bx bx-chevron-right'></i>
+						</li>
+						<li>
+							<Link to='active' href='#'>
+								Home
+							</Link>
+						</li>
+					</ul>
+				</div>
+				<Link to='#' className='btn-download'>
+					<i className='bx bxs-cloud-download'></i>
+					<span className='text'>Download PDF</span>
+				</Link>
+			</div>
+
+			<ul className='box-info'>
+				<li>
+					<i className='bx bxs-calendar-check'></i>
+					<span className='text'>
+						<h3>1020</h3>
+						<p>New Order</p>
+					</span>
+				</li>
+				<li>
+					<i className='bx bxs-group'></i>
+					<span className='text'>
+						<h3>2834</h3>
+						<p>Visitors</p>
+					</span>
+				</li>
+				<li>
+					<i className='bx bxs-dollar-circle'></i>
+					<span className='text'>
+						<h3>$2543</h3>
+						<p>Total Sales</p>
+					</span>
+				</li>
+			</ul>
+
+			<div className='table-data'>
+				<div className='order'>
+					<div className='head'>
+						<h3>Recent Orders</h3>
+						<i className='bx bx-search'></i>
+						<i className='bx bx-filter'></i>
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>User</th>
+								<th>Date Order</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<img src={PeopleImg} alt='' />
+									<p>John Doe</p>
+								</td>
+								<td>01-10-2021</td>
+								<td>
+									<span className='status completed'>
+										Completed
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src={PeopleImg} alt='' />
+									<p>John Doe</p>
+								</td>
+								<td>01-10-2021</td>
+								<td>
+									<span className='status pending'>
+										Pending
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src={PeopleImg} alt='' />
+									<p>John Doe</p>
+								</td>
+								<td>01-10-2021</td>
+								<td>
+									<span className='status process'>
+										Process
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src={PeopleImg} alt='' />
+									<p>John Doe</p>
+								</td>
+								<td>01-10-2021</td>
+								<td>
+									<span className='status pending'>
+										Pending
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<img src={PeopleImg} alt='' />
+									<p>John Doe</p>
+								</td>
+								<td>01-10-2021</td>
+								<td>
+									<span className='status completed'>
+										Completed
+									</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div className='todo'>
+					<div className='head'>
+						<h3>Todos</h3>
+						<i className='bx bx-plus'></i>
+						<i className='bx bx-filter'></i>
+					</div>
+					<ul className='todo-list'>
+						<li className='completed'>
+							<p>Todo List</p>
+							<i className='bx bx-dots-vertical-rounded'></i>
+						</li>
+						<li className='completed'>
+							<p>Todo List</p>
+							<i className='bx bx-dots-vertical-rounded'></i>
+						</li>
+						<li className='not-completed'>
+							<p>Todo List</p>
+							<i className='bx bx-dots-vertical-rounded'></i>
+						</li>
+						<li className='completed'>
+							<p>Todo List</p>
+							<i className='bx bx-dots-vertical-rounded'></i>
+						</li>
+						<li className='not-completed'>
+							<p>Todo List</p>
+							<i className='bx bx-dots-vertical-rounded'></i>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</>
+	);
 }
 
 export default Home;

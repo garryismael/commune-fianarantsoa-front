@@ -5,14 +5,15 @@ import { getAdmins } from "../services/admin";
 
 const useAdmin = () => {
   const dispatch = useDispatch();
-  const admins = useSelector((state) => state.admin.admins);
+  const admins = useSelector((state: any) => state.admin.admins);
+  
   useEffect(() => {
     const fetch_data = async () => {
       try {
         const response = await getAdmins();
         dispatch(setAdmins(response.data));
       } catch (errors) {
-        throw new Error(errors);
+        console.error(errors);
       }
     };
     if (admins.length <= 0) {
@@ -20,7 +21,7 @@ const useAdmin = () => {
     }
   }, []);
 
-  const setData = (data) => {
+  const setData = (data: any) => {
     dispatch(setAdmins(data));
   };
 

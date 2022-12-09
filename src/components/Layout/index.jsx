@@ -7,13 +7,15 @@ import "./index.css";
 const Layout = () => {
 	return (
 		<>
-			<Topbar />
-			<div className='container'>
-				<Sidebar />
-                <Outlet/>
+			<Sidebar />
+			<div id='content'>
+				<Topbar />
+				<main>
+					<Outlet />
+				</main>
 			</div>
 		</>
 	);
 };
 
-export default Layout
+export default Layout;

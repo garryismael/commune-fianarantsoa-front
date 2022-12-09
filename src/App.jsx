@@ -7,9 +7,6 @@ import AdminAdd from "./pages/Admin/Add";
 import AdminEdit from "./pages/Admin/Edit";
 import Home from "./pages/Home";
 import LoginPage from "./pages/Login";
-import NewProduct from "./pages/Product/Add";
-import Product from "./pages/Product/Detail";
-import ProductList from "./pages/Product/List";
 import NewUser from "./pages/User/Add";
 import User from "./pages/User/Detail";
 import UserList from "./pages/User/List";
@@ -27,9 +24,6 @@ function App() {
         <Route path="/users" element={<UserList />} />
         <Route path="/user/:userId" element={<User />} />
         <Route path="/newUser" element={<NewUser />} />
-        <Route path="/products" element={<ProductList />} />
-        <Route path="/product/:productId" element={<Product />} />
-        <Route path="/newproduct" element={<NewProduct />} />
       </Route>
       <Route path="login" element={<LoginPage />} />
     </Routes>

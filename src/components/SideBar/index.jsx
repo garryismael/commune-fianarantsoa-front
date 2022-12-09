@@ -1,119 +1,60 @@
-import "./index.css";
-
-import { faChartBar, faMessage, faUser } from "@fortawesome/free-regular-svg-icons";
-import {
-  faChartGantt,
-  faChartLine,
-  faHome,
-  faMoneyBill,
-  faRedoAlt,
-  faStoreAlt,
-  faTimeline,
-  faTornado,
-  faVoicemail
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import "./index.css";
 
 function Sidebar() {
 	return (
-		<div className='sidebar'>
-			<div className='sidebarWrapper'>
-				<div className='sidebarMenu'>
-					<h3 className='sidebarTitle'>Dashboard</h3>
-					<ul className='sidebarList'>
-						<Link to='/' className='link'>
-							<li className='sidebarListItem active'>
-								<FontAwesomeIcon
-									icon={faHome}
-									className='sidebarIcon'
-								/>
-								Home
-							</li>
-						</Link>
-						<li className='sidebarListItem'>
-							<FontAwesomeIcon
-								icon={faChartLine}
-								className='sidebarIcon'
-							/>
-							Analytics
-						</li>
-						<li className='sidebarListItem'>
-							<FontAwesomeIcon
-								icon={faChartGantt}
-								className='sidebarIcon'
-							/>
-							Sales
-						</li>
-					</ul>
-				</div>
-				<div className='sidebarMenu'>
-					<h3 className='sidebarTitle'>Quick Menu</h3>
-					<ul className='sidebarList'>
-						<Link to='/admins' className='link'>
-							<li className='sidebarListItem'>
-								<FontAwesomeIcon icon={faUser} className='sidebarIcon' />
-								Admin
-							</li>
-						</Link>
-						<Link to='/products' className='link'>
-							<li className='sidebarListItem'>
-								<FontAwesomeIcon icon={faStoreAlt} className='sidebarIcon' />
-								Products
-							</li>
-						</Link>
-						<li className='sidebarListItem'>
-							<FontAwesomeIcon icon={faMoneyBill} className='sidebarIcon' />
-							Transactions
-						</li>
-						<li className='sidebarListItem'>
-							<FontAwesomeIcon
-								icon={faChartBar}
-								className='sidebarIcon'
-							/>
-							Reports
-						</li>
-					</ul>
-				</div>
-				<div className='sidebarMenu'>
-					<h3 className='sidebarTitle'>Notifications</h3>
-					<ul className='sidebarList'>
-						<li className='sidebarListItem'>
-							<FontAwesomeIcon icon={faVoicemail} className='sidebarIcon' />
-							Mail
-						</li>
-						<li className='sidebarListItem'>
-							<FontAwesomeIcon icon={faRedoAlt} className='sidebarIcon' />
-							Feedback
-						</li>
-						<li className='sidebarListItem'>
-							<FontAwesomeIcon icon={faMessage} className='sidebarIcon' />
-							Messages
-						</li>
-					</ul>
-				</div>
-				<div className='sidebarMenu'>
-					<h3 className='sidebarTitle'>Staff</h3>
-					<ul className='sidebarList'>
-						<li className='sidebarListItem'>
-							<FontAwesomeIcon icon={faTornado} className='sidebarIcon' />
-							Manage
-						</li>
-						<li className='sidebarListItem'>
-							<FontAwesomeIcon icon={faTimeline} className='sidebarIcon' />
-							Analytics
-						</li>
-						<li className='sidebarListItem'>
-            <FontAwesomeIcon
-								icon={faChartBar}
-								className='sidebarIcon'
-							/>
-							Reports
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		<section id='sidebar'>
+			<Link href='#' className='brand'>
+				<i className='bx bxs-smile'></i>
+				<span className='text'>CUF</span>
+			</Link>
+			<ul className='side-menu top'>
+				<li className='active'>
+					<Link to='/'>
+						<i className='bx bxs-dashboard'></i>
+						<span className='text'>Dashboard</span>
+					</Link>
+				</li>
+				<li>
+					<Link to='/admins'>
+						<i className='bx bxs-shopping-bag-alt'></i>
+						<span className='text'>Admin</span>
+					</Link>
+				</li>
+				<li>
+					<Link href='#'>
+						<i className='bx bxs-doughnut-chart'></i>
+						<span className='text'>Analytics</span>
+					</Link>
+				</li>
+				<li>
+					<Link href='#'>
+						<i className='bx bxs-message-dots'></i>
+						<span className='text'>Message</span>
+					</Link>
+				</li>
+				<li>
+					<Link href='#'>
+						<i className='bx bxs-group'></i>
+						<span className='text'>Team</span>
+					</Link>
+				</li>
+			</ul>
+			<ul className='side-menu'>
+				<li>
+					<Link href='#'>
+						<i className='bx bxs-cog'></i>
+						<span className='text'>Settings</span>
+					</Link>
+				</li>
+				<li>
+					<Link href='#' className='logout'>
+						<i className='bx bxs-log-out-circle'></i>
+						<span className='text'>Logout</span>
+					</Link>
+				</li>
+			</ul>
+		</section>
 	);
 }
 
