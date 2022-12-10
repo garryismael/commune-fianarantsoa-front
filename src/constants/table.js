@@ -59,3 +59,51 @@ export const columnsClient = [
 		label: "Actions",
 	},
 ];
+
+
+export const columnsAbonnement = [
+	{
+		id: "id",
+		label: "Id",
+	},
+	{
+		id: "nom",
+		label: "Nom",
+	},
+	{
+		id: "prenom",
+		label: "Prénoms"
+	},
+	{
+		id: "mois_a_payer",
+		label: "Mois à payer",
+	},
+	{
+		id: "partition",
+		label: "Partition",
+	},
+	{
+		id: "categorie",
+		label: "Categorie",
+	},
+	{
+		id: "activite",
+		label: "Activité",
+	},
+	{
+		id: "type_installation",
+		label: "Type Installation",
+	},
+	{
+		id: "zone",
+		label: "Zone",
+	},
+	{
+		id: "pavillon",
+		label: "N°PAV",
+	},
+	{
+		id: "actions",
+		label: "Actions",
+	},
+];

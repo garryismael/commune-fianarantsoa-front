@@ -39,15 +39,15 @@ function Sidebar() {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to='/admins'>
-						<i className='bx bxs-shopping-bag-alt'></i>
-						<span className='text'>Utilisateur</span>
+					<NavLink to='/abonnements'>
+						<i className='bx bxs-message-dots'></i>
+						<span className='text'>Abonnements</span>
 					</NavLink>
 				</li>
 				<li>
-					<NavLink href='#'>
-						<i className='bx bxs-message-dots'></i>
-						<span className='text'>Message</span>
+					<NavLink to='/admins'>
+						<i className='bx bxs-shopping-bag-alt'></i>
+						<span className='text'>Utilisateur</span>
 					</NavLink>
 				</li>
 				<li>

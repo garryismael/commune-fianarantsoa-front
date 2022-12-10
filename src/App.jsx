@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import AbonnementList from "./components/Abonnement/List";
 import AdminList from "./components/Admin/List";
 import ClientList from "./components/Client/List";
 import Guard from "./components/Guard";
@@ -20,6 +21,7 @@ function App() {
 				<Route path='/clients' element={<ClientPage />}>
 					<Route index element={<ClientList />} />
 				</Route>
+				<Route path='/abonnements' element={<AbonnementList />} />
 				<Route path='/user/:userId' element={<User />} />
 				<Route path='/newUser' element={<NewUser />} />
 			</Route>
