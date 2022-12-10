@@ -109,11 +109,6 @@ const ClientList = () => {
 									<TableCell>{row.prenom}</TableCell>
 									<TableCell>{row.adresse}</TableCell>
 									<TableCell>{row.contact}</TableCell>
-									<TableCell>{row.groupe.nom}</TableCell>
-									<TableCell>{row.groupe.zone.nom}</TableCell>
-									<TableCell>
-										{row.groupe.type_marche.nom}
-									</TableCell>
 									<TableCell>
 										<div className='actions'>
 											<FontAwesomeIcon

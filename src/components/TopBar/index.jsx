@@ -5,9 +5,26 @@ import PeopleImg from "../../assets/img/people.png";
 import "./index.css";
 
 function Topbar() {
+	const onClick = () => {
+		const sidebar = window.document.getElementById("sidebar");
+		sidebar.classList.toggle("hide");
+	};
+
+	const onSwitch = () => {
+		const switchMode = window.document.getElementById("switch-mode");
+
+		switchMode.addEventListener("change", function () {
+			if (this.checked) {
+				document.body.classList.add("dark");
+			} else {
+				document.body.classList.remove("dark");
+			}
+		});
+	};
+
 	return (
 		<nav className='navbar-content'>
-			<i className='bx bx-menu'></i>
+			<i className='bx bx-menu' onClick={onClick}></i>
 			<Link to='#' className='nav-link'>
 				Categories
 			</Link>
@@ -19,7 +36,7 @@ function Topbar() {
 					</button>
 				</div>
 			</form>
-			<input type='checkbox' id='switch-mode' hidden />
+			<input type='checkbox' id='switch-mode' hidden onChange={onSwitch}/>
 			<label htmlFor='switch-mode' className='switch-mode'></label>
 			<Link to='#' className='notification'>
 				<i className='bx bxs-bell'></i>

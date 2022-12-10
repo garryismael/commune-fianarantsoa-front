@@ -2,21 +2,14 @@ import {
 	Button,
 	Card,
 	CardContent,
-	CardHeader,
-	FormControl,
-	InputLabel,
-	MenuItem,
-	Select,
-	TextField,
+	CardHeader, TextField
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useClientForm } from "../../../hooks/useClient";
-import useGroupe from "../../../hooks/useGroupe";
 import { appendClient, updateClient } from "../../../redux/clientSlice";
 import { addClient, editClient } from "../../../services/client";
 
 const ClientForm = (props) => {
-	const [groupes] = useGroupe();
 
 	return (
 		<div className='admin'>
@@ -56,23 +49,6 @@ const ClientForm = (props) => {
 							variant='outlined'
 							onChange={props.onChange}
 						/>
-						<FormControl fullWidth>
-							<InputLabel id='select-label'>Groupe</InputLabel>
-							<Select
-								id='groupe-id-select'
-								name='groupe_id'
-								label='Groupe'
-								value={props.values?.groupe_id || ""}
-								labelId='groupe-id-select-label'
-								onChange={props.onChange}>
-								{groupes.map((groupe) => (
-									<MenuItem key={groupe.id} value={groupe.id}>
-										{groupe.nom}-{groupe.zone.nom}-
-										{groupe.type_marche.nom}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
 						<Button
 							variant='contained'
 							className='button-form'

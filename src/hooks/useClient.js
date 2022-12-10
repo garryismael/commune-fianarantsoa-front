@@ -35,8 +35,7 @@ export const useClientForm = (data) => {
     nom: data?.nom,
     prenom: data?.prenom,
     adresse: data?.adresse,
-    contact: data?.contact,
-    groupe_id: data?.groupe.id,
+    contact: data?.contact
   });
 
   const onChange = (e) => {

@@ -1,17 +1,17 @@
 import axios from "../utils/axios";
 
 export const getAdmins = async () => {
-  return await axios.get("api/utilisateurs");
+  return await axios.get("utilisateurs");
 };
 
 export const addAdmin = async (data) => {
-  return await axios.post('api/utilisateurs', data);
+  return await axios.post('utilisateurs', data);
 };
 
 export const editAdmin = async (id, data) => {
-  return await axios.put(`api/utilisateurs/${id}/`, data);
+  return await axios.put(`utilisateurs/${id}/`, data);
 };
 
 export const deleteAdmin= async (id)=>{
-  return await axios.delete(`api/utilisateurs/${id}/`);
+  return await axios.delete(`utilisateurs/${id}/`);
 }

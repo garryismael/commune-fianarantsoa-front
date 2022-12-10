@@ -55,18 +55,6 @@ export const columnsClient = [
 		label: "Contact",
 	},
 	{
-		id: "groupe",
-		label: "Groupe",
-	},
-	{
-		id: "zone",
-		label: "Zone",
-	},
-	{
-		id: "type_marche",
-		label: "Type Marché",
-	},
-	{
 		id: "actions",
 		label: "Actions",
 	},
