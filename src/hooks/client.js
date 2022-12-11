@@ -32,6 +32,15 @@ const useClient = () => {
 export const useClientAbonnement = (id) => {
 	const [abonnements, setAbonnements] = useState([]);
 
+	const reload = async () => {
+		try {
+			const response = await getClientAbonnements(id);
+			setAbonnements(response.data);
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
 	useEffect(() => {
 		const fetch_data = async () => {
 			try {
@@ -44,7 +53,7 @@ export const useClientAbonnement = (id) => {
 		fetch_data();
 	}, [id]);
 
-	return [abonnements, setAbonnements];
+	return [abonnements, setAbonnements, reload];
 };
 
 export const useClientForm = (data) => {

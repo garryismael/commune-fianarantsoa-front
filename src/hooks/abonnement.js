@@ -41,11 +41,30 @@ export const useAbonnementForm = (abonnement) => {
 		pavillon_id: abonnement?.pavillon.id,
 	});
 
-  const onChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+	const onChange = (e) => {
+		setValues({ ...values, [e.target.name]: e.target.value });
+	};
 
-  return [values, onChange];
+	return [values, onChange];
+};
+
+export const useAbonnementClientForm = (client, abonnement) => {
+	const [values, setValues] = useState({
+		frais: abonnement?.frais,
+		mois_a_payer: abonnement?.mois_a_payer,
+		client_id: client?.id,
+		activite_id: abonnement?.activite.id,
+		zone_id: abonnement?.zone.id,
+		partition_id: abonnement?.partition.id,
+		type_installation_id: abonnement?.type_installation.id,
+		pavillon_id: abonnement?.pavillon.id,
+	});
+
+	const onChange = (e) => {
+		setValues({ ...values, [e.target.name]: e.target.value });
+	};
+
+	return [values, onChange];
 };
 
 export default useAbonnement;

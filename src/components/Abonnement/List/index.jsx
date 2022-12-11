@@ -16,19 +16,20 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { style } from "../../../constants";
 import { columnsAbonnement } from "../../../constants/table";
-import useAbonnement, { useAbonnementForm } from "../../../hooks/abonnement";
+import useAbonnement from "../../../hooks/abonnement";
 import useModal from "../../../hooks/modal";
-import { appendAbonnement } from "../../../redux/abonnementSlice";
-import { addAbonnement } from "../../../services/abonnement";
+import { removeAbonnement } from "../../../redux/abonnementSlice";
+import { deleteAbonnement } from "../../../services/abonnement";
 import TablePaginationActions from "../../Pagination";
-import AbonnementForm from "../Form";
+import { AbonnementAdd, AbonnementEdit } from "../Form";
 
 const AbonnementList = () => {
 	const [page, setPage] = useState(0);
+	const [abonnement, setAbonnement] = useState();
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
+	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
 	const [abonnements] = useAbonnement();
-	const [values, onChange] = useAbonnementForm();
 	const dispatch = useDispatch();
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
@@ -40,19 +41,24 @@ const AbonnementList = () => {
 		setPage(newPage);
 	};
 
+	const onEdit = (row) => {
+		setAbonnement(row);
+		handleOpenEdit();
+	};
+
 	const handleChangeRowsPerPage = (event) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
 
-	const handleAddSubmit = async (e) => {
-		e.preventDefault();
-		try {
-			const response = await addAbonnement(values);
-			dispatch(appendAbonnement(response.data));
-			handleCloseAdd();
-		} catch (errors) {
-			console.error(errors);
+	const handleDelete = async (id) => {
+		if (window.confirm("Voulez vous vraiment supprimer?")) {
+			try {
+				await deleteAbonnement(id);
+				dispatch(removeAbonnement(id));
+			} catch (errors) {
+				console.error(errors);
+			}
 		}
 	};
 
@@ -99,6 +105,7 @@ const AbonnementList = () => {
 										{row.client.nom}
 									</TableCell>
 									<TableCell>{row.client.prenom}</TableCell>
+									<TableCell>{row.frais} Ar</TableCell>
 									<TableCell>{row.mois_a_payer}</TableCell>
 									<TableCell>{row.partition.nom}</TableCell>
 									<TableCell>
@@ -112,8 +119,14 @@ const AbonnementList = () => {
 									<TableCell>{row.pavillon.numero}</TableCell>
 									<TableCell>
 										<div className='actions'>
-											<i className='fas fa-edit'></i>
-											<i className='fas fa-trash-alt'></i>
+											<i
+												className='fas fa-edit'
+												onClick={() => onEdit(row)}></i>
+											<i
+												className='fas fa-trash-alt'
+												onClick={() =>
+													handleDelete(row.id)
+												}></i>
 										</div>
 									</TableCell>
 								</TableRow>
@@ -161,12 +174,18 @@ const AbonnementList = () => {
 				aria-labelledby='modal-edit-title'
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<AbonnementForm
-						title='Ajouter un abonnement'
-						values={values}
-						onChange={onChange}
-						button='Sauvegarder'
-						handleSubmit={handleAddSubmit}
+					<AbonnementAdd handleClose={handleCloseAdd} />
+				</Box>
+			</Modal>
+			<Modal
+				open={openEdit}
+				onClose={handleCloseEdit}
+				aria-labelledby='modal-add-title'
+				aria-describedby='modal-add-description'>
+				<Box sx={style}>
+					<AbonnementEdit
+						abonnement={abonnement}
+						handleClose={handleCloseEdit}
 					/>
 				</Box>
 			</Modal>

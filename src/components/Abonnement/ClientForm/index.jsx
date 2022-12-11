@@ -5,21 +5,17 @@ import CardContent from "@mui/material/CardContent";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { useAbonnementForm } from "../../../hooks/abonnement";
+import { useAbonnementClientForm } from "../../../hooks/abonnement";
 import useActivite from "../../../hooks/activite";
-import useClient from "../../../hooks/client";
 import usePartition from "../../../hooks/partition";
 import { useNotUsedPavillon } from "../../../hooks/pavillon";
 import useTypeInstallation from "../../../hooks/typeInstallation";
 import useZone from "../../../hooks/zone";
-import { appendAbonnement, updateAbonnement } from "../../../redux/abonnementSlice";
 import { addAbonnement, editAbonnement } from "../../../services/abonnement";
 
 import "./index.css";
 
-const AbonnementForm = (props) => {
-	const [clients] = useClient();
+const AbonnementClientForm = (props) => {
 	const [activites] = useActivite();
 	const [zones] = useZone();
 	const [partitions] = usePartition();
@@ -30,7 +26,9 @@ const AbonnementForm = (props) => {
 			<Card sx={{ width: "500px", margin: "auto" }}>
 				<CardHeader title={props.title} />
 				<CardContent>
-					<form className='abonnement-form' onSubmit={props.handleSubmit}>
+					<form
+						className='abonnement-form'
+						onSubmit={props.handleSubmit}>
 						<TextField
 							id='frais'
 							label='Frais'
@@ -49,24 +47,7 @@ const AbonnementForm = (props) => {
 							variant='outlined'
 							onChange={props.onChange}
 						/>
-						<FormControl fullWidth>
-							<InputLabel id='client-select-label'>
-								Client
-							</InputLabel>
-							<Select
-								id='client-select'
-								name='client_id'
-								label='Client'
-								value={props?.values.client_id || ""}
-								labelId='client-select-label'
-								onChange={props.onChange}>
-								{clients.map((client) => (
-									<MenuItem key={client.id} value={client.id}>
-										{client.nom} {client.prenom}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
+
 						<FormControl fullWidth>
 							<InputLabel id='activite-select-label'>
 								Activite
@@ -176,16 +157,16 @@ const AbonnementForm = (props) => {
 	);
 };
 
-export const AbonnementAdd = (props) => {
-	const [values, onChange] = useAbonnementForm();
-	const dispatch = useDispatch();
+export const AbonnementClientAdd = (props) => {
+	const [values, onChange] = useAbonnementClientForm(props.client);
+
 	const [pavillons] = useNotUsedPavillon();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await addAbonnement(values);
-			dispatch(appendAbonnement(response.data));
+			await addAbonnement(values);
+			await props.reload();
 			props.handleClose();
 		} catch (errors) {
 			console.error(errors);
@@ -193,10 +174,11 @@ export const AbonnementAdd = (props) => {
 	};
 
 	return (
-		<AbonnementForm
+		<AbonnementClientForm
 			title='Ajouter un Abonnement'
 			values={values}
 			button='Ajouter'
+			create={true}
 			handleSubmit={handleSubmit}
 			onChange={onChange}
 			pavillons={pavillons}
@@ -204,16 +186,16 @@ export const AbonnementAdd = (props) => {
 	);
 };
 
-export const AbonnementEdit = (props) => {
-	const [values, onChange] = useAbonnementForm(props.abonnement);
-	const dispatch = useDispatch();
+export const AbonnementClientEdit = (props) => {
+	const [values, onChange] = useAbonnementClientForm(props.client, props.abonnement);
+
 	const [pavillons] = useNotUsedPavillon();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await editAbonnement(props.abonnement.id, values);
-			dispatch(updateAbonnement(response.data));
+			await editAbonnement(props.abonnement.id, values);
+			await props.reload();
 			props.handleClose();
 		} catch (errors) {
 			console.error(errors);
@@ -221,10 +203,11 @@ export const AbonnementEdit = (props) => {
 	};
 
 	return (
-		<AbonnementForm
+		<AbonnementClientForm
 			title='Modifier un Abonnement'
 			values={values}
 			button='Modifier'
+			create={false}
 			handleSubmit={handleSubmit}
 			onChange={onChange}
 			pavillons={pavillons.concat(props.abonnement.pavillon)}
@@ -232,5 +215,4 @@ export const AbonnementEdit = (props) => {
 	);
 };
 
-
-export default AbonnementForm;
+export default AbonnementClientForm;

@@ -42,7 +42,7 @@ export const useNotUsedPavillon = () => {
 			}
 		};
 		fetch_data();
-	});
+	}, []);
 	return [pavillons, setPavillons];
 };
 

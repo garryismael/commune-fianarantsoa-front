@@ -75,6 +75,10 @@ export const columnsAbonnement = [
 		label: "Prénoms"
 	},
 	{
+		"id": "frais",
+		label: "Frais"
+	},
+	{
 		id: "mois_a_payer",
 		label: "Mois à payer",
 	},
@@ -113,6 +117,10 @@ export const columnsClientAbonnement = [
 	{
 		id: "id",
 		label: "Id",
+	},
+	{
+		"id": "frais",
+		label: "Frais"
 	},
 	{
 		id: "mois_a_payer",
