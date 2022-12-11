@@ -9,7 +9,7 @@ import {
 	TableFooter,
 	TableHead,
 	TablePagination,
-	TableRow,
+	TableRow
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
@@ -17,8 +17,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { style } from "../../../constants";
 import { columnsClient } from "../../../constants/table";
-import useClient from "../../../hooks/useClient";
-import useModal from "../../../hooks/useModal";
+import useClient from "../../../hooks/client";
+import useModal from "../../../hooks/modal";
 import { removeClient } from "../../../redux/clientSlice";
 import { deleteClient } from "../../../services/client";
 import TablePaginationActions from "../../Pagination";

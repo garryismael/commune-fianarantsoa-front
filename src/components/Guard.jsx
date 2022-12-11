@@ -1,9 +1,9 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import useAuth from '../hooks/auth';
 import Layout from './Layout';
 
 const Guard = () => {
-	const location = useLocation();
-	const token = localStorage.getItem("token");
+	const [location, token] = useAuth();
 	return token ? (
 		<Layout />
 	) : (

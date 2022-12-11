@@ -5,7 +5,7 @@ import {
 	CardHeader, TextField
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { useClientForm } from "../../../hooks/useClient";
+import { useClientForm } from "../../../hooks/client";
 import { appendClient, updateClient } from "../../../redux/clientSlice";
 import { addClient, editClient } from "../../../services/client";
 

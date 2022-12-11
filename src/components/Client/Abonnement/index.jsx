@@ -13,7 +13,7 @@ import {
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { columnsClientAbonnement } from "../../../constants/table";
-import { useClientAbonnement } from "../../../hooks/useClient";
+import { useClientAbonnement } from "../../../hooks/client";
 import TablePaginationActions from "../../Pagination";
 import "./index.css";
 

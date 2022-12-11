@@ -5,6 +5,7 @@ import { abonnementReducer } from './abonnementSlice';
 import { activiteReducer } from './activiteSlice';
 import { adminReducer } from './adminSlice';
 import { authReducer } from './authSlice';
+import { categorieActiviteReducer } from './categorieActiviteSlice';
 import { clientReducer } from './clientSlice';
 import { partitionReducer } from './partitionSlice';
 import { pavillonReducer } from './pavillonSlice';
@@ -13,16 +14,17 @@ import { typeInstallationReducer } from './typeInstallationSlice';
 import { zoneReducer } from './zoneSlice';
 
 const reducer = combineReducers({
-	auth: authReducer,
-	admin: adminReducer,
-	client: clientReducer,
-	zone: zoneReducer,
 	abonnement: abonnementReducer,
 	activite: activiteReducer,
+	admin: adminReducer,
+	auth: authReducer,
+	categorie_activite: categorieActiviteReducer,
+	client: clientReducer,
 	partition: partitionReducer,
-	type_installation: typeInstallationReducer,
 	pavillon: pavillonReducer,
-	transaction: transactionReducer
+	transaction: transactionReducer,
+	type_installation: typeInstallationReducer,
+	zone: zoneReducer,
 });
 
 export const store = configureStore({

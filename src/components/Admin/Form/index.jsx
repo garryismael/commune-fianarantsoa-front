@@ -10,7 +10,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import { useDispatch } from "react-redux";
-import useAdminForm from "../../../hooks/useAdminForm";
+import { useAdminForm } from "../../../hooks/admin";
 import { appendAdmin, updateAdmin } from "../../../redux/adminSlice";
 import { addAdmin, editAdmin } from "../../../services/admin";
 

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { columnsAbonnement } from "../../../constants/table";
-import useAbonnement from "../../../hooks/useAbonnement";
+import useAbonnement from "../../../hooks/abonnement";
 import TablePaginationActions from "../../Pagination";
 
 const AbonnementList = () => {
