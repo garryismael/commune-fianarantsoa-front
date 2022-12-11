@@ -1,15 +1,14 @@
-import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    Button, Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableFooter,
-    TableHead,
-    TablePagination,
-    TableRow
+	Button,
+	Paper,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableFooter,
+	TableHead,
+	TablePagination,
+	TableRow,
 } from "@mui/material";
 import { useState } from "react";
 import { columnsAbonnement } from "../../../constants/table";
@@ -24,7 +23,9 @@ const AbonnementList = () => {
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - abonnements.length) : 0;
+		page > 0
+			? Math.max(0, (1 + page) * rowsPerPage - abonnements.length)
+			: 0;
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -41,8 +42,7 @@ const AbonnementList = () => {
 				<Button
 					variant='contained'
 					type='button'
-					sx={{ marginBottom: "10px" }}
-					>
+					sx={{ marginBottom: "10px" }}>
 					Ajouter
 				</Button>
 
@@ -80,24 +80,19 @@ const AbonnementList = () => {
 									<TableCell>{row.client.prenom}</TableCell>
 									<TableCell>{row.mois_a_payer}</TableCell>
 									<TableCell>{row.partition.nom}</TableCell>
-                                    <TableCell>{row.activite.categorie_activite.nom}</TableCell>
-                                    <TableCell>{row.activite.nom}</TableCell>
-                                    <TableCell>{row.type_installation.nom}</TableCell>
-                                    <TableCell>{row.zone.nom}</TableCell>
-                                    <TableCell>{row.pavillon.numero}</TableCell>
+									<TableCell>
+										{row.activite.categorie_activite.nom}
+									</TableCell>
+									<TableCell>{row.activite.nom}</TableCell>
+									<TableCell>
+										{row.type_installation.nom}
+									</TableCell>
+									<TableCell>{row.zone.nom}</TableCell>
+									<TableCell>{row.pavillon.numero}</TableCell>
 									<TableCell>
 										<div className='actions'>
-											<FontAwesomeIcon
-												icon={faEdit}
-												color='blue'
-												size='lg'
-											/>
-
-											<FontAwesomeIcon
-												icon={faTrashAlt}
-												color='red'
-												size='lg'
-											/>
+											<i className='fas fa-edit'></i>
+											<i className='fas fa-trash-alt'></i>
 										</div>
 									</TableCell>
 								</TableRow>

@@ -4,6 +4,10 @@ export const getClients = async () => {
 	return await axios.get("clients");
 };
 
+export const getClientAbonnements = async (id) => {
+	return await axios.get(`clients/${id}/abonnements`);
+}
+
 export const addClient = async (data) => {
 	return await axios.post("clients", data);
 };

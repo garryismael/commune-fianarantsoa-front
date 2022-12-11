@@ -1,5 +1,3 @@
-import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Modal, TableHead } from "@mui/material";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -23,7 +21,6 @@ import TablePaginationActions from "../../Pagination";
 
 import { AdminAdd, AdminEdit } from "../Form";
 import "./index.css";
-
 
 export default function AdminList() {
 	const [page, setPage] = useState(0);
@@ -111,21 +108,14 @@ export default function AdminList() {
 									<TableCell>{row.contact}</TableCell>
 									<TableCell>
 										<div className='actions'>
-											<FontAwesomeIcon
-												icon={faEdit}
-												color='blue'
-												size='lg'
-												onClick={() => onEdit(row)}
-											/>
-
-											<FontAwesomeIcon
-												icon={faTrashAlt}
-												color='red'
-												size='lg'
+											<i
+												className='fas fa-edit'
+												onClick={() => onEdit(row)}></i>
+											<i
+												className='fas fa-trash-alt'
 												onClick={() =>
 													handleDelete(row.id)
-												}
-											/>
+												}></i>
 										</div>
 									</TableCell>
 								</TableRow>

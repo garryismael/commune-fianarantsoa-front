@@ -107,3 +107,43 @@ export const columnsAbonnement = [
 		label: "Actions",
 	},
 ];
+
+
+export const columnsClientAbonnement = [
+	{
+		id: "id",
+		label: "Id",
+	},
+	{
+		id: "mois_a_payer",
+		label: "Mois à payer",
+	},
+	{
+		id: "partition",
+		label: "Partition",
+	},
+	{
+		id: "categorie",
+		label: "Categorie",
+	},
+	{
+		id: "activite",
+		label: "Activité",
+	},
+	{
+		id: "type_installation",
+		label: "Type Installation",
+	},
+	{
+		id: "zone",
+		label: "Zone",
+	},
+	{
+		id: "pavillon",
+		label: "N°PAV",
+	},
+	{
+		id: "actions",
+		label: "Actions",
+	},
+];

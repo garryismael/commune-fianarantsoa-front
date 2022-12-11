@@ -2,14 +2,12 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import AbonnementList from "./components/Abonnement/List";
 import AdminList from "./components/Admin/List";
+import ClientAbonnement from "./components/Client/Abonnement";
 import ClientList from "./components/Client/List";
 import Guard from "./components/Guard";
 import ClientPage from "./pages/Client";
 import Home from "./pages/Home";
 import LoginPage from "./pages/Login";
-import NewUser from "./pages/User/Add";
-import User from "./pages/User/Detail";
-import UserList from "./pages/User/List";
 
 function App() {
 	return (
@@ -17,13 +15,11 @@ function App() {
 			<Route path='/' element={<Guard />}>
 				<Route index element={<Home />} />
 				<Route path='admins' element={<AdminList />} />
-				<Route path='/users' element={<UserList />} />
 				<Route path='/clients' element={<ClientPage />}>
 					<Route index element={<ClientList />} />
+					<Route path=":id/abonnements" element={<ClientAbonnement/>}/>
 				</Route>
 				<Route path='/abonnements' element={<AbonnementList />} />
-				<Route path='/user/:userId' element={<User />} />
-				<Route path='/newUser' element={<NewUser />} />
 			</Route>
 			<Route path='login' element={<LoginPage />} />
 		</Routes>

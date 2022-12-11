@@ -1,5 +1,3 @@
-import { faEdit, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	Button,
 	Modal,
@@ -11,11 +9,12 @@ import {
 	TableFooter,
 	TableHead,
 	TablePagination,
-	TableRow
+	TableRow,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { style } from "../../../constants";
 import { columnsClient } from "../../../constants/table";
 import useClient from "../../../hooks/useClient";
@@ -34,10 +33,15 @@ const ClientList = () => {
 
 	const [admins] = useClient();
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const onEdit = (row) => {
 		setClient(row);
 		handleOpenEdit();
+	};
+
+	const onClickRow = (client) => {
+		navigate(`${client.id}/abonnements`, { state: { client } });
 	};
 
 	const handleDelete = async (id) => {
@@ -99,7 +103,10 @@ const ClientList = () => {
 								  )
 								: admins
 							).map((row) => (
-								<TableRow key={row.id}>
+								<TableRow
+									key={row.id}
+									className='cursor-pointer'
+									onClick={() => onClickRow(row)}>
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>
@@ -111,17 +118,13 @@ const ClientList = () => {
 									<TableCell>{row.contact}</TableCell>
 									<TableCell>
 										<div className='actions'>
-											<FontAwesomeIcon
-												icon={faEdit}
-												color='blue'
-												size='lg'
+											<i
+												className='fas fa-edit'
 												onClick={() => onEdit(row)}
 											/>
 
-											<FontAwesomeIcon
-												icon={faTrashAlt}
-												color='red'
-												size='lg'
+											<i
+												className='fas fa-trash-alt'
 												onClick={() =>
 													handleDelete(row.id)
 												}

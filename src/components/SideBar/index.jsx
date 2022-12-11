@@ -34,19 +34,19 @@ function Sidebar() {
 				</li>
 				<li>
 					<NavLink to='/clients'>
-						<i className='bx bxs-doughnut-chart'></i>
+						<i className='bx bxs-group'></i>
 						<span className='text'>Client</span>
 					</NavLink>
 				</li>
 				<li>
 					<NavLink to='/abonnements'>
-						<i className='bx bxs-message-dots'></i>
+						<i className='fas fa-user-shield'></i>
 						<span className='text'>Abonnements</span>
 					</NavLink>
 				</li>
 				<li>
 					<NavLink to='/admins'>
-						<i className='bx bxs-shopping-bag-alt'></i>
+						<i className='fas fa-user-shield'></i>
 						<span className='text'>Utilisateur</span>
 					</NavLink>
 				</li>

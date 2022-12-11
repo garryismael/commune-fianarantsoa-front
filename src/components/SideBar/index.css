@@ -7,7 +7,7 @@
 	background: var(--light);
 	z-index: 2000;
 	font-family: var(--lato);
-	transition: .3s ease;
+	transition: 0.3s ease;
 	overflow-x: hidden;
 }
 #sidebar::--webkit-scrollbar {
@@ -32,6 +32,7 @@
 	padding-bottom: 20px;
 	box-sizing: content-box;
 }
+
 #sidebar .brand .bx {
 	min-width: 60px;
 	display: flex;
@@ -41,6 +42,7 @@
 	width: 100%;
 	margin-top: 48px;
 }
+
 #sidebar .side-menu li {
 	height: 48px;
 	background: transparent;
@@ -53,7 +55,7 @@
 	position: relative;
 }
 #sidebar .side-menu li.active::before {
-	content: '';
+	content: "";
 	position: absolute;
 	width: 40px;
 	height: 40px;
@@ -64,7 +66,7 @@
 	z-index: -1;
 }
 #sidebar .side-menu li.active::after {
-	content: '';
+	content: "";
 	position: absolute;
 	width: 40px;
 	height: 40px;
@@ -91,7 +93,7 @@
 }
 #sidebar.hide .side-menu li a {
 	width: calc(48px - (4px * 2));
-	transition: width .3s ease;
+	transition: width 0.3s ease;
 }
 #sidebar .side-menu li a.logout {
 	color: var(--red);
@@ -99,8 +101,9 @@
 #sidebar .side-menu.top li a:hover {
 	color: var(--blue);
 }
-#sidebar .side-menu li a .bx {
-	min-width: calc(60px  - ((4px + 6px) * 2));
+#sidebar .side-menu li a .bx,
+#sidebar .side-menu li a .fas {
+	min-width: calc(60px - ((4px + 6px) * 2));
 	display: flex;
 	justify-content: center;
 }

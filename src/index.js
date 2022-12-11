@@ -1,3 +1,5 @@
+import "@fortawesome/fontawesome-free/css/all.css";
+import "boxicons/css/boxicons.min.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
