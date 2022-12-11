@@ -109,10 +109,10 @@ export default function AdminList() {
 									<TableCell>
 										<div className='actions'>
 											<i
-												className='fas fa-edit'
+												className='fas fa-edit fa-lg blue-color cursor-pointer'
 												onClick={() => onEdit(row)}></i>
 											<i
-												className='fas fa-trash-alt'
+												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
 													handleDelete(row.id)
 												}></i>

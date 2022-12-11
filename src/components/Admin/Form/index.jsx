@@ -140,7 +140,7 @@ export const AdminEdit = (props) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await editAdmin(props.admin.id, values);
+			const response = await editAdmin(props.user.id, values);
 			dispatch(updateAdmin(response.data));
 			props.handleClose();
 		} catch (errors) {

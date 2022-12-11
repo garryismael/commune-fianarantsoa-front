@@ -9,7 +9,7 @@ import {
 	TableFooter,
 	TableHead,
 	TablePagination,
-	TableRow
+	TableRow,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
@@ -119,12 +119,12 @@ const ClientList = () => {
 									<TableCell>
 										<div className='actions'>
 											<i
-												className='fas fa-edit'
+												className='fas fa-edit fa-lg blue-color cursor-pointer'
 												onClick={() => onEdit(row)}
 											/>
 
 											<i
-												className='fas fa-trash-alt'
+												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
 													handleDelete(row.id)
 												}
