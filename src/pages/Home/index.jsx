@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import PeopleImg from "../../assets/img/people.png";
+import useStats from "../../hooks/stats";
 import "./index.css";
 
 function Home() {
+	const [stats] = useStats();
 	return (
 		<>
 			<div className='head-title'>
@@ -32,22 +34,22 @@ function Home() {
 				<li>
 					<i className='bx bxs-calendar-check'></i>
 					<span className='text'>
-						<h3>1020</h3>
-						<p>New Order</p>
+						<h3>{stats?.transactions || 0}</h3>
+						<p>Nouvelle Transaction</p>
 					</span>
 				</li>
 				<li>
 					<i className='bx bxs-group'></i>
 					<span className='text'>
-						<h3>2834</h3>
-						<p>Visitors</p>
+						<h3>{stats?.clients || 0}</h3>
+						<p>Clients</p>
 					</span>
 				</li>
 				<li>
 					<i className='bx bxs-dollar-circle'></i>
 					<span className='text'>
-						<h3>$2543</h3>
-						<p>Total Sales</p>
+						<h3>Ar {stats?.money || 0}</h3>
+						<p>Total Transaction</p>
 					</span>
 				</li>
 			</ul>
@@ -55,16 +57,16 @@ function Home() {
 			<div className='table-data'>
 				<div className='order'>
 					<div className='head'>
-						<h3>Recent Orders</h3>
+						<h3>Transaction Récente</h3>
 						<i className='bx bx-search'></i>
 						<i className='bx bx-filter'></i>
 					</div>
 					<table>
 						<thead>
 							<tr>
-								<th>User</th>
-								<th>Date Order</th>
-								<th>Status</th>
+								<th>Utilisateur</th>
+								<th>Date Transaction</th>
+								<th>Est vérifié</th>
 							</tr>
 						</thead>
 						<tbody>

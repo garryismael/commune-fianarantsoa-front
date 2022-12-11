@@ -9,6 +9,7 @@ import { categorieActiviteReducer } from './categorieActiviteSlice';
 import { clientReducer } from './clientSlice';
 import { partitionReducer } from './partitionSlice';
 import { pavillonReducer } from './pavillonSlice';
+import { statsReducer } from './statsSlice';
 import { transactionReducer } from './transactionSlice';
 import { typeInstallationReducer } from './typeInstallationSlice';
 import { zoneReducer } from './zoneSlice';
@@ -25,6 +26,7 @@ const reducer = combineReducers({
 	transaction: transactionReducer,
 	type_installation: typeInstallationReducer,
 	zone: zoneReducer,
+	stats: statsReducer
 });
 
 export const store = configureStore({
