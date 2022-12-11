@@ -38,7 +38,7 @@ export const useAbonnementForm = (abonnement) => {
 		zone_id: abonnement?.zone.id,
 		partition_id: abonnement?.partition.id,
 		type_installation_id: abonnement?.type_installation.id,
-		pavillon_id: 3,
+		pavillon_id: abonnement?.pavillon.id,
 	});
 
   const onChange = (e) => {

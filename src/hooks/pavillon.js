@@ -1,33 +1,49 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPavillons } from "../redux/pavillonSlice";
-import { getPavillons } from "../services/pavillons";
+import { getNotUsedPavillon, getPavillons } from "../services/pavillons";
 
 const usePavillon = () => {
-  const dispatch = useDispatch();
-  const pavillons = useSelector((state) => state.pavillon.pavillons);
-  
-  const fetch_data = async () => {
-    try {
-      const response = await getPavillons();
-      dispatch(setPavillons(response.data));
-    } catch (errors) {
-      console.error(errors);
-    }
-  };
+	const dispatch = useDispatch();
+	const pavillons = useSelector((state) => state.pavillon.pavillons);
 
-  useEffect(() => {
-    if (pavillons.length <= 0) {
-      fetch_data();
-    }
-  }, []);
+	const fetch_data = async () => {
+		try {
+			const response = await getPavillons();
+			dispatch(setPavillons(response.data));
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
 
-  const setData = (data) => {
-    dispatch(setPavillons(data));
-  };
+	useEffect(() => {
+		if (pavillons.length <= 0) {
+			fetch_data();
+		}
+	}, []);
 
-  return [pavillons, setData];
+	const setData = (data) => {
+		dispatch(setPavillons(data));
+	};
+
+	return [pavillons, setData];
 };
 
+export const useNotUsedPavillon = () => {
+	const [pavillons, setPavillons] = useState([]);
+
+	useEffect(() => {
+		const fetch_data = async () => {
+			try {
+				const response = await getNotUsedPavillon();
+				setPavillons(response.data);
+			} catch (errors) {
+				console.error(errors);
+			}
+		};
+		fetch_data();
+	});
+	return [pavillons, setPavillons];
+};
 
 export default usePavillon;

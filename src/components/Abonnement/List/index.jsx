@@ -1,5 +1,7 @@
 import {
+	Box,
 	Button,
+	Modal,
 	Paper,
 	Table,
 	TableBody,
@@ -11,16 +13,23 @@ import {
 	TableRow,
 } from "@mui/material";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { style } from "../../../constants";
 import { columnsAbonnement } from "../../../constants/table";
-import useAbonnement from "../../../hooks/abonnement";
+import useAbonnement, { useAbonnementForm } from "../../../hooks/abonnement";
+import useModal from "../../../hooks/modal";
+import { appendAbonnement } from "../../../redux/abonnementSlice";
+import { addAbonnement } from "../../../services/abonnement";
 import TablePaginationActions from "../../Pagination";
+import AbonnementForm from "../Form";
 
 const AbonnementList = () => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
-
+	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
 	const [abonnements] = useAbonnement();
-
+	const [values, onChange] = useAbonnementForm();
+	const dispatch = useDispatch();
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
 		page > 0
@@ -36,13 +45,25 @@ const AbonnementList = () => {
 		setPage(0);
 	};
 
+	const handleAddSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			const response = await addAbonnement(values);
+			dispatch(appendAbonnement(response.data));
+			handleCloseAdd();
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
 	return (
 		<>
 			<div>
 				<Button
 					variant='contained'
 					type='button'
-					sx={{ marginBottom: "10px" }}>
+					sx={{ marginBottom: "10px" }}
+					onClick={handleOpenAdd}>
 					Ajouter
 				</Button>
 
@@ -134,6 +155,21 @@ const AbonnementList = () => {
 					</Table>
 				</TableContainer>
 			</div>
+			<Modal
+				open={openAdd}
+				onClose={handleCloseAdd}
+				aria-labelledby='modal-edit-title'
+				aria-describedby='modal-edit-description'>
+				<Box sx={style}>
+					<AbonnementForm
+						title='Ajouter un abonnement'
+						values={values}
+						onChange={onChange}
+						button='Sauvegarder'
+						handleSubmit={handleAddSubmit}
+					/>
+				</Box>
+			</Modal>
 		</>
 	);
 };

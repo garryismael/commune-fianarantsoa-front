@@ -4,6 +4,10 @@ export const getPavillons = async () => {
 	return await axios.get("pavillons");
 };
 
+export const getNotUsedPavillon = async() => {
+	return await axios.get("pavillons/not_used");
+};
+
 export const addPavillon = async (data) => {
 	return await axios.post("pavillons", data);
 };

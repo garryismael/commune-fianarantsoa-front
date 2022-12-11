@@ -8,7 +8,7 @@ import React from "react";
 import useActivite from "../../../hooks/activite";
 import useClient from "../../../hooks/client";
 import usePartition from "../../../hooks/partition";
-import usePavillon from "../../../hooks/pavillon";
+import { useNotUsedPavillon } from "../../../hooks/pavillon";
 import useTypeInstallation from "../../../hooks/typeInstallation";
 import useZone from "../../../hooks/zone";
 
@@ -20,7 +20,7 @@ const AbonnementForm = (props) => {
 	const [zones] = useZone();
 	const [partitions] = usePartition();
 	const [type_installations] = useTypeInstallation();
-	const [pavillons] = usePavillon();
+	const [pavillons] = useNotUsedPavillon();
 
 	return (
 		<div className='admin'>
@@ -40,6 +40,7 @@ const AbonnementForm = (props) => {
 						<TextField
 							id='mois_a_payer'
 							name='mois_a_payer'
+							type='number'
 							label='Mois à payer'
 							value={props.values.mois_a_payer}
 							variant='outlined'
@@ -51,9 +52,9 @@ const AbonnementForm = (props) => {
 							</InputLabel>
 							<Select
 								id='client-select'
-								name="client_id"
+								name='client_id'
 								label='Client'
-								value={props.values.client_id}
+								value={props.values.client_id || ""}
 								labelId='client-select-label'
 								onChange={props.onChange}>
 								{clients.map((client) => (
@@ -69,27 +70,27 @@ const AbonnementForm = (props) => {
 							</InputLabel>
 							<Select
 								id='activite-select'
-								name="activite_id"
+								name='activite_id'
 								label='Activite'
-								value={props.values.activite_id}
+								value={props.values.activite_id || ""}
 								labelId='activite-select-label'
 								onChange={props.onChange}>
 								{activites.map((activite) => (
-									<MenuItem key={activite.id} value={activite.id}>
+									<MenuItem
+										key={activite.id}
+										value={activite.id}>
 										{activite.nom}
 									</MenuItem>
 								))}
 							</Select>
 						</FormControl>
 						<FormControl fullWidth>
-							<InputLabel id='zone-select-label'>
-								Zone
-							</InputLabel>
+							<InputLabel id='zone-select-label'>Zone</InputLabel>
 							<Select
 								id='zone-select'
-								name="zone_id"
+								name='zone_id'
 								label='Zone'
-								value={props.values.zone_id}
+								value={props.values.zone_id || ""}
 								labelId='zone-select-label'
 								onChange={props.onChange}>
 								{zones.map((zone) => (
@@ -105,13 +106,15 @@ const AbonnementForm = (props) => {
 							</InputLabel>
 							<Select
 								id='partition-select'
-								name="partition_id"
+								name='partition_id'
 								label='Partition'
-								value={props.values.partition_id}
+								value={props.values.partition_id || ""}
 								labelId='partition-select-label'
 								onChange={props.onChange}>
 								{partitions.map((partition) => (
-									<MenuItem key={partition.id} value={partition.id}>
+									<MenuItem
+										key={partition.id}
+										value={partition.id}>
 										{partition.nom}
 									</MenuItem>
 								))}
@@ -123,13 +126,15 @@ const AbonnementForm = (props) => {
 							</InputLabel>
 							<Select
 								id='type-installation-select'
-								name="type_installation_id"
+								name='type_installation_id'
 								label='Partition'
-								value={props.values.type_installation_id}
+								value={props.values.type_installation_id || ""}
 								labelId='type-installation-select-label'
 								onChange={props.onChange}>
 								{type_installations.map((type_installation) => (
-									<MenuItem key={type_installation.id} value={type_installation.id}>
+									<MenuItem
+										key={type_installation.id}
+										value={type_installation.id}>
 										{type_installation.nom}
 									</MenuItem>
 								))}
@@ -141,13 +146,15 @@ const AbonnementForm = (props) => {
 							</InputLabel>
 							<Select
 								id='pavillon-select'
-								name="pavillon_id"
+								name='pavillon_id'
 								label='Pavillon'
-								value={props.values.pavillon_id}
+								value={props.values.pavillon_id || ""}
 								labelId='pavillon-select-label'
 								onChange={props.onChange}>
 								{pavillons.map((pavillon) => (
-									<MenuItem key={pavillon.id} value={pavillon.id}>
+									<MenuItem
+										key={pavillon.id}
+										value={pavillon.id}>
 										{pavillon.numero}
 									</MenuItem>
 								))}

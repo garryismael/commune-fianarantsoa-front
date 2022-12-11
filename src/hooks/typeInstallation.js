@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setTypeInstallations } from "../redux/typeInstallationSlice";
-import { getTypeInstallation } from "../services/type_installation";
+import { getTypeInstallation } from "../services/typeInstallation";
 
 const useTypeInstallation = () => {
   const dispatch = useDispatch();
-  const type_installations = useSelector((state) => state.type_installation.type_installations);
+  const types_installation = useSelector((state) => state.type_installation.types_installation);
   
   const fetch_data = async () => {
     try {
@@ -17,7 +17,7 @@ const useTypeInstallation = () => {
   };
 
   useEffect(() => {
-    if (type_installations.length <= 0) {
+    if (types_installation.length <= 0) {
       fetch_data();
     }
   }, []);
@@ -26,7 +26,7 @@ const useTypeInstallation = () => {
     dispatch(setTypeInstallations(data));
   };
 
-  return [type_installations, setData];
+  return [types_installation, setData];
 };
 
 
