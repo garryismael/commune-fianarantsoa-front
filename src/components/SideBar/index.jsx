@@ -34,7 +34,7 @@ function Sidebar() {
 				</li>
 				<li>
 					<NavLink to='/clients'>
-						<i class='fas fa-user-group fa-sm'></i>
+						<i className='fas fa-user-group fa-sm'></i>
 						<span className='text'>Clients</span>
 					</NavLink>
 				</li>
@@ -52,7 +52,7 @@ function Sidebar() {
 				</li>
 				<li>
 					<NavLink href='#'>
-					<i class="fas fa-hand-holding-dollar"></i>
+					<i className="fas fa-hand-holding-dollar"></i>
 						<span className='text'>Transactions</span>
 					</NavLink>
 				</li>

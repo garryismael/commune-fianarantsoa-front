@@ -7,20 +7,19 @@ const useClient = () => {
 	const dispatch = useDispatch();
 	const clients = useSelector((state) => state.client.clients);
 
-	const fetch_data = async () => {
-		try {
-			const response = await getClients();
-			dispatch(setClients(response.data));
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	useEffect(() => {
+		const fetch_data = async () => {
+			try {
+				const response = await getClients();
+				dispatch(setClients(response.data));
+			} catch (errors) {
+				console.error(errors);
+			}
+		};
 		if (clients.length <= 0) {
 			fetch_data();
 		}
-	}, []);
+	}, [clients.length, dispatch]);
 
 	const setData = (data) => {
 		dispatch(setClients(data));

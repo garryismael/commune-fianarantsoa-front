@@ -7,20 +7,19 @@ const usePavillon = () => {
 	const dispatch = useDispatch();
 	const pavillons = useSelector((state) => state.pavillon.pavillons);
 
-	const fetch_data = async () => {
-		try {
-			const response = await getPavillons();
-			dispatch(setPavillons(response.data));
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	useEffect(() => {
+		const fetch_data = async () => {
+			try {
+				const response = await getPavillons();
+				dispatch(setPavillons(response.data));
+			} catch (errors) {
+				console.error(errors);
+			}
+		};
 		if (pavillons.length <= 0) {
 			fetch_data();
 		}
-	}, []);
+	}, [dispatch, pavillons.length]);
 
 	const setData = (data) => {
 		dispatch(setPavillons(data));

@@ -7,20 +7,20 @@ const useAbonnement = () => {
 	const dispatch = useDispatch();
 	const abonnements = useSelector((state) => state.abonnement.abonnements);
 
-	const fetch_data = async () => {
-		try {
-			const response = await getAbonnements();
-			dispatch(setAbonnements(response.data));
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	useEffect(() => {
+		const fetch_data = async () => {
+			try {
+				const response = await getAbonnements();
+				dispatch(setAbonnements(response.data));
+			} catch (errors) {
+				console.error(errors);
+			}
+		};
+
 		if (abonnements.length <= 0) {
 			fetch_data();
 		}
-	}, []);
+	}, [abonnements.length, dispatch]);
 
 	const setData = (data) => {
 		dispatch(setAbonnements(data));

@@ -4,30 +4,28 @@ import { setActivites } from "../redux/activiteSlice";
 import { getActivites } from "../services/activite";
 
 const useActivite = () => {
-  const dispatch = useDispatch();
-  const activites = useSelector((state) => state.activite.activites);
-  
-  const fetch_data = async () => {
-    try {
-      const response = await getActivites();
-      dispatch(setActivites(response.data));
-    } catch (errors) {
-      console.error(errors);
-    }
-  };
+	const dispatch = useDispatch();
+	const activites = useSelector((state) => state.activite.activites);
 
-  useEffect(() => {
-    if (activites.length <= 0) {
-      fetch_data();
-    }
-  }, []);
+	useEffect(() => {
+		const fetch_data = async () => {
+			try {
+				const response = await getActivites();
+				dispatch(setActivites(response.data));
+			} catch (errors) {
+				console.error(errors);
+			}
+		};
+		if (activites.length <= 0) {
+			fetch_data();
+		}
+	}, [activites.length, dispatch]);
 
-  const setData = (data) => {
-    dispatch(setActivites(data));
-  };
+	const setData = (data) => {
+		dispatch(setActivites(data));
+	};
 
-  return [activites, setData];
+	return [activites, setData];
 };
-
 
 export default useActivite;

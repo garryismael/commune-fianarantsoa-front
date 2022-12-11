@@ -4,30 +4,29 @@ import { setZones } from "../redux/zoneSlice";
 import { getZones } from "../services/zone";
 
 const useZone = () => {
-  const dispatch = useDispatch();
-  const zones = useSelector((state) => state.zone.zones);
-  
-  const fetch_data = async () => {
-    try {
-      const response = await getZones();
-      dispatch(setZones(response.data));
-    } catch (errors) {
-      console.error(errors);
-    }
-  };
+	const dispatch = useDispatch();
+	const zones = useSelector((state) => state.zone.zones);
 
-  useEffect(() => {
-    if (zones.length <= 0) {
-      fetch_data();
-    }
-  }, []);
+	useEffect(() => {
+		const fetch_data = async () => {
+			try {
+				const response = await getZones();
+				dispatch(setZones(response.data));
+			} catch (errors) {
+				console.error(errors);
+			}
+		};
 
-  const setData = (data) => {
-    dispatch(setZones(data));
-  };
+		if (zones.length <= 0) {
+			fetch_data();
+		}
+	}, [dispatch, zones.length]);
 
-  return [zones, setData];
+	const setData = (data) => {
+		dispatch(setZones(data));
+	};
+
+	return [zones, setData];
 };
-
 
 export default useZone;
