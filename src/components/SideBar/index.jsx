@@ -28,14 +28,14 @@ function Sidebar() {
 			<ul className='side-menu top' ref={ulRef}>
 				<li className='active'>
 					<NavLink to='/'>
-						<i className='bx bxs-dashboard'></i>
+						<i className='bx bxs-dashboard bx-sm'></i>
 						<span className='text'>Dashboard</span>
 					</NavLink>
 				</li>
 				<li>
 					<NavLink to='/clients'>
-						<i className='bx bxs-group'></i>
-						<span className='text'>Client</span>
+						<i class='fas fa-user-group fa-sm'></i>
+						<span className='text'>Clients</span>
 					</NavLink>
 				</li>
 				<li>
@@ -47,13 +47,13 @@ function Sidebar() {
 				<li>
 					<NavLink to='/admins'>
 						<i className='fas fa-user-shield'></i>
-						<span className='text'>Utilisateur</span>
+						<span className='text'>Utilisateurs</span>
 					</NavLink>
 				</li>
 				<li>
 					<NavLink href='#'>
-						<i className='bx bxs-group'></i>
-						<span className='text'>Team</span>
+					<i class="fas fa-hand-holding-dollar"></i>
+						<span className='text'>Transactions</span>
 					</NavLink>
 				</li>
 			</ul>
