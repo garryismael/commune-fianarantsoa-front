@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const categorieActiviteSlice = createSlice({
-	name: "categorie_activite",
+	name: "categories_activite",
 	initialState: {
 		categories_activite: [],
 	},

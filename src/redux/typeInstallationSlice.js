@@ -1,24 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const typeInstallationSlice = createSlice({
-	name: "type_installations",
+	name: "types_installation",
 	initialState: {
-		type_installations: [],
+		types_installation: [],
 	},
 	reducers: {
 		setTypeInstallations: (state, action) => {
-			state.type_installations = action.payload;
+			state.types_installation = action.payload;
 		},
 		appendTypeInstallation: (state, action) => {
-			state.type_installations.push(action.payload);
+			state.types_installation.push(action.payload);
 		},
 		removeTypeInstallation: (state, action) => {
-			state.type_installations = state.type_installations.filter(
+			state.types_installation = state.types_installation.filter(
 				(type_installation) => type_installation.id !== action.payload,
 			);
 		},
 		updateTypeInstallation: (state, action) => {
-			state.type_installations = state.type_installations.map(
+			state.types_installation = state.types_installation.map(
 				(type_installation) => {
 					if (type_installation.id === action.payload.id) {
 						return action.payload;

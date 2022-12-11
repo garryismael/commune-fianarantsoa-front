@@ -1,18 +1,27 @@
-import { CardHeader } from "@mui/material";
+import { CardHeader, InputLabel, MenuItem, Select } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import React from "react";
+import useActivite from "../../../hooks/activite";
+import useClient from "../../../hooks/client";
+import usePartition from "../../../hooks/partition";
+import usePavillon from "../../../hooks/pavillon";
+import useTypeInstallation from "../../../hooks/typeInstallation";
+import useZone from "../../../hooks/zone";
 
 import "./index.css";
 
 const AbonnementForm = (props) => {
+	const [clients] = useClient();
+	const [activites] = useActivite();
+	const [zones] = useZone();
+	const [partitions] = usePartition();
+	const [type_installations] = useTypeInstallation();
+	const [pavillons] = usePavillon();
+
 	return (
 		<div className='admin'>
 			<Card sx={{ width: "500px", margin: "auto" }}>
@@ -23,7 +32,7 @@ const AbonnementForm = (props) => {
 							id='frais'
 							label='Frais'
 							name='frais'
-                            type="number"
+							type='number'
 							value={props.values.frais}
 							variant='outlined'
 							onChange={props.onChange}
@@ -36,60 +45,114 @@ const AbonnementForm = (props) => {
 							variant='outlined'
 							onChange={props.onChange}
 						/>
-						<TextField
-							id='Email'
-							name='email'
-							label='Email'
-							value={props.values.email}
-							variant='outlined'
-							onChange={props.onChange}
-						/>
-						<TextField
-							id='adresse'
-							name='adresse'
-							label='Adresse'
-							value={props.values.adresse}
-							variant='outlined'
-							onChange={props.onChange}
-						/>
-						<TextField
-							id='contact'
-							name='contact'
-							label='Contact'
-							value={props.values.contact}
-							variant='outlined'
-							onChange={props.onChange}
-						/>
-						<FormControl>
-							<FormLabel id='est_admin'>Est admin?</FormLabel>
-							<RadioGroup
-								row
-								aria-labelledby='est_admin'
-								name='est_admin'
-								value={props.values.est_admin}
+						<FormControl fullWidth>
+							<InputLabel id='client-select-label'>
+								Client
+							</InputLabel>
+							<Select
+								id='client-select'
+								name="client_id"
+								label='Client'
+								value={props.values.client_id}
+								labelId='client-select-label'
 								onChange={props.onChange}>
-								<FormControlLabel
-									value={true}
-									control={<Radio />}
-									label='Oui'
-								/>
-								<FormControlLabel
-									value={false}
-									control={<Radio />}
-									label='Non'
-								/>
-							</RadioGroup>
+								{clients.map((client) => (
+									<MenuItem key={client.id} value={client.id}>
+										{client.nom} {client.prenom}
+									</MenuItem>
+								))}
+							</Select>
 						</FormControl>
-						{props.create && (
-							<TextField
-								id='mot_de_passe'
-								name='mot_de_passe'
-								label='Mot de passe'
-								variant='outlined'
-								onChange={props.onChange}
-								type='password'
-							/>
-						)}
+						<FormControl fullWidth>
+							<InputLabel id='activite-select-label'>
+								Activite
+							</InputLabel>
+							<Select
+								id='activite-select'
+								name="activite_id"
+								label='Activite'
+								value={props.values.activite_id}
+								labelId='activite-select-label'
+								onChange={props.onChange}>
+								{activites.map((activite) => (
+									<MenuItem key={activite.id} value={activite.id}>
+										{activite.nom}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+						<FormControl fullWidth>
+							<InputLabel id='zone-select-label'>
+								Zone
+							</InputLabel>
+							<Select
+								id='zone-select'
+								name="zone_id"
+								label='Zone'
+								value={props.values.zone_id}
+								labelId='zone-select-label'
+								onChange={props.onChange}>
+								{zones.map((zone) => (
+									<MenuItem key={zone.id} value={zone.id}>
+										{zone.nom}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+						<FormControl fullWidth>
+							<InputLabel id='partition-select-label'>
+								Partition
+							</InputLabel>
+							<Select
+								id='partition-select'
+								name="partition_id"
+								label='Partition'
+								value={props.values.partition_id}
+								labelId='partition-select-label'
+								onChange={props.onChange}>
+								{partitions.map((partition) => (
+									<MenuItem key={partition.id} value={partition.id}>
+										{partition.nom}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+						<FormControl fullWidth>
+							<InputLabel id='type-installation-select-label'>
+								Type Installation
+							</InputLabel>
+							<Select
+								id='type-installation-select'
+								name="type_installation_id"
+								label='Partition'
+								value={props.values.type_installation_id}
+								labelId='type-installation-select-label'
+								onChange={props.onChange}>
+								{type_installations.map((type_installation) => (
+									<MenuItem key={type_installation.id} value={type_installation.id}>
+										{type_installation.nom}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+						<FormControl fullWidth>
+							<InputLabel id='pavillon-select-label'>
+								Pavillon
+							</InputLabel>
+							<Select
+								id='pavillon-select'
+								name="pavillon_id"
+								label='Pavillon'
+								value={props.values.pavillon_id}
+								labelId='pavillon-select-label'
+								onChange={props.onChange}>
+								{pavillons.map((pavillon) => (
+									<MenuItem key={pavillon.id} value={pavillon.id}>
+										{pavillon.numero}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 						<Button
 							variant='contained'
 							className='button-form'
