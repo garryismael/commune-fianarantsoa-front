@@ -60,7 +60,6 @@ export const columnsClient = [
 	},
 ];
 
-
 export const columnsAbonnement = [
 	{
 		id: "id",
@@ -72,11 +71,11 @@ export const columnsAbonnement = [
 	},
 	{
 		id: "prenom",
-		label: "Prénoms"
+		label: "Prénoms",
 	},
 	{
-		"id": "frais",
-		label: "Frais"
+		id: "frais",
+		label: "Frais",
 	},
 	{
 		id: "mois_a_payer",
@@ -112,15 +111,14 @@ export const columnsAbonnement = [
 	},
 ];
 
-
 export const columnsClientAbonnement = [
 	{
 		id: "id",
 		label: "Id",
 	},
 	{
-		"id": "frais",
-		label: "Frais"
+		id: "frais",
+		label: "Frais",
 	},
 	{
 		id: "mois_a_payer",
@@ -153,5 +151,36 @@ export const columnsClientAbonnement = [
 	{
 		id: "actions",
 		label: "Actions",
+	},
+];
+
+export const columnsTransaction = [
+	{
+		id: "id",
+		label: "id",
+	},
+	{
+		client: "client",
+		label: "Client",
+	},
+	{
+		id: "pavillon",
+		label: "Numéro pavillon",
+	},
+	{
+		id: "utilisateur",
+		label: "Utilisateur",
+	},
+	{
+		id: "date",
+		label: "Date",
+	},
+	{
+		id: 'verification',
+		label: 'Status'
+	},
+	{
+		id: "total",
+		label: "Total",
 	},
 ];

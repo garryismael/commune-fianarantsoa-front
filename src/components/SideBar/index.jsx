@@ -51,8 +51,8 @@ function Sidebar() {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink href='#'>
-					<i className="fas fa-hand-holding-dollar"></i>
+					<NavLink to='/transactions'>
+						<i className='fas fa-hand-holding-dollar'></i>
 						<span className='text'>Transactions</span>
 					</NavLink>
 				</li>

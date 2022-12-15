@@ -8,6 +8,7 @@ import Guard from "./components/Guard";
 import ClientPage from "./pages/Client";
 import Home from "./pages/Home";
 import LoginPage from "./pages/Login";
+import TransactionPage from "./pages/Transaction";
 
 function App() {
 	return (
@@ -17,9 +18,13 @@ function App() {
 				<Route path='admins' element={<AdminList />} />
 				<Route path='/clients' element={<ClientPage />}>
 					<Route index element={<ClientList />} />
-					<Route path=":id/abonnements" element={<ClientAbonnement/>}/>
+					<Route
+						path=':id/abonnements'
+						element={<ClientAbonnement />}
+					/>
 				</Route>
 				<Route path='/abonnements' element={<AbonnementList />} />
+				<Route path='/transactions' element={<TransactionPage />} />
 			</Route>
 			<Route path='login' element={<LoginPage />} />
 		</Routes>
