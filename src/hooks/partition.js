@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPartitions } from "../redux/partitionSlice";
 import { getPartitions } from "../services/partition";
@@ -28,4 +28,16 @@ const usePartition = () => {
 	return [partitions, setData];
 };
 
+export const usePartitionForm = (data) => {
+	const [values, setValues] = useState({
+		nom: data?.nom,
+		
+	});
+
+	const onChange = (e) => {
+		setValues({...values, [e.target.name]: e.target.value });
+	};
+
+	return [values, onChange];
+};
 export default usePartition;

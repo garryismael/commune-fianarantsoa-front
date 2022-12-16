@@ -27,6 +27,18 @@ const usePavillon = () => {
 
 	return [pavillons, setData];
 };
+export const usePavillonForm = (data) => {
+	const [values, setValues] = useState({
+		numero: data?.numero,
+		
+	});
+
+	const onChange = (e) => {
+		setValues({...values, [e.target.name]: e.target.value });
+	};
+
+	return [values, onChange];
+};
 
 export const useNotUsedPavillon = () => {
 	const [pavillons, setPavillons] = useState([]);

@@ -155,3 +155,80 @@ export const columnsClientAbonnement = [
 		label: "Actions",
 	},
 ];
+
+
+export const columnsPavillon = [
+	{
+		id: "id",
+		label: "Id",
+	},
+	{
+		id: "numero",
+		label: "Numero",
+	},
+	{
+		id: "actions",
+		label: "Actions",
+	},
+];
+export const columnsActivite = [
+	{
+		id: "id",
+		label: "Id",
+	},
+	{
+		id: "nom",
+		label: "Nom",
+	},
+	{
+		id: "actions",
+		label: "Actions",
+	},
+	
+];
+
+export const columnsCategorieActivite = [
+	{
+		id: "id",
+		label: "Id",
+	},
+	{
+		id: "nom",
+		label: "Nom",
+	},
+	{
+		id: "actions",
+		label: "Actions",
+	},
+	
+];
+export const columnsZone = [
+	{
+		id: "id",
+		label: "Id",
+	},
+	{
+		id: "nom",
+		label: "Nom",
+	},
+	{
+		id: "actions",
+		label: "Actions",
+	},
+	
+];
+export const columnsPartition = [
+	{
+		id: "id",
+		label: "Id",
+	},
+	{
+		id: "nom",
+		label: "Nom",
+	},
+	{
+		id: "actions",
+		label: "Actions",
+	},
+	
+];

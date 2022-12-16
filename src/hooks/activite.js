@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActivites } from "../redux/activiteSlice";
-import { getActivites } from "../services/activite";
+import { getActivites } from "../services/activites";
 
 const useActivite = () => {
 	const dispatch = useDispatch();
@@ -26,6 +26,18 @@ const useActivite = () => {
 	};
 
 	return [activites, setData];
+};
+export const useActiviteForm = (data) => {
+	const [values, setValues] = useState({
+		nom: data?.nom,
+		
+	});
+
+	const onChange = (e) => {
+		setValues({ ...values, [e.target.name]: e.target.value });
+	};
+
+	return [values, onChange];
 };
 
 export default useActivite;

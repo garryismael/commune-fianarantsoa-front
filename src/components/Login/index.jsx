@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 
 export default function LoginForm() {
 	return (
+		
 		<Box
 			component='form'
 			sx={{
@@ -13,6 +14,8 @@ export default function LoginForm() {
 			autoComplete='off'>
 			<TextField id='email' label='Email' variant='outlined' />
 			<TextField id='password' label='Mot de passe' variant='outlined' />
+			
 		</Box>
+		
 	);
 }

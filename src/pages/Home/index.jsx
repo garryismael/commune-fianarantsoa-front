@@ -65,6 +65,8 @@ function Home() {
 						<thead>
 							<tr>
 								<th>Utilisateur</th>
+								<th>Nom Client</th>
+								<th>Numéro pavillon</th>
 								<th>Date Transaction</th>
 								<th>Est vérifié</th>
 							</tr>
