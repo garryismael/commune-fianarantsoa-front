@@ -1,37 +1,38 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategorieActivite } from "../redux/categorieActiviteSlice";
 import { getCategorieActivites } from "../services/categorieActivite";
 
 const useCategorieActivite = () => {
-  const dispatch = useDispatch();
-  const categorie_activite = useSelector((state) => state.categorie_activite.categories_activite);
-  
-  const fetch_data = async () => {
-    try {
-      const response = await getCategorieActivites();
-      dispatch(setCategorieActivite(response.data));
-    } catch (errors) {
-      console.error(errors);
-    }
-  };
+	const dispatch = useDispatch();
+	const categorie_activite = useSelector(
+		(state) => state.categorie_activite.categories_activite,
+	);
 
-  useEffect(() => {
-    if (categorie_activite.length <= 0) {
-      fetch_data();
-    }
-  }, []);
+	useEffect(() => {
+		const fetch_data = async () => {
+			try {
+				const response = await getCategorieActivites();
+				dispatch(setCategorieActivite(response.data));
+			} catch (errors) {
+				console.error(errors);
+			}
+		};
 
-  const setData = (data) => {
-    dispatch(setCategorieActivite(data));
-  };
+		if (categorie_activite.length <= 0) {
+			fetch_data();
+		}
+	}, [categorie_activite.length, dispatch]);
 
-  return [categorie_activite, setData];
+	const setData = (data) => {
+		dispatch(setCategorieActivite(data));
+	};
+
+	return [categorie_activite, setData];
 };
 export const useCategorieActiviteForm = (data) => {
 	const [values, setValues] = useState({
 		nom: data?.nom,
-		
 	});
 
 	const onChange = (e) => {
@@ -40,6 +41,5 @@ export const useCategorieActiviteForm = (data) => {
 
 	return [values, onChange];
 };
-
 
 export default useCategorieActivite;

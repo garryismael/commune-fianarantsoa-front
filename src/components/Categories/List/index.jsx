@@ -14,15 +14,14 @@ import {
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { style } from "../../../constants";
-import { columnsCategorieActivite} from "../../../constants/table";
+import { columnsCategorieActivite } from "../../../constants/table";
 import useZone from "../../../hooks/categorieActivite";
 import useModal from "../../../hooks/modal";
-import {removeCategorieActivite } from "../../../redux/categorieActiviteSlice";
+import { removeCategorieActivite } from "../../../redux/categorieActiviteSlice";
 import { deleteCategorieActivite } from "../../../services/categorieActivite";
 import TablePaginationActions from "../../Pagination";
-import{ CategorieActiviteAdd, CategorieActiviteEdit } from "../Form";
+import { CategorieActiviteAdd, CategorieActiviteEdit } from "../Form";
 
 
 const CategorieActiviteList = () => {
@@ -34,15 +33,10 @@ const CategorieActiviteList = () => {
 
 	const [categorieActivites] = useZone();
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const onEdit = (row) => {
 		setCategorieActivite(row);
 		handleOpenEdit();
-	};
-
-	const onClickRow = (categorieActivite) => {
-		navigate(`${categorieActivite.id}/categories`, { state: { categorieActivite } });
 	};
 
 	const handleDelete = async (id) => {
@@ -106,8 +100,7 @@ const CategorieActiviteList = () => {
 							).map((row) => (
 								<TableRow
 									key={row.id}
-									className='cursor-pointer'
-									onClick={() => onClickRow(row)}>
+									className='cursor-pointer'>
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>

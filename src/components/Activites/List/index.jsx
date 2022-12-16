@@ -14,17 +14,14 @@ import {
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { style } from "../../../constants";
+import { columnsActivite } from "../../../constants/table";
 import useActivite from "../../../hooks/activite";
 import useModal from "../../../hooks/modal";
-import {removeActivite } from "../../../redux/activiteSlice";
+import { removeActivite } from "../../../redux/activiteSlice";
 import { deleteActivite } from "../../../services/activites";
 import TablePaginationActions from "../../Pagination";
-import { columnsActivite } from "../../../constants/table";
 import { ActiviteAdd, ActiviteEdit } from "../Form";
-
-
 
 const ActiviteList = () => {
 	const [page, setPage] = useState(0);
@@ -35,15 +32,10 @@ const ActiviteList = () => {
 
 	const [activites] = useActivite();
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const onEdit = (row) => {
 		setActivite(row);
 		handleOpenEdit();
-	};
-
-	const onClickRow = (activite) => {
-		navigate(`${activite.id}/activites`, { state: { activite } });
 	};
 
 	const handleDelete = async (id) => {
@@ -108,14 +100,16 @@ const ActiviteList = () => {
 								<TableRow
 									key={row.id}
 									className='cursor-pointer'
-									onClick={() => onClickRow(row)}>
+									>
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>
 									<TableCell component='th' scope='row'>
 										{row.nom}
 									</TableCell>
-									
+									<TableCell component='th' scope='row'>
+										{row.categorie_activite.nom}
+									</TableCell>
 									<TableCell>
 										<div className='actions'>
 											<i
@@ -186,7 +180,10 @@ const ActiviteList = () => {
 				aria-labelledby='modal-edit-title'
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<ActiviteEdit activite={activite} handleClose={handleCloseEdit} />
+					<ActiviteEdit
+						activite={activite}
+						handleClose={handleCloseEdit}
+					/>
 				</Box>
 			</Modal>
 		</>

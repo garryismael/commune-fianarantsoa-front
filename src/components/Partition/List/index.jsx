@@ -14,16 +14,14 @@ import {
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { style } from "../../../constants";
 import { columnsPartition } from "../../../constants/table";
-import usePartition from "../../../hooks/partition";
 import useModal from "../../../hooks/modal";
-import {removePartition } from "../../../redux/partitionSlice";
+import usePartition from "../../../hooks/partition";
+import { removePartition } from "../../../redux/partitionSlice";
 import { deletePartition } from "../../../services/partition";
 import TablePaginationActions from "../../Pagination";
 import { PartitionAdd, PartitionEdit } from "../Form";
-
 
 const PartitionList = () => {
 	const [page, setPage] = useState(0);
@@ -34,15 +32,10 @@ const PartitionList = () => {
 
 	const [partitions] = usePartition();
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const onEdit = (row) => {
 		setPartition(row);
 		handleOpenEdit();
-	};
-
-	const onClickRow = (partition) => {
-		navigate(`${partition.id}/pavillons`, { state: { partition: partition } });
 	};
 
 	const handleDelete = async (id) => {
@@ -58,7 +51,9 @@ const PartitionList = () => {
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - partitions.length) : 0;
+		page > 0
+			? Math.max(0, (1 + page) * rowsPerPage - partitions.length)
+			: 0;
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -106,12 +101,11 @@ const PartitionList = () => {
 							).map((row) => (
 								<TableRow
 									key={row.id}
-									className='cursor-pointer'
-									onClick={() => onClickRow(row)}>
+									className='cursor-pointer'>
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>
-									
+
 									<TableCell>{row.nom}</TableCell>
 									<TableCell>
 										<div className='actions'>
@@ -183,7 +177,10 @@ const PartitionList = () => {
 				aria-labelledby='modal-edit-title'
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<PartitionEdit pavillon={partition} handleClose={handleCloseEdit} />
+					<PartitionEdit
+						pavillon={partition}
+						handleClose={handleCloseEdit}
+					/>
 				</Box>
 			</Modal>
 		</>

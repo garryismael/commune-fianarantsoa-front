@@ -14,16 +14,14 @@ import {
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { style } from "../../../constants";
-import { columnsZone} from "../../../constants/table";
-import useZone from "../../../hooks/zone";
+import { columnsZone } from "../../../constants/table";
 import useModal from "../../../hooks/modal";
-import {removeZone} from "../../../redux/zoneSlice";
+import useZone from "../../../hooks/zone";
+import { removeZone } from "../../../redux/zoneSlice";
 import { deleteZone } from "../../../services/zone";
 import TablePaginationActions from "../../Pagination";
 import { ZoneAdd, ZoneEdit } from "../Form";
-
 
 const ZoneList = () => {
 	const [page, setPage] = useState(0);
@@ -34,15 +32,10 @@ const ZoneList = () => {
 
 	const [zones] = useZone();
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const onEdit = (row) => {
 		setZone(row);
 		handleOpenEdit();
-	};
-
-	const onClickRow = (zone) => {
-		navigate(`${zone.id}/zone`, { state: { zone } });
 	};
 
 	const handleDelete = async (id) => {
@@ -106,16 +99,12 @@ const ZoneList = () => {
 							).map((row) => (
 								<TableRow
 									key={row.id}
-									className='cursor-pointer'
-									onClick={() => onClickRow(row)}>
+									className='cursor-pointer'>
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>
-                                    <TableCell >
-										{row.nom}
-									</TableCell>
-									
-						
+									<TableCell>{row.nom}</TableCell>
+
 									<TableCell>
 										<div className='actions'>
 											<i

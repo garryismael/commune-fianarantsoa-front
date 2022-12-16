@@ -179,6 +179,10 @@ export const columnsActivite = [
 		label: "Nom",
 	},
 	{
+		id: 'categorie',
+		label: "Catégorie"
+	},
+	{
 		id: "actions",
 		label: "Actions",
 	},

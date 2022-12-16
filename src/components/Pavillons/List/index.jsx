@@ -14,16 +14,14 @@ import {
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { style } from "../../../constants";
 import { columnsPavillon } from "../../../constants/table";
-import usePavillon from "../../../hooks/pavillon";
 import useModal from "../../../hooks/modal";
-import {removePavillon } from "../../../redux/pavillonSlice";
+import usePavillon from "../../../hooks/pavillon";
+import { removePavillon } from "../../../redux/pavillonSlice";
 import { deletePavillon } from "../../../services/pavillons";
 import TablePaginationActions from "../../Pagination";
 import { PavillonAdd, PavillonEdit } from "../Form";
-
 
 const PavillonList = () => {
 	const [page, setPage] = useState(0);
@@ -34,15 +32,10 @@ const PavillonList = () => {
 
 	const [pavillons] = usePavillon();
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const onEdit = (row) => {
 		setPavillon(row);
 		handleOpenEdit();
-	};
-
-	const onClickRow = (pavillon) => {
-		navigate(`${pavillon.id}/pavillons`, { state: { pavillon } });
 	};
 
 	const handleDelete = async (id) => {
@@ -106,12 +99,11 @@ const PavillonList = () => {
 							).map((row) => (
 								<TableRow
 									key={row.id}
-									className='cursor-pointer'
-									onClick={() => onClickRow(row)}>
+									className='cursor-pointer'>
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>
-									
+
 									<TableCell>{row.numero}</TableCell>
 									<TableCell>
 										<div className='actions'>
@@ -183,7 +175,10 @@ const PavillonList = () => {
 				aria-labelledby='modal-edit-title'
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<PavillonEdit pavillon={pavillon} handleClose={handleCloseEdit} />
+					<PavillonEdit
+						pavillon={pavillon}
+						handleClose={handleCloseEdit}
+					/>
 				</Box>
 			</Modal>
 		</>
