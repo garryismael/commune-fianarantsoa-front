@@ -46,8 +46,14 @@ function Sidebar() {
         </li>
         <li>
           <NavLink to="/abonnements">
-		  <i className="fas fa-solid fa-font"></i>
+            <i className="fas fa-solid fa-font"></i>
             <span className="text">Abonnements</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/transactions">
+            <i className="fas fa-solid fa-sack-dollar"></i>
+            <span className="text">Transactions</span>
           </NavLink>
         </li>
         <li>
@@ -58,34 +64,29 @@ function Sidebar() {
         </li>
         <li>
           <NavLink to="/zone">
-		  <i className="fas fa-solid fa-location-dot"></i>
+            <i className="fas fa-solid fa-location-dot"></i>
             <span className="text">Zones</span>
           </NavLink>
         </li>
         <li>
           <NavLink to="/activites">
-		  <i className="fas fa-solid fa-star"></i>
+            <i className="fas fa-solid fa-star"></i>
             <span className="text">Activités</span>
           </NavLink>
         </li>
         <li>
           <NavLink to="/categorieActivite">
-		  <i className="fas fa-solid fa-filter"></i>
+            <i className="fas fa-solid fa-filter"></i>
             <span className="text">Catégorie</span>
           </NavLink>
         </li>
-		<li>
+        <li>
           <NavLink to="/partitions">
-		  <i className="fas a-solid fa-list"></i>
+            <i className="fas a-solid fa-list"></i>
             <span className="text">Partitions</span>
           </NavLink>
         </li>
-        <li>
-          <NavLink href="#">
-		  <i className="fas fa-solid fa-sack-dollar"></i>
-            <span className="text">Transactions</span>
-          </NavLink>
-        </li>
+        
       </ul>
       <ul className="side-menu">
         <li>

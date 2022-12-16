@@ -4,23 +4,25 @@ import {
 	CardContent,
 	CardHeader, TextField
 } from "@mui/material";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { usePavillonForm } from "../../../hooks/pavillon";
 import { appendPavillon,updatePavillon } from "../../../redux/pavillonSlice";
 import { addPavillon, editPavillon } from "../../../services/pavillons";
+import "./index.css";
 
 const PavillonForm=(props)=>{
     return(
-        <div className="">
+        <div className="pavillon">
             <Card sx={{ width: "500px", margin: "auto" }}>
 				<CardHeader title={props.title} />
 				<CardContent>
-                <form className='' onSubmit={props.handleSubmit}>
+                <form className='pavillon-form' onSubmit={props.handleSubmit}>
 						<TextField
 							id='numero'
 							label='Numero'
 							name='numero'
-							value={props.values?.nom}
+							value={props.values?.numero}
 							variant='outlined'
 							onChange={props.onChange}
 						/>
@@ -58,6 +60,8 @@ export const PavillonAdd=(props)=>{
         <PavillonForm
             title='Ajouter un pavillon'
             values={values}
+            button='Ajouter'
+            create={true}
             handleSubmit={handleSubmit}
             oneChange={onChange}
             />
@@ -84,6 +88,7 @@ export const PavillonAdd=(props)=>{
                 title='Modifier un pavillon'
                 values={values}
                 button='Modifier'
+                create={false}
                 handleSubmit={handleSubmit}
                 onChange={onChange}
             />

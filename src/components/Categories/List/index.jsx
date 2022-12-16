@@ -32,7 +32,7 @@ const CategorieActiviteList = () => {
 	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
 	const [categorieActivite, setCategorieActivite] = useState();
 
-	const [admins] = useZone();
+	const [categorieActivites] = useZone();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -58,7 +58,7 @@ const CategorieActiviteList = () => {
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - admins.length) : 0;
+		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - categorieActivites.length) : 0;
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -98,11 +98,11 @@ const CategorieActiviteList = () => {
 						</TableHead>
 						<TableBody>
 							{(rowsPerPage > 0
-								? admins.slice(
+								? categorieActivites.slice(
 										page * rowsPerPage,
 										page * rowsPerPage + rowsPerPage,
 								  )
-								: admins
+								: categorieActivites
 							).map((row) => (
 								<TableRow
 									key={row.id}
@@ -147,7 +147,7 @@ const CategorieActiviteList = () => {
 										{ label: "All", value: -1 },
 									]}
 									colSpan={5}
-									count={admins.length}
+									count={categorieActivites.length}
 									rowsPerPage={rowsPerPage}
 									page={page}
 									SelectProps={{

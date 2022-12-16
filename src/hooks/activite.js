@@ -30,7 +30,7 @@ const useActivite = () => {
 export const useActiviteForm = (data) => {
 	const [values, setValues] = useState({
 		nom: data?.nom,
-		
+		categorie_activite_id: data.categorie_activite.id
 	});
 
 	const onChange = (e) => {

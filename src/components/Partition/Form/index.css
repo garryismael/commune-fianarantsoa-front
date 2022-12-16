@@ -1,0 +1,17 @@
+.partition {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.partition-form{
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px;
+}
+
+.button-form {
+    margin-top: 20px;
+    height: 40px;
+}

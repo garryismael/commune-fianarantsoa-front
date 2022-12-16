@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCategorieActivite } from "../redux/categorieActiviteSlice";
 import { getCategorieActivites } from "../services/categorieActivite";
 
-const useZone = () => {
+const useCategorieActivite = () => {
   const dispatch = useDispatch();
   const categorie_activite = useSelector((state) => state.categorie_activite.categories_activite);
   
@@ -42,4 +42,4 @@ export const useCategorieActiviteForm = (data) => {
 };
 
 
-export default useZone;
+export default useCategorieActivite;

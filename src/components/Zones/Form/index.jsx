@@ -8,14 +8,15 @@ import { useDispatch } from "react-redux";
 import { useZoneForm } from "../../../hooks/zone";
 import { appendZone,updateZone } from "../../../redux/zoneSlice";
 import { addZone, editZone } from "../../../services/zone";
+import "./index.css"
 
 const ZoneForm=(props)=>{
     return(
-        <div className="">
+        <div className="zone">
             <Card sx={{ width: "500px", margin: "auto" }}>
 				<CardHeader title={props.title} />
 				<CardContent>
-                <form className='' onSubmit={props.handleSubmit}>
+                <form className='zone-form' onSubmit={props.handleSubmit}>
 						<TextField
 							id='nom'
 							label='Nom'
@@ -57,6 +58,8 @@ export const ZoneAdd=(props)=>{
         <ZoneForm
             title='Ajouter une zone'
             values={values}
+            button='Ajouter'
+            create={true}
             handleSubmit={handleSubmit}
             oneChange={onChange}
             />
@@ -64,7 +67,7 @@ export const ZoneAdd=(props)=>{
     };
     
     export const ZoneEdit = (props) => {
-        const [values, onChange] = useZoneForm(props.pavillon);
+        const [values, onChange] = useZoneForm(props.zone);
         const dispatch = useDispatch();
     
         const handleSubmit = async (e) => {
@@ -83,6 +86,7 @@ export const ZoneAdd=(props)=>{
                 title='Modifier une zone'
                 values={values}
                 button='Modifier'
+                create={false}
                 handleSubmit={handleSubmit}
                 onChange={onChange}
             />

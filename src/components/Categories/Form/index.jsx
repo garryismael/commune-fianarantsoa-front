@@ -8,14 +8,15 @@ import { useDispatch } from "react-redux";
 import { useCategorieActiviteForm } from "../../../hooks/categorieActivite";
 import { appendCategorieActivite,updateCategorieActivite } from "../../../redux/categorieActiviteSlice";
 import { addCategorieActivite, editCategorieActivite } from "../../../services/categorieActivite";
+import "./index.css"
 
 const CategorieActiviteForm=(props)=>{
     return(
-        <div className="">
+        <div className='categorie-activite'>
             <Card sx={{ width: "500px", margin: "auto" }}>
 				<CardHeader title={props.title} />
 				<CardContent>
-                <form className='' onSubmit={props.handleSubmit}>
+                <form className='categorie-activite-form' onSubmit={props.handleSubmit}>
 						<TextField
 							id='nom'
 							label='Nom'
@@ -57,6 +58,8 @@ export const CategorieActiviteAdd=(props)=>{
         <CategorieActiviteForm
             title='Ajouter une Catégorie '
             values={values}
+            button='Ajouter'
+			create={true}
             handleSubmit={handleSubmit}
             oneChange={onChange}
             />
@@ -83,6 +86,7 @@ export const CategorieActiviteAdd=(props)=>{
                 title='Modifier une catégorie'
                 values={values}
                 button='Modifier'
+                create={false}
                 handleSubmit={handleSubmit}
                 onChange={onChange}
             />

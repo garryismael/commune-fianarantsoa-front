@@ -8,14 +8,15 @@ import { useDispatch } from "react-redux";
 import { useActiviteForm } from "../../../hooks/activite";
 import { appendActivite,updateActivite } from "../../../redux/activiteSlice";
 import { addActivite, editActivite } from "../../../services/activites";
+import "./index.css"
 
 const ActiviteForm=(props)=>{
     return(
-        <div className="">
+        <div className='active'>
             <Card sx={{ width: "500px", margin: "auto" }}>
 				<CardHeader title={props.title} />
 				<CardContent>
-                <form className='' onSubmit={props.handleSubmit}>
+                <form className='activite-form' onSubmit={props.handleSubmit}>
 						<TextField
 							id='nom'
 							label='Nom'
@@ -57,6 +58,8 @@ export const ActiviteAdd=(props)=>{
         <ActiviteForm
             title='Ajouter une activité'
             values={values}
+            button='Ajouter'
+			create={true}
             handleSubmit={handleSubmit}
             oneChange={onChange}
             />
@@ -64,7 +67,7 @@ export const ActiviteAdd=(props)=>{
     };
     
     export const ActiviteEdit = (props) => {
-        const [values, onChange] = useActiviteForm(props.pavillon);
+        const [values, onChange] = useActiviteForm(props.activite);
         const dispatch = useDispatch();
     
         const handleSubmit = async (e) => {
@@ -83,6 +86,7 @@ export const ActiviteAdd=(props)=>{
                 title='Modifier une activité'
                 values={values}
                 button='Modifier'
+                create={false}
                 handleSubmit={handleSubmit}
                 onChange={onChange}
             />

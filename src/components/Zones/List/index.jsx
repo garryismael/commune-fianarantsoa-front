@@ -30,19 +30,19 @@ const ZoneList = () => {
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
 	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
-	const [zone, setPavillon] = useState();
+	const [zone, setZone] = useState();
 
-	const [admins] = useZone();
+	const [zones] = useZone();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const onEdit = (row) => {
-		setPavillon(row);
+		setZone(row);
 		handleOpenEdit();
 	};
 
 	const onClickRow = (zone) => {
-		navigate(`${zone.id}/pavillons`, { state: { zone } });
+		navigate(`${zone.id}/zone`, { state: { zone } });
 	};
 
 	const handleDelete = async (id) => {
@@ -58,7 +58,7 @@ const ZoneList = () => {
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - admins.length) : 0;
+		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - zones.length) : 0;
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -98,11 +98,11 @@ const ZoneList = () => {
 						</TableHead>
 						<TableBody>
 							{(rowsPerPage > 0
-								? admins.slice(
+								? zones.slice(
 										page * rowsPerPage,
 										page * rowsPerPage + rowsPerPage,
 								  )
-								: admins
+								: zones
 							).map((row) => (
 								<TableRow
 									key={row.id}
@@ -150,7 +150,7 @@ const ZoneList = () => {
 										{ label: "All", value: -1 },
 									]}
 									colSpan={5}
-									count={admins.length}
+									count={zones.length}
 									rowsPerPage={rowsPerPage}
 									page={page}
 									SelectProps={{
@@ -186,7 +186,7 @@ const ZoneList = () => {
 				aria-labelledby='modal-edit-title'
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<ZoneEdit pavillon={zone} handleClose={handleCloseEdit} />
+					<ZoneEdit zone={zone} handleClose={handleCloseEdit} />
 				</Box>
 			</Modal>
 		</>

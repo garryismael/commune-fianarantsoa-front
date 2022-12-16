@@ -33,7 +33,7 @@ const ActiviteList = () => {
 	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
 	const [activite, setActivite] = useState();
 
-	const [admins] = useActivite();
+	const [activites] = useActivite();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -59,7 +59,7 @@ const ActiviteList = () => {
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - admins.length) : 0;
+		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - activites.length) : 0;
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -99,11 +99,11 @@ const ActiviteList = () => {
 						</TableHead>
 						<TableBody>
 							{(rowsPerPage > 0
-								? admins.slice(
+								? activites.slice(
 										page * rowsPerPage,
 										page * rowsPerPage + rowsPerPage,
 								  )
-								: admins
+								: activites
 							).map((row) => (
 								<TableRow
 									key={row.id}
@@ -150,7 +150,7 @@ const ActiviteList = () => {
 										{ label: "All", value: -1 },
 									]}
 									colSpan={5}
-									count={admins.length}
+									count={activites.length}
 									rowsPerPage={rowsPerPage}
 									page={page}
 									SelectProps={{

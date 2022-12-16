@@ -32,7 +32,7 @@ const PartitionList = () => {
 	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
 	const [partition, setPartition] = useState();
 
-	const [admins] = usePartition();
+	const [partitions] = usePartition();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -58,7 +58,7 @@ const PartitionList = () => {
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - admins.length) : 0;
+		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - partitions.length) : 0;
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -98,11 +98,11 @@ const PartitionList = () => {
 						</TableHead>
 						<TableBody>
 							{(rowsPerPage > 0
-								? admins.slice(
+								? partitions.slice(
 										page * rowsPerPage,
 										page * rowsPerPage + rowsPerPage,
 								  )
-								: admins
+								: partitions
 							).map((row) => (
 								<TableRow
 									key={row.id}
@@ -147,7 +147,7 @@ const PartitionList = () => {
 										{ label: "All", value: -1 },
 									]}
 									colSpan={5}
-									count={admins.length}
+									count={partitions.length}
 									rowsPerPage={rowsPerPage}
 									page={page}
 									SelectProps={{
