@@ -13,6 +13,7 @@ import LoginPage from "./pages/Login";
 import CategorieActiviteList from "./components/Categories/List";
 import ZoneList from "./components/Zones/List";
 import PartitionList from "./components/Partition/List";
+import TransactionPage from "./pages/Transaction";
 
 function App() {
 	return (
@@ -22,7 +23,10 @@ function App() {
 				<Route path='admins' element={<AdminList />} />
 				<Route path='/clients' element={<ClientPage />}>
 					<Route index element={<ClientList />} />
-					<Route path=":id/abonnements" element={<ClientAbonnement/>}/>
+					<Route
+						path=':id/abonnements'
+						element={<ClientAbonnement />}
+					/>
 				</Route>
 				<Route path='/abonnements' element={<AbonnementList />} />
 				<Route path='/pavillons'  element={<PavillonList />} />
@@ -30,6 +34,7 @@ function App() {
 				<Route path='/categorieActivite'  element={<CategorieActiviteList />} />
 				<Route path='/zone'  element={<ZoneList />} />
 				<Route path='/partitions'  element={<PartitionList />} />
+				<Route path='/transactions' element={<TransactionPage />} />
 			</Route>
 			<Route path='login' element={<LoginPage />} />
 		</Routes>

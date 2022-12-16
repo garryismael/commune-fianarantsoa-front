@@ -80,9 +80,6 @@ function Sidebar() {
             <span className="text">Partitions</span>
           </NavLink>
         </li>
-        
-        
-           
         <li>
           <NavLink href="#">
 		  <i className="fas fa-solid fa-sack-dollar"></i>

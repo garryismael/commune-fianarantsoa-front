@@ -8,6 +8,10 @@ export const addTransaction = async (data) => {
 	return await axios.post("transactions", data);
 };
 
+export const bulkUpdateTransaction = async (data) => {
+	return await axios.put("transactions/bulkUpdate", data);
+}
+
 export const editTransaction = async (id, data) => {
 	return await axios.put(`transactions/${id}/`, data);
 };
