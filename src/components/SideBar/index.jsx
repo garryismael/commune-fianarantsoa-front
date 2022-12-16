@@ -52,7 +52,7 @@ function Sidebar() {
 				</li>
 				<li>
 					<NavLink to='/transactions'>
-						<i className='fas fa-hand-holding-dollar'></i>
+						<i class='bx bxs-analyse'></i>
 						<span className='text'>Transactions</span>
 					</NavLink>
 				</li>
