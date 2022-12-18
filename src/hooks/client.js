@@ -18,10 +18,8 @@ const useClient = () => {
 				console.error(errors);
 			}
 		};
-		if (clients.length <= 0) {
-			fetch_data();
-		}
-	}, [clients.length, dispatch]);
+		fetch_data();
+	}, [dispatch]);
 
 	const setData = (data) => {
 		dispatch(setClients(data));

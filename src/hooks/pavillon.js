@@ -16,9 +16,7 @@ const usePavillon = () => {
 				console.error(errors);
 			}
 		};
-		if (pavillons.length <= 0) {
-			fetch_data();
-		}
+		fetch_data();
 	}, [dispatch, pavillons.length]);
 
 	const setData = (data) => {
@@ -30,11 +28,10 @@ const usePavillon = () => {
 export const usePavillonForm = (data) => {
 	const [values, setValues] = useState({
 		numero: data?.numero,
-		
 	});
 
 	const onChange = (e) => {
-		setValues({...values, [e.target.name]: e.target.value });
+		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 
 	return [values, onChange];

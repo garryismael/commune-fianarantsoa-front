@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPartitions } from "../redux/partitionSlice";
 import { getPartitions } from "../services/partition";
@@ -16,10 +16,8 @@ const usePartition = () => {
 				console.error(errors);
 			}
 		};
-		if (partitions.length <= 0) {
-			fetch_data();
-		}
-	}, [dispatch, partitions.length]);
+		fetch_data();
+	}, [dispatch]);
 
 	const setData = (data) => {
 		dispatch(setPartitions(data));
@@ -31,11 +29,10 @@ const usePartition = () => {
 export const usePartitionForm = (data) => {
 	const [values, setValues] = useState({
 		nom: data?.nom,
-		
 	});
 
 	const onChange = (e) => {
-		setValues({...values, [e.target.name]: e.target.value });
+		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 
 	return [values, onChange];

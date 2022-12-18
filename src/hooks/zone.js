@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setZones } from "../redux/zoneSlice";
 import { getZones } from "../services/zone";
@@ -16,11 +16,8 @@ const useZone = () => {
 				console.error(errors);
 			}
 		};
-
-		if (zones.length <= 0) {
-			fetch_data();
-		}
-	}, [dispatch, zones.length]);
+		fetch_data();
+	}, [dispatch]);
 
 	const setData = (data) => {
 		dispatch(setZones(data));
@@ -31,15 +28,13 @@ const useZone = () => {
 export const useZoneForm = (data) => {
 	const [values, setValues] = useState({
 		nom: data?.nom,
-		
 	});
 
 	const onChange = (e) => {
-		setValues({...values, [e.target.name]: e.target.value });
+		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 
 	return [values, onChange];
 };
-
 
 export default useZone;

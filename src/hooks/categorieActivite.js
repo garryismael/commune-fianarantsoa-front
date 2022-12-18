@@ -18,11 +18,8 @@ const useCategorieActivite = () => {
 				console.error(errors);
 			}
 		};
-
-		if (categorie_activite.length <= 0) {
-			fetch_data();
-		}
-	}, [categorie_activite.length, dispatch]);
+		fetch_data();
+	}, [dispatch]);
 
 	const setData = (data) => {
 		dispatch(setCategorieActivite(data));

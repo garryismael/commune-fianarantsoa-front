@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActivites } from "../redux/activiteSlice";
 import { getActivites } from "../services/activites";
@@ -16,10 +16,8 @@ const useActivite = () => {
 				console.error(errors);
 			}
 		};
-		if (activites.length <= 0) {
-			fetch_data();
-		}
-	}, [activites.length, dispatch]);
+		fetch_data();
+	}, [dispatch]);
 
 	const setData = (data) => {
 		dispatch(setActivites(data));

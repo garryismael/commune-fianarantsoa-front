@@ -18,11 +18,8 @@ const useTransaction = () => {
 				console.error(errors);
 			}
 		};
-
-		if (transactions.length <= 0) {
-			fetch_data();
-		}
-	}, [dispatch, transactions.length]);
+		fetch_data();
+	}, [dispatch]);
 
 	const setData = (data) => {
 		dispatch(setTransactions(data));
@@ -31,12 +28,11 @@ const useTransaction = () => {
 	return [transactions, setData];
 };
 
-
 export const useTransactionForm = (args) => {
 	const formik = useFormik({
 		initialValues: {
 			total_mois: 0,
-			abonnement_id: args.abonnement.id
+			abonnement_id: args.abonnement.id,
 		},
 		validationSchema: transactionAbonnementValidationSchema,
 		onSubmit: async (values) => {

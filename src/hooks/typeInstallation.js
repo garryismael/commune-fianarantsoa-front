@@ -18,10 +18,8 @@ const useTypeInstallation = () => {
 				console.error(errors);
 			}
 		};
-		if (types_installation.length <= 0) {
-			fetch_data();
-		}
-	}, [dispatch, types_installation.length]);
+		fetch_data();
+	}, [dispatch]);
 
 	const setData = (data) => {
 		dispatch(setTypeInstallations(data));
