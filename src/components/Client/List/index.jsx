@@ -40,7 +40,7 @@ const ClientList = () => {
 		handleOpenEdit();
 	};
 
-	const onClickRow = (client) => {
+	const navigateToClientAbonnement = (client) => {
 		navigate(`${client.id}/abonnements`, { state: { client } });
 	};
 
@@ -103,10 +103,7 @@ const ClientList = () => {
 								  )
 								: admins
 							).map((row) => (
-								<TableRow
-									key={row.id}
-									className='cursor-pointer'
-									onClick={() => onClickRow(row)}>
+								<TableRow key={row.id}>
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>
@@ -118,6 +115,13 @@ const ClientList = () => {
 									<TableCell>{row.contact}</TableCell>
 									<TableCell>
 										<div className='actions'>
+											<i
+												className='bx bx-link bx-sm cursor-pointer'
+												onClick={() =>
+													navigateToClientAbonnement(
+														row,
+													)
+												}></i>
 											<i
 												className='fas fa-edit fa-lg blue-color cursor-pointer'
 												onClick={() => onEdit(row)}

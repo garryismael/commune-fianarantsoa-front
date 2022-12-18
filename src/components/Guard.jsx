@@ -3,8 +3,8 @@ import useAuth from '../hooks/auth';
 import Layout from './Layout';
 
 const Guard = () => {
-	const [location, token] = useAuth();
-	return token ? (
+	const [location, user] = useAuth();
+	return user ? (
 		<Layout />
 	) : (
 		<Navigate

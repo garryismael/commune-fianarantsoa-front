@@ -84,3 +84,8 @@
 .gap-10 {
 	gap: 8px;
 }
+
+.actions {
+	display: flex;
+	align-items: center;
+}

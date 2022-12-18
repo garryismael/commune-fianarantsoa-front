@@ -1,6 +1,5 @@
 import {
 	Button,
-	Modal,
 	Paper,
 	Table,
 	TableBody,
@@ -9,35 +8,26 @@ import {
 	TableFooter,
 	TableHead,
 	TablePagination,
-	TableRow,
+	TableRow
 } from "@mui/material";
-import { Box } from "@mui/system";
+import Checkbox from "@mui/material/Checkbox";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { style } from "../../../constants";
 import { columnsTransaction } from "../../../constants/table";
-import useModal from "../../../hooks/modal";
-import useTransaction, { useTransactionForm } from "../../../hooks/transaction";
-import { updateAbonnement } from "../../../redux/abonnementSlice";
+import useTransaction from "../../../hooks/transaction";
 import {
-	appendTransaction,
-	setTransactions,
+	setTransactions
 } from "../../../redux/transactionSlice";
 import {
-	addTransaction,
-	bulkUpdateTransaction,
+	bulkUpdateTransaction
 } from "../../../services/transaction";
 import TablePaginationActions from "../../Pagination";
-import Checkbox from "@mui/material/Checkbox";
-import TransactionForm from "../Form";
 import "./index.css";
 
 const TransactionList = () => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [transactions] = useTransaction();
-	const [open, handleOpen, handleClose] = useModal();
-	const [values, onChange] = useTransactionForm();
 	const [ids, setIds] = useState([]);
 
 	const dispatch = useDispatch();
@@ -55,18 +45,6 @@ const TransactionList = () => {
 	const handleChangeRowsPerPage = (event) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
-	};
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		try {
-			const response = await addTransaction(values);
-			dispatch(appendTransaction(response.data));
-			dispatch(updateAbonnement(response.data.abonnement));
-			handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
 	};
 
 	const handleCheck = (e) => {
@@ -94,13 +72,6 @@ const TransactionList = () => {
 						sx={{ marginBottom: "10px" }}
 						onClick={handleValidate}>
 						Valider
-					</Button>
-					<Button
-						variant='contained'
-						type='button'
-						sx={{ marginBottom: "10px" }}
-						onClick={handleOpen}>
-						Ajouter
 					</Button>
 				</div>
 
@@ -196,22 +167,6 @@ const TransactionList = () => {
 					</Table>
 				</TableContainer>
 			</div>
-			<Modal
-				open={open}
-				onClose={handleClose}
-				aria-labelledby='modal-edit-title'
-				aria-describedby='modal-edit-description'>
-				<Box sx={style}>
-					<TransactionForm
-						title='Ajouter une transaction'
-						values={values}
-						onChange={onChange}
-						handleClose={handleClose}
-						handleSubmit={handleSubmit}
-						button='Sauvegarder'
-					/>
-				</Box>
-			</Modal>
 		</>
 	);
 };

@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setTransactions } from "../redux/transactionSlice";
 import { getTransactions } from "../services/transaction";
+import { transactionAbonnementValidationSchema } from "../validations/transaction-form";
 
 const useTransaction = () => {
 	const dispatch = useDispatch();
@@ -29,17 +31,20 @@ const useTransaction = () => {
 	return [transactions, setData];
 };
 
-export const useTransactionForm = () => {
-	const [values, setValues] = useState({
-		total_mois: 0,
-		abonnement_id: undefined,
+
+export const useTransactionForm = (args) => {
+	const formik = useFormik({
+		initialValues: {
+			total_mois: 0,
+			abonnement_id: args.abonnement.id
+		},
+		validationSchema: transactionAbonnementValidationSchema,
+		onSubmit: async (values) => {
+			await args.onSubmit(values);
+		},
 	});
 
-	const onChange = (e) => {
-		setValues({ ...values, [e.target.name]: e.target.value });
-	};
-
-	return [values, onChange];
+	return formik;
 };
 
 export default useTransaction;

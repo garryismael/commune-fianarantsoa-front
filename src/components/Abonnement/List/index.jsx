@@ -18,10 +18,13 @@ import { style } from "../../../constants";
 import { columnsAbonnement } from "../../../constants/table";
 import useAbonnement from "../../../hooks/abonnement";
 import useModal from "../../../hooks/modal";
-import { removeAbonnement } from "../../../redux/abonnementSlice";
+import { removeAbonnement, updateAbonnement } from "../../../redux/abonnementSlice";
+import { appendTransaction } from "../../../redux/transactionSlice";
 import { deleteAbonnement } from "../../../services/abonnement";
+import { addTransaction } from "../../../services/transaction";
 import TablePaginationActions from "../../Pagination";
 import { AbonnementAdd, AbonnementEdit } from "../Form";
+import TransactionForm from "../TransactionForm";
 
 const AbonnementList = () => {
 	const [page, setPage] = useState(0);
@@ -29,6 +32,11 @@ const AbonnementList = () => {
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
 	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
+	const [
+		openTransactionForm,
+		handleOpenTransactionForm,
+		handleCloseTransactionForm,
+	] = useModal();
 	const [abonnements] = useAbonnement();
 	const dispatch = useDispatch();
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -61,6 +69,24 @@ const AbonnementList = () => {
 			}
 		}
 	};
+	
+	const openTransaction = async (row) => {
+		setAbonnement(row);
+		handleOpenTransactionForm();
+	};
+
+	const handleAddTransaction = async (values) => {
+		try {
+			const response = await addTransaction(values);
+			dispatch(appendTransaction(response.data));
+			dispatch(updateAbonnement(response.data.abonnement));
+			handleCloseTransactionForm();
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
+	
 
 	return (
 		<>
@@ -119,6 +145,12 @@ const AbonnementList = () => {
 									<TableCell>{row.pavillon.numero}</TableCell>
 									<TableCell>
 										<div className='actions'>
+											<i
+												className='bx bx-add-to-queue cursor-pointer bx-sm'
+												onClick={() =>
+													openTransaction(row)
+												}
+											/>
 											<i
 												className='fas fa-edit fa-lg blue-color cursor-pointer'
 												onClick={() => onEdit(row)}></i>
@@ -186,6 +218,19 @@ const AbonnementList = () => {
 					<AbonnementEdit
 						abonnement={abonnement}
 						handleClose={handleCloseEdit}
+					/>
+				</Box>
+			</Modal>
+
+			<Modal
+				open={openTransactionForm}
+				onClose={handleCloseTransactionForm}
+				aria-labelledby='modal-transaction-title'
+				aria-describedby='modal-transaction-description'>
+				<Box sx={style}>
+					<TransactionForm
+						abonnement={abonnement}
+						onSubmit={handleAddTransaction}
 					/>
 				</Box>
 			</Modal>

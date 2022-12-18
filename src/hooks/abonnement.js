@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAbonnements } from "../redux/abonnementSlice";
 import { getAbonnements } from "../services/abonnement";
+import { useFormik } from "formik";
+import { abonnementValidationSchema } from "../validations/abonnement-form";
 
 const useAbonnement = () => {
 	const dispatch = useDispatch();
@@ -16,11 +18,8 @@ const useAbonnement = () => {
 				console.error(errors);
 			}
 		};
-
-		if (abonnements.length <= 0) {
-			fetch_data();
-		}
-	}, [abonnements.length, dispatch]);
+		fetch_data();
+	}, [dispatch]);
 
 	const setData = (data) => {
 		dispatch(setAbonnements(data));
@@ -29,23 +28,25 @@ const useAbonnement = () => {
 	return [abonnements, setData];
 };
 
-export const useAbonnementForm = (abonnement) => {
-	const [values, setValues] = useState({
-		frais: abonnement?.frais,
-		mois_a_payer: abonnement?.mois_a_payer,
-		client_id: abonnement?.client.id,
-		activite_id: abonnement?.activite.id,
-		zone_id: abonnement?.zone.id,
-		partition_id: abonnement?.partition.id,
-		type_installation_id: abonnement?.type_installation.id,
-		pavillon_id: abonnement?.pavillon.id,
+export const useAbonnementForm = (args) => {
+	const formik = useFormik({
+		initialValues: {
+			frais: args.abonnement?.frais || "",
+			mois_a_payer: args.abonnement?.mois_a_payer || "",
+			client_id: args.abonnement?.client.id || "",
+			activite_id: args.abonnement?.activite.id || "",
+			zone_id: args.abonnement?.zone.id || "",
+			partition_id: args.abonnement?.partition.id || "",
+			type_installation_id: args.abonnement?.type_installation.id || "",
+			pavillon_id: args.abonnement?.pavillon.id || "",
+		},
+		validationSchema: abonnementValidationSchema,
+		onSubmit: (values) => {
+			args.onSubmit(values);
+		},
 	});
 
-	const onChange = (e) => {
-		setValues({ ...values, [e.target.name]: e.target.value });
-	};
-
-	return [values, onChange];
+	return formik;
 };
 
 export const useAbonnementClientForm = (client, abonnement) => {
