@@ -22,6 +22,7 @@ import { removeZone } from "../../../redux/zoneSlice";
 import { deleteZone } from "../../../services/zone";
 import TablePaginationActions from "../../Pagination";
 import { ZoneAdd, ZoneEdit } from "../Form";
+import confirm from "../../../utils/confirm-dialog";
 
 const ZoneList = () => {
 	const [page, setPage] = useState(0);
@@ -38,14 +39,27 @@ const ZoneList = () => {
 		handleOpenEdit();
 	};
 
-	const handleDelete = async (id) => {
-		if (window.confirm("Voulez vous vraiment supprimer?")) {
-			try {
-				await deleteZone(id);
-				dispatch(removeZone(id));
-			} catch (errors) {
-				console.error(errors);
-			}
+	const handleOk = async (id) => {
+		try {
+			await deleteZone(id);
+			dispatch(removeZone(id));
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
+	const handleDelete = async (row) => {
+		if (
+			await confirm(
+				`Voulez vous vraiment supprimer la zone ${row.nom}?`,
+				{
+					okLabel: "Supprimer",
+					cancelLabel: "Annuler",
+					proceed: () => handleOk(row.id),
+				},
+			)
+		) {
+			console.log("OK");
 		}
 	};
 
@@ -113,7 +127,7 @@ const ZoneList = () => {
 											<i
 												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
-													handleDelete(row.id)
+													handleDelete(row)
 												}
 											/>
 										</div>

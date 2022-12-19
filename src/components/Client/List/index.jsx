@@ -23,6 +23,7 @@ import { removeClient } from "../../../redux/clientSlice";
 import { deleteClient } from "../../../services/client";
 import TablePaginationActions from "../../Pagination";
 import { ClientAdd, ClientEdit } from "../Form";
+import confirm from "../../../utils/confirm-dialog";
 
 const ClientList = () => {
 	const [page, setPage] = useState(0);
@@ -44,14 +45,24 @@ const ClientList = () => {
 		navigate(`${client.id}/abonnements`, { state: { client } });
 	};
 
-	const handleDelete = async (id) => {
-		if (window.confirm("Voulez vous vraiment supprimer?")) {
-			try {
-				await deleteClient(id);
-				dispatch(removeClient(id));
-			} catch (errors) {
-				console.error(errors);
-			}
+	const handleOk = async (id) => {
+		try {
+			await deleteClient(id);
+			dispatch(removeClient(id));
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
+	const handleDelete = async (row) => {
+		if (
+			await confirm(`Voulez vous vraiment supprimer le client ${row.nom}?`, {
+				okLabel: "Delete",
+				cancelLabel: "Annuler",
+				proceed: () => handleOk(row.id),
+			})
+		) {
+			console.log("OK");
 		}
 	};
 
@@ -130,7 +141,7 @@ const ClientList = () => {
 											<i
 												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
-													handleDelete(row.id)
+													handleDelete(row)
 												}
 											/>
 										</div>

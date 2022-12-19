@@ -22,6 +22,7 @@ import { removeCategorieActivite } from "../../../redux/categorieActiviteSlice";
 import { deleteCategorieActivite } from "../../../services/categorieActivite";
 import TablePaginationActions from "../../Pagination";
 import { CategorieActiviteAdd, CategorieActiviteEdit } from "../Form";
+import confirm from "../../../utils/confirm-dialog";
 
 const CategorieActiviteList = () => {
 	const [page, setPage] = useState(0);
@@ -38,14 +39,27 @@ const CategorieActiviteList = () => {
 		handleOpenEdit();
 	};
 
-	const handleDelete = async (id) => {
-		if (window.confirm("Voulez vous vraiment supprimer?")) {
-			try {
-				await deleteCategorieActivite(id);
-				dispatch(removeCategorieActivite(id));
-			} catch (errors) {
-				console.error(errors);
-			}
+	const handleOk = async (id) => {
+		try {
+			await deleteCategorieActivite(id);
+			dispatch(removeCategorieActivite(id));
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
+	const handleDelete = async (row) => {
+		if (
+			await confirm(
+				`Voulez vous vraiment supprimer la catégorie d'activité ${row.nom}?`,
+				{
+					okLabel: "Supprimer",
+					cancelLabel: "Annuler",
+					proceed: () => handleOk(row.id),
+				},
+			)
+		) {
+			console.log("OK");
 		}
 	};
 
@@ -115,7 +129,7 @@ const CategorieActiviteList = () => {
 											<i
 												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
-													handleDelete(row.id)
+													handleDelete(row)
 												}
 											/>
 										</div>

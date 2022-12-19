@@ -22,6 +22,7 @@ import { removeActivite } from "../../../redux/activiteSlice";
 import { deleteActivite } from "../../../services/activites";
 import TablePaginationActions from "../../Pagination";
 import { ActiviteAdd, ActiviteEdit } from "../Form";
+import confirm from "../../../utils/confirm-dialog";
 
 const ActiviteList = () => {
 	const [page, setPage] = useState(0);
@@ -38,14 +39,27 @@ const ActiviteList = () => {
 		handleOpenEdit();
 	};
 
-	const handleDelete = async (id) => {
-		if (window.confirm("Voulez vous vraiment supprimer?")) {
-			try {
-				await deleteActivite(id);
-				dispatch(removeActivite(id));
-			} catch (errors) {
-				console.error(errors);
-			}
+	const handleOk = async (id) => {
+		try {
+			await deleteActivite(id);
+			dispatch(removeActivite(id));
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
+	const handleDelete = async (row) => {
+		if (
+			await confirm(
+				`Voulez vous vraiment supprimer la l'activité ${row.nom}?`,
+				{
+					okLabel: "Supprimer",
+					cancelLabel: "Annuler",
+					proceed: () => handleOk(row.id),
+				},
+			)
+		) {
+			console.log("OK");
 		}
 	};
 
@@ -117,7 +131,7 @@ const ActiviteList = () => {
 											<i
 												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
-													handleDelete(row.id)
+													handleDelete(row)
 												}
 											/>
 										</div>

@@ -22,6 +22,7 @@ import { removePavillon } from "../../../redux/pavillonSlice";
 import { deletePavillon } from "../../../services/pavillons";
 import TablePaginationActions from "../../Pagination";
 import { PavillonAdd, PavillonEdit } from "../Form";
+import confirm from "../../../utils/confirm-dialog";
 
 const PavillonList = () => {
 	const [page, setPage] = useState(0);
@@ -38,14 +39,24 @@ const PavillonList = () => {
 		handleOpenEdit();
 	};
 
-	const handleDelete = async (id) => {
-		if (window.confirm("Voulez vous vraiment supprimer?")) {
-			try {
-				await deletePavillon(id);
-				dispatch(removePavillon(id));
-			} catch (errors) {
-				console.error(errors);
-			}
+	const handleOk = async (id) => {
+		try {
+			await deletePavillon(id);
+			dispatch(removePavillon(id));
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
+	const handleDelete = async (row) => {
+		if (
+			await confirm(`Voulez vous vraiment supprimer le pavillon ${row.numero}?`, {
+				okLabel: "Supprimer",
+				cancelLabel: "Annuler",
+				proceed: () => handleOk(row.id),
+			})
+		) {
+			console.log("OK");
 		}
 	};
 
@@ -113,7 +124,7 @@ const PavillonList = () => {
 											<i
 												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
-													handleDelete(row.id)
+													handleDelete(row)
 												}
 											/>
 										</div>

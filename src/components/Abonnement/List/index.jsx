@@ -18,13 +18,17 @@ import { style } from "../../../constants";
 import { columnsAbonnement } from "../../../constants/table";
 import useAbonnement from "../../../hooks/abonnement";
 import useModal from "../../../hooks/modal";
-import { removeAbonnement, updateAbonnement } from "../../../redux/abonnementSlice";
+import {
+	removeAbonnement,
+	updateAbonnement,
+} from "../../../redux/abonnementSlice";
 import { appendTransaction } from "../../../redux/transactionSlice";
 import { deleteAbonnement } from "../../../services/abonnement";
 import { addTransaction } from "../../../services/transaction";
 import TablePaginationActions from "../../Pagination";
 import { AbonnementAdd, AbonnementEdit } from "../Form";
 import TransactionForm from "../TransactionForm";
+import confirm from "../../../utils/confirm-dialog";
 
 const AbonnementList = () => {
 	const [page, setPage] = useState(0);
@@ -59,17 +63,30 @@ const AbonnementList = () => {
 		setPage(0);
 	};
 
-	const handleDelete = async (id) => {
-		if (window.confirm("Voulez vous vraiment supprimer?")) {
-			try {
-				await deleteAbonnement(id);
-				dispatch(removeAbonnement(id));
-			} catch (errors) {
-				console.error(errors);
-			}
+	const handleOk = async (id) => {
+		try {
+			await deleteAbonnement(id);
+			dispatch(removeAbonnement(id));
+		} catch (errors) {
+			console.error(errors);
 		}
 	};
-	
+
+	const handleDelete = async (row) => {
+		if (
+			await confirm(
+				`Voulez vous vraiment supprimer l'abonnement de ${row.client.nom} dans la zone ${row.zone.nom}?`,
+				{
+					okLabel: "Supprimer",
+					cancelLabel: "Annuler",
+					proceed: () => handleOk(row.id),
+				},
+			)
+		) {
+			console.log("OK");
+		}
+	};
+
 	const openTransaction = async (row) => {
 		setAbonnement(row);
 		handleOpenTransactionForm();
@@ -85,8 +102,6 @@ const AbonnementList = () => {
 			console.error(errors);
 		}
 	};
-
-	
 
 	return (
 		<>
@@ -157,7 +172,7 @@ const AbonnementList = () => {
 											<i
 												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
-													handleDelete(row.id)
+													handleDelete(row)
 												}></i>
 										</div>
 									</TableCell>

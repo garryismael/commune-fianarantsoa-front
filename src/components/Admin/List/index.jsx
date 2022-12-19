@@ -19,9 +19,10 @@ import { removeAdmin } from "../../../redux/adminSlice";
 import { deleteAdmin } from "../../../services/admin";
 import TablePaginationActions from "../../Pagination";
 
+import confirm from "../../../utils/confirm-dialog";
 import {
 	adminEditValidationSchema,
-	adminValidationSchema
+	adminValidationSchema,
 } from "../../../validations/admin-form";
 import { AdminAdd, AdminEdit } from "../Form";
 import "./index.css";
@@ -41,14 +42,24 @@ export default function AdminList() {
 		handleOpenEdit();
 	};
 
-	const handleDelete = async (id) => {
-		if (window.confirm("Voulez vous vraiment supprimer?")) {
-			try {
-				await deleteAdmin(id);
-				dispatch(removeAdmin(id));
-			} catch (errors) {
-				console.error(errors);
-			}
+	const handleOk = async (id) => {
+		try {
+			await deleteAdmin(id);
+			dispatch(removeAdmin(id));
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
+	const handleDelete = async (row) => {
+		if (
+			await confirm(`Voulez vous vraiment supprimer l'utilisateur ${row.nom}?`, {
+				okLabel: "Delete",
+				cancelLabel: "Annuler",
+				proceed: () => handleOk(row.id),
+			})
+		) {
+			console.log("OK");
 		}
 	};
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -118,7 +129,7 @@ export default function AdminList() {
 											<i
 												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
-													handleDelete(row.id)
+													handleDelete(row)
 												}></i>
 										</div>
 									</TableCell>

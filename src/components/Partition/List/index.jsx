@@ -20,6 +20,7 @@ import useModal from "../../../hooks/modal";
 import usePartition from "../../../hooks/partition";
 import { removePartition } from "../../../redux/partitionSlice";
 import { deletePartition } from "../../../services/partition";
+import confirmWrapper from "../../../utils/confirm-dialog";
 import TablePaginationActions from "../../Pagination";
 import { PartitionAdd, PartitionEdit } from "../Form";
 
@@ -38,14 +39,27 @@ const PartitionList = () => {
 		handleOpenEdit();
 	};
 
-	const handleDelete = async (id) => {
-		if (window.confirm("Voulez vous vraiment supprimer?")) {
-			try {
-				await deletePartition(id);
-				dispatch(removePartition(id));
-			} catch (errors) {
-				console.error(errors);
-			}
+	const handleOk = async (id) => {
+		try {
+			await deletePartition(id);
+			dispatch(removePartition(id));
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
+	const handleDelete = async (row) => {
+		if (
+			await confirmWrapper(
+				`Voulez vous vraiment supprimer la partition ${row.nom}?`,
+				{
+					okLabel: "Supprimer",
+					cancelLabel: "Annuler",
+					proceed: () => handleOk(row.id),
+				},
+			)
+		) {
+			console.log("OK");
 		}
 	};
 
@@ -115,7 +129,7 @@ const PartitionList = () => {
 											<i
 												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
-													handleDelete(row.id)
+													handleDelete(row)
 												}
 											/>
 										</div>
