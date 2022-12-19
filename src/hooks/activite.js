@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActivites } from "../redux/activiteSlice";
 import { getActivites } from "../services/activites";
+import { activiteValidationSchema } from "../validations/activite-form";
 
 const useActivite = () => {
 	const dispatch = useDispatch();
@@ -25,17 +27,21 @@ const useActivite = () => {
 
 	return [activites, setData];
 };
-export const useActiviteForm = (data) => {
-	const [values, setValues] = useState({
-		nom: data?.nom,
-		categorie_activite_id: data?.categorie_activite.id
+export const useActiviteForm = (args) => {
+	const formik = useFormik({
+		initialValues: {
+			nom: args.activite?.nom || "",
+			categorie_activite_id: args.activite?.categorie_activite.id || "",
+		},
+		validationSchema: activiteValidationSchema,
+		onSubmit: async (values) => {
+			await args.onSubmit(values);
+		},
 	});
 
-	const onChange = (e) => {
-		setValues({ ...values, [e.target.name]: e.target.value });
-	};
+	console.log(args.activite);
 
-	return [values, onChange];
+	return formik;
 };
 
 export default useActivite;

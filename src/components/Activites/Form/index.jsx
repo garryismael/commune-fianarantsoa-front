@@ -4,6 +4,7 @@ import {
 	CardContent,
 	CardHeader,
 	FormControl,
+	FormHelperText,
 	InputLabel,
 	MenuItem,
 	Select,
@@ -11,30 +12,38 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useActiviteForm } from "../../../hooks/activite";
+import useCategorieActivite from "../../../hooks/categorieActivite";
 import { appendActivite, updateActivite } from "../../../redux/activiteSlice";
 import { addActivite, editActivite } from "../../../services/activites";
 import "./index.css";
-import useCategorieActivite from "../../../hooks/categorieActivite";
 
 const ActiviteForm = (props) => {
 	const [categorie_activites] = useCategorieActivite();
+	const formik = useActiviteForm({ ...props });
 	return (
 		<div className='active'>
 			<Card sx={{ width: "500px", margin: "auto" }}>
 				<CardHeader title={props.title} />
 				<CardContent>
-					<form
-						className='activite-form'
-						onSubmit={props.handleSubmit}>
+					<form className='activite-form' onSubmit={formik.handleSubmit}>
 						<TextField
 							id='nom'
 							label='Nom'
 							name='nom'
-							value={props.values?.nom}
+							value={formik.values.nom}
+							onChange={formik.handleChange}
+							error={
+								formik.touched.nom && Boolean(formik.errors.nom)
+							}
 							variant='outlined'
-							onChange={props.onChange}
+							helperText={formik.touched.nom && formik.errors.nom}
 						/>
-						<FormControl fullWidth>
+						<FormControl
+							fullWidth
+							error={
+								formik.touched.categorie_activite_id &&
+								Boolean(formik.errors.categorie_activite_id)
+							}>
 							<InputLabel id='categorie-activite-select-label'>
 								Categorie de l'activité
 							</InputLabel>
@@ -42,11 +51,9 @@ const ActiviteForm = (props) => {
 								id='categorie-activite-select'
 								name='categorie_activite_id'
 								label="Categorie de l'activité"
-								value={
-									props?.values.categorie_activite_id || ""
-								}
+								value={formik?.values.categorie_activite_id}
 								labelId='categorie-activite-select-label'
-								onChange={props.onChange}>
+								onChange={formik.handleChange}>
 								{categorie_activites.map(
 									(categorie_activite) => (
 										<MenuItem
@@ -57,6 +64,10 @@ const ActiviteForm = (props) => {
 									),
 								)}
 							</Select>
+							<FormHelperText>
+								{formik.touched.categorie_activite_id &&
+									formik.errors.categorie_activite_id}
+							</FormHelperText>
 						</FormControl>
 						<Button
 							variant='contained'
@@ -71,11 +82,9 @@ const ActiviteForm = (props) => {
 	);
 };
 export const ActiviteAdd = (props) => {
-	const [values, onChange] = useActiviteForm();
 	const dispatch = useDispatch();
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+	const onSubmit = async (values) => {
 		try {
 			const response = await addActivite(values);
 			dispatch(appendActivite(response.data));
@@ -88,21 +97,16 @@ export const ActiviteAdd = (props) => {
 	return (
 		<ActiviteForm
 			title='Ajouter une activité'
-			values={values}
 			button='Ajouter'
-			create={true}
-			handleSubmit={handleSubmit}
-			oneChange={onChange}
+			onSubmit={onSubmit}
 		/>
 	);
 };
 
 export const ActiviteEdit = (props) => {
-	const [values, onChange] = useActiviteForm(props.activite);
 	const dispatch = useDispatch();
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+	const onSubmit = async (values) => {
 		try {
 			const response = await editActivite(props.activite.id, values);
 			dispatch(updateActivite(response.data));
@@ -115,11 +119,9 @@ export const ActiviteEdit = (props) => {
 	return (
 		<ActiviteForm
 			title='Modifier une activité'
-			values={values}
 			button='Modifier'
-			create={false}
-			handleSubmit={handleSubmit}
-			onChange={onChange}
+			activite={props.activite}
+			onSubmit={onSubmit}
 		/>
 	);
 };

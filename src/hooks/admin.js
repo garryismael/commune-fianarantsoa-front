@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdmins } from "../redux/adminSlice";
 import { getAdmins } from "../services/admin";
@@ -26,22 +27,43 @@ const useAdmin = () => {
 	return [admins, setData];
 };
 
-export const useAdminForm = (data) => {
-	const [values, setValues] = useState({
-		nom: data?.nom,
-		prenom: data?.prenom,
-		adresse: data?.adresse,
-		email: data?.email,
-		contact: data?.contact,
-		est_admin: data?.est_admin || false,
-		mot_de_passe: "",
+export const useAdminForm = (args) => {
+	const formik = useFormik({
+		initialValues: {
+			nom: args.utilisateur?.nom,
+			prenom: args.utilisateur?.prenom,
+			adresse: args.utilisateur?.adresse,
+			email: args.utilisateur?.email,
+			contact: args.utilisateur?.contact,
+			est_admin: args.utilisateur?.est_admin || false,
+			mot_de_passe: "",
+		},
+		validationSchema: args.validationSchema,
+		onSubmit: async (values) => {
+			await args.onSubmit(values);
+		},
 	});
 
-	const onChange = (e) => {
-		setValues({ ...values, [e.target.name]: e.target.value });
-	};
+	return formik;
+};
 
-	return [values, onChange];
+export const useAdminEditForm = (args) => {
+	const formik = useFormik({
+		initialValues: {
+			nom: args.utilisateur?.nom,
+			prenom: args.utilisateur?.prenom,
+			adresse: args.utilisateur?.adresse,
+			email: args.utilisateur?.email,
+			contact: args.utilisateur?.contact,
+			est_admin: args.utilisateur?.est_admin || false,
+		},
+		validationSchema: args.validationSchema,
+		onSubmit: async (values) => {
+			await args.onSubmit(values);
+		},
+	});
+
+	return formik;
 };
 
 export default useAdmin;

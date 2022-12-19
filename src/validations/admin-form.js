@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const clientValidationSchema = yup.object({
+const commonAdminValidationSchema = {
 	nom: yup
 		.string("Entrer votre nom")
 		.min(3, "Ce champ doit comporter au moins 3 caractères.")
@@ -24,8 +24,16 @@ export const clientValidationSchema = yup.object({
 	est_admin: yup
 		.boolean("Veuillez choisir une valeur")
 		.required("Est admin est requis"),
+};
+
+export const adminValidationSchema = yup.object({
+	...commonAdminValidationSchema,
 	mot_de_passe: yup
 		.string("Entrer un mot de passe")
 		.min(4, "Ce champ doit comporter au moins 3 caractères.")
 		.required("Le mot de passe est requis"),
+});
+
+export const adminEditValidationSchema = yup.object({
+	...commonAdminValidationSchema,
 });

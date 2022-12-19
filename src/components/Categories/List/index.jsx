@@ -23,7 +23,6 @@ import { deleteCategorieActivite } from "../../../services/categorieActivite";
 import TablePaginationActions from "../../Pagination";
 import { CategorieActiviteAdd, CategorieActiviteEdit } from "../Form";
 
-
 const CategorieActiviteList = () => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -52,7 +51,9 @@ const CategorieActiviteList = () => {
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - categorieActivites.length) : 0;
+		page > 0
+			? Math.max(0, (1 + page) * rowsPerPage - categorieActivites.length)
+			: 0;
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -98,13 +99,11 @@ const CategorieActiviteList = () => {
 								  )
 								: categorieActivites
 							).map((row) => (
-								<TableRow
-									key={row.id}
-									className='cursor-pointer'>
+								<TableRow key={row.id}>
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>
-									
+
 									<TableCell>{row.nom}</TableCell>
 									<TableCell>
 										<div className='actions'>
@@ -176,7 +175,10 @@ const CategorieActiviteList = () => {
 				aria-labelledby='modal-edit-title'
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<CategorieActiviteEdit pavillon={categorieActivite} handleClose={handleCloseEdit} />
+					<CategorieActiviteEdit
+						categorie_activite={categorieActivite}
+						handleClose={handleCloseEdit}
+					/>
 				</Box>
 			</Modal>
 		</>

@@ -19,6 +19,10 @@ import { removeAdmin } from "../../../redux/adminSlice";
 import { deleteAdmin } from "../../../services/admin";
 import TablePaginationActions from "../../Pagination";
 
+import {
+	adminEditValidationSchema,
+	adminValidationSchema
+} from "../../../validations/admin-form";
 import { AdminAdd, AdminEdit } from "../Form";
 import "./index.css";
 
@@ -164,7 +168,10 @@ export default function AdminList() {
 				aria-labelledby='modal-edit-title'
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<AdminAdd handleClose={handleCloseAdd} />
+					<AdminAdd
+						validationSchema={adminValidationSchema}
+						handleClose={handleCloseAdd}
+					/>
 				</Box>
 			</Modal>
 			<Modal
@@ -173,7 +180,11 @@ export default function AdminList() {
 				aria-labelledby='modal-add-title'
 				aria-describedby='modal-add-description'>
 				<Box sx={style}>
-					<AdminEdit user={user} handleClose={handleCloseEdit} />
+					<AdminEdit
+						utilisateur={user}
+						validationSchema={adminEditValidationSchema}
+						handleClose={handleCloseEdit}
+					/>
 				</Box>
 			</Modal>
 		</>

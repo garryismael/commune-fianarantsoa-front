@@ -97,9 +97,7 @@ const PavillonList = () => {
 								  )
 								: pavillons
 							).map((row) => (
-								<TableRow
-									key={row.id}
-									className='cursor-pointer'>
+								<TableRow key={row.id}>
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>

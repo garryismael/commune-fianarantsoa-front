@@ -2,96 +2,94 @@ import {
 	Button,
 	Card,
 	CardContent,
-	CardHeader, TextField
+	CardHeader,
+	TextField,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { useZoneForm } from "../../../hooks/zone";
-import { appendZone,updateZone } from "../../../redux/zoneSlice";
+import useForm from "../../../hooks/form";
+import { appendZone, updateZone } from "../../../redux/zoneSlice";
 import { addZone, editZone } from "../../../services/zone";
-import "./index.css"
+import "./index.css";
+import { getValidationSchema } from "../../../validations/common-form";
+import { zoneForm } from "../../../constants/form";
 
-const ZoneForm=(props)=>{
-    return(
-        <div className="zone">
-            <Card sx={{ width: "500px", margin: "auto" }}>
+const ZoneForm = (props) => {
+	const validationSchema = getValidationSchema(zoneForm);
+	const formik = useForm({ ...props, validationSchema });
+
+	return (
+		<div className='zone'>
+			<Card sx={{ width: "500px", margin: "auto" }}>
 				<CardHeader title={props.title} />
 				<CardContent>
-                <form className='zone-form' onSubmit={props.handleSubmit}>
+					<form className='zone-form' onSubmit={formik.handleSubmit}>
 						<TextField
 							id='nom'
-							label='Nom'
 							name='nom'
-							value={props.values?.nom}
+							label='Nom'
+							value={formik.values.nom}
+							onChange={formik.handleChange}
+							error={
+								formik.touched.nom && Boolean(formik.errors.nom)
+							}
 							variant='outlined'
-							onChange={props.onChange}
+							helperText={formik.touched.nom && formik.errors.nom}
 						/>
-                        <Button
+						<Button
 							variant='contained'
 							className='button-form'
 							type='submit'>
 							{props.button}
 						</Button>
-                        </form>
-                </CardContent>
-                </Card>
-                
-        </div>
-    );
+					</form>
+				</CardContent>
+			</Card>
+		</div>
+	);
 };
-export const ZoneAdd=(props)=>{
-    const[values, onChange]=useZoneForm();
-    const dispatch=useDispatch();
+export const ZoneAdd = (props) => {
+	const dispatch = useDispatch();
 
-    const handleSubmit= async(e)=>{
-        e.preventDefault();
-        try{
-            const response= await addZone(values);
-            dispatch(appendZone(response.data));
-            props.handleClose();
+	const onSubmit = async (values) => {
+		try {
+			const response = await addZone(values);
+			dispatch(appendZone(response.data));
+			props.handleClose();
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
 
-        }catch(errors){
-            console.error(errors);
-        }
-    };
+	return (
+		<ZoneForm
+			title='Ajouter une zone'
+			button='Ajouter'
+			onSubmit={onSubmit}
+		/>
+	);
+};
 
-    return (
-        <ZoneForm
-            title='Ajouter une zone'
-            values={values}
-            button='Ajouter'
-            create={true}
-            handleSubmit={handleSubmit}
-            oneChange={onChange}
-            />
-        );
-    };
-    
-    export const ZoneEdit = (props) => {
-        const [values, onChange] = useZoneForm(props.zone);
-        const dispatch = useDispatch();
-    
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-            try {
-                const response = await editZone(props.zone.id, values);
-                dispatch(updateZone(response.data));
-                props.handleClose();
-            } catch (errors) {
-                console.error(errors);
-            }
-        };
-    
-        return (
-            <ZoneForm
-                title='Modifier une zone'
-                values={values}
-                button='Modifier'
-                create={false}
-                handleSubmit={handleSubmit}
-                onChange={onChange}
-            />
-        );
-    };
-    
-    export default ZoneForm;
-    
+export const ZoneEdit = (props) => {
+	const dispatch = useDispatch();
+
+	const onSubmit = async (values) => {
+		try {
+			const response = await editZone(props.zone.id, values);
+			dispatch(updateZone(response.data));
+			props.handleClose();
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
+	return (
+		<ZoneForm
+			title='Modifier une zone'
+			button='Modifier'
+			data={props.zone}
+			onSubmit={onSubmit}
+		/>
+	);
+};
+
+export default ZoneForm;

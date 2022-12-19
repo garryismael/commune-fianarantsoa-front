@@ -6,90 +6,96 @@ import {
   TextField,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { usePartitionForm } from "../../../hooks/partition";
+import { partitionForm } from "../../../constants/form";
+import useForm from "../../../hooks/form";
 import {
   appendPartition,
   updatePartition,
 } from "../../../redux/partitionSlice";
 import { addPartition, editPartition } from "../../../services/partition";
-import "./index.css"
+import { getValidationSchema } from "../../../validations/common-form";
+import "./index.css";
 
 const PartitionForm = (props) => {
-  return (
-    <div className="partition">
-      <Card sx={{ width: "500px", margin: "auto" }}>
-        <CardHeader title={props.title} />
-        <CardContent>
-          <form className="partition-form" onSubmit={props.handleSubmit}>
-            <TextField
-              id="nom"
-              label="Nom"
-              name="nom"
-              value={props.values?.nom}
-              variant="outlined"
-              onChange={props.onChange}
-            />
-            <Button variant="contained" className="button-form" type="submit">
-              {props.button}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-  );
+	const validationSchema = getValidationSchema(partitionForm);
+	const formik = useForm({ ...props, validationSchema });
+
+	return (
+		<div className='partition'>
+			<Card sx={{ width: "500px", margin: "auto" }}>
+				<CardHeader title={props.title} />
+				<CardContent>
+					<form
+						className='partition-form'
+						onSubmit={formik.handleSubmit}>
+						<TextField
+							id='nom'
+							name='nom'
+							label='Nom'
+							value={formik.values.nom}
+							onChange={formik.handleChange}
+							error={
+								formik.touched.nom && Boolean(formik.errors.nom)
+							}
+							variant='outlined'
+							helperText={formik.touched.nom && formik.errors.nom}
+						/>
+						<Button
+							variant='contained'
+							className='button-form'
+							type='submit'>
+							{props.button}
+						</Button>
+					</form>
+				</CardContent>
+			</Card>
+		</div>
+	);
 };
 export const PartitionAdd = (props) => {
-  const [values, onChange] = usePartitionForm();
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await addPartition(values);
-      dispatch(appendPartition(response.data));
-      props.handleClose();
-    } catch (errors) {
-      console.error(errors);
-    }
-  };
+	const onSubmit = async (values) => {
+		try {
+			const response = await addPartition(values);
+			dispatch(appendPartition(response.data));
+			props.handleClose();
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
 
-  return (
-    <PartitionForm
-      title="Ajouter une partition"
-      values={values}
-      button="Ajouter"
-      create={true}
-      handleSubmit={handleSubmit}
-      oneChange={onChange}
-    />
-  );
+	return (
+		<PartitionForm
+			title='Ajouter une partition'
+			button='Ajouter'
+			create={true}
+			onSubmit={onSubmit}
+		/>
+	);
 };
 
 export const PartitionEdit = (props) => {
-  const [values, onChange] = usePartitionForm(props.partition);
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await editPartition(props.partition.id, values);
-      dispatch(updatePartition(response.data));
-      props.handleClose();
-    } catch (errors) {
-      console.error(errors);
-    }
-  };
+	const onSubmit = async (values) => {
+		try {
+			const response = await editPartition(props.partition.id, values);
+			dispatch(updatePartition(response.data));
+			props.handleClose();
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
 
-  return (
-    <PartitionForm
-      title="Modifier une partition"
-      values={values}
-      button="Modifier"
-      create={false}
-      handleSubmit={handleSubmit}
-      onChange={onChange}
-    />
-  );
+	return (
+		<PartitionForm
+			title='Modifier une partition'
+      data={props.partition}
+			button='Modifier'
+			onSubmit={onSubmit}
+		/>
+	);
 };
 
 export default PartitionForm;

@@ -2,96 +2,105 @@ import {
 	Button,
 	Card,
 	CardContent,
-	CardHeader, TextField
+	CardHeader,
+	TextField,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { useCategorieActiviteForm } from "../../../hooks/categorieActivite";
-import { appendCategorieActivite,updateCategorieActivite } from "../../../redux/categorieActiviteSlice";
-import { addCategorieActivite, editCategorieActivite } from "../../../services/categorieActivite";
-import "./index.css"
+import { categorieForm } from "../../../constants/form";
+import useForm from "../../../hooks/form";
+import {
+	appendCategorieActivite,
+	updateCategorieActivite,
+} from "../../../redux/categorieActiviteSlice";
+import {
+	addCategorieActivite,
+	editCategorieActivite,
+} from "../../../services/categorieActivite";
+import { getValidationSchema } from "../../../validations/common-form";
+import "./index.css";
 
-const CategorieActiviteForm=(props)=>{
-    return(
-        <div className='categorie-activite'>
-            <Card sx={{ width: "500px", margin: "auto" }}>
+const CategorieActiviteForm = (props) => {
+	const validationSchema = getValidationSchema(categorieForm);
+	const formik = useForm({ ...props, validationSchema });
+	return (
+		<div className='categorie-activite'>
+			<Card sx={{ width: "500px", margin: "auto" }}>
 				<CardHeader title={props.title} />
 				<CardContent>
-                <form className='categorie-activite-form' onSubmit={props.handleSubmit}>
+					<form
+						className='categorie-activite-form'
+						onSubmit={formik.handleSubmit}>
 						<TextField
 							id='nom'
-							label='Nom'
 							name='nom'
-							value={props.values?.nom}
+							label='Nom'
+							value={formik.values.nom}
+							onChange={formik.handleChange}
+							error={
+								formik.touched.nom && Boolean(formik.errors.nom)
+							}
 							variant='outlined'
-							onChange={props.onChange}
+							helperText={formik.touched.nom && formik.errors.nom}
 						/>
-                        <Button
+						<Button
 							variant='contained'
 							className='button-form'
 							type='submit'>
 							{props.button}
 						</Button>
-                        </form>
-                </CardContent>
-                </Card>
-                
-        </div>
-    );
+					</form>
+				</CardContent>
+			</Card>
+		</div>
+	);
 };
-export const CategorieActiviteAdd=(props)=>{
-    const[values, onChange]=useCategorieActiviteForm();
-    const dispatch=useDispatch();
+export const CategorieActiviteAdd = (props) => {
+	const dispatch = useDispatch();
 
-    const handleSubmit= async(e)=>{
-        e.preventDefault();
-        try{
-            const response= await addCategorieActivite(values);
-            dispatch(appendCategorieActivite(response.data));
-            props.handleClose();
+	const onSubmit = async (values) => {
+		try {
+			const response = await addCategorieActivite(values);
+			dispatch(appendCategorieActivite(response.data));
+			props.handleClose();
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
 
-        }catch(errors){
-            console.error(errors);
-        }
-    };
+	return (
+		<CategorieActiviteForm
+			title='Ajouter une Catégorie '
+			button='Ajouter'
+			onSubmit={onSubmit}
+		/>
+	);
+};
 
-    return (
-        <CategorieActiviteForm
-            title='Ajouter une Catégorie '
-            values={values}
-            button='Ajouter'
-			create={true}
-            handleSubmit={handleSubmit}
-            oneChange={onChange}
-            />
-        );
-    };
-    
-    export const CategorieActiviteEdit = (props) => {
-        const [values, onChange] = useCategorieActiviteForm(props.categorieactivite);
-        const dispatch = useDispatch();
-    
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-            try {
-                const response = await editCategorieActivite(props.categorieactivite.id, values);
-                dispatch(updateCategorieActivite(response.data));
-                props.handleClose();
-            } catch (errors) {
-                console.error(errors);
-            }
-        };
-    
-        return (
-            <CategorieActiviteForm
-                title='Modifier une catégorie'
-                values={values}
-                button='Modifier'
-                create={false}
-                handleSubmit={handleSubmit}
-                onChange={onChange}
-            />
-        );
-    };
-    
-    export default CategorieActiviteForm;
-    
+export const CategorieActiviteEdit = (props) => {
+	const dispatch = useDispatch();
+
+	const onSubmit = async (values) => {
+		try {
+			const response = await editCategorieActivite(
+				props.categorie_activite.id,
+				values,
+			);
+			dispatch(updateCategorieActivite(response.data));
+			props.handleClose();
+		} catch (errors) {
+			console.error(errors);
+		}
+	};
+
+    console.log(props.categorie_activite);
+	return (
+		<CategorieActiviteForm
+			title='Modifier une catégorie'
+			button='Modifier'
+			data={props.categorie_activite}
+			handleSubmit={onSubmit}
+		/>
+	);
+};
+
+export default CategorieActiviteForm;

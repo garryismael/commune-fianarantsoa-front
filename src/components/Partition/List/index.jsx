@@ -99,9 +99,7 @@ const PartitionList = () => {
 								  )
 								: partitions
 							).map((row) => (
-								<TableRow
-									key={row.id}
-									className='cursor-pointer'>
+								<TableRow key={row.id}>
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>
@@ -178,7 +176,7 @@ const PartitionList = () => {
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
 					<PartitionEdit
-						pavillon={partition}
+						partition={partition}
 						handleClose={handleCloseEdit}
 					/>
 				</Box>

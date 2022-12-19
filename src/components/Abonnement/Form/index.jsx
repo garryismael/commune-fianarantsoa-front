@@ -309,6 +309,7 @@ export const AbonnementEdit = (props) => {
 			title='Modifier un Abonnement'
 			button='Modifier'
 			handleSubmit={handleSubmit}
+			abonnement={props.abonnement}
 			pavillons={pavillons.concat(props.abonnement.pavillon)}
 		/>
 	);

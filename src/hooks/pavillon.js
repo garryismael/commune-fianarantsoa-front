@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPavillons } from "../redux/pavillonSlice";
 import { getNotUsedPavillon, getPavillons } from "../services/pavillons";
+import { useFormik } from "formik";
+import { pavillonValidationSchema } from "../validations/pavillon-form";
 
 const usePavillon = () => {
 	const dispatch = useDispatch();
@@ -25,16 +27,18 @@ const usePavillon = () => {
 
 	return [pavillons, setData];
 };
-export const usePavillonForm = (data) => {
-	const [values, setValues] = useState({
-		numero: data?.numero,
+export const usePavillonForm = (args) => {
+	const formik = useFormik({
+		initialValues: {
+			numero: args.pavillon?.numero,
+		},
+		validationSchema: pavillonValidationSchema,
+		onSubmit: async (values) => {
+			await args.onSubmit(values);
+		},
 	});
 
-	const onChange = (e) => {
-		setValues({ ...values, [e.target.name]: e.target.value });
-	};
-
-	return [values, onChange];
+	return formik;
 };
 
 export const useNotUsedPavillon = () => {
