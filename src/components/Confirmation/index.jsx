@@ -10,8 +10,9 @@ import { confirmable } from "react-confirm";
 
 function ConfirmDialog({
 	okLabel = "OK",
-	cancelLabel = "Cancel",
+	cancelLabel = "Annuler",
 	title = "Confirmation",
+	color = "error",
 	confirmation,
 	show,
 	proceed,
@@ -41,7 +42,7 @@ function ConfirmDialog({
 				<Button variant='text' onClick={dismiss}>
 					{cancelLabel}
 				</Button>
-				<Button variant='contained' onClick={handleOk}>
+				<Button variant='contained' color={color} onClick={handleOk}>
 					{okLabel}
 				</Button>
 			</DialogActions>

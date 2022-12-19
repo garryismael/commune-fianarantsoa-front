@@ -57,7 +57,7 @@ const ClientList = () => {
 	const handleDelete = async (row) => {
 		if (
 			await confirm(`Voulez vous vraiment supprimer le client ${row.nom}?`, {
-				okLabel: "Delete",
+				okLabel: "Supprimer",
 				cancelLabel: "Annuler",
 				proceed: () => handleOk(row.id),
 			})

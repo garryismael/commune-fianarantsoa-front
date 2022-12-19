@@ -54,7 +54,7 @@ export default function AdminList() {
 	const handleDelete = async (row) => {
 		if (
 			await confirm(`Voulez vous vraiment supprimer l'utilisateur ${row.nom}?`, {
-				okLabel: "Delete",
+				okLabel: "Supprimer",
 				cancelLabel: "Annuler",
 				proceed: () => handleOk(row.id),
 			})
