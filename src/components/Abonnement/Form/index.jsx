@@ -11,7 +11,6 @@ import CardContent from "@mui/material/CardContent";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import { useDispatch } from "react-redux";
 import { useAbonnementForm } from "../../../hooks/abonnement";
 import useActivite from "../../../hooks/activite";
 import useClient from "../../../hooks/client";
@@ -19,19 +18,11 @@ import usePartition from "../../../hooks/partition";
 import { useNotUsedPavillon } from "../../../hooks/pavillon";
 import useTypeInstallation from "../../../hooks/typeInstallation";
 import useZone from "../../../hooks/zone";
-import {
-	appendAbonnement,
-	updateAbonnement,
-} from "../../../redux/abonnementSlice";
-import { addAbonnement, editAbonnement } from "../../../services/abonnement";
 
 import "./index.css";
 
 const AbonnementForm = (props) => {
-	const formik = useAbonnementForm({
-		abonnement: props.abonnement,
-		onSubmit: props.handleSubmit,
-	});
+	const formik = useAbonnementForm({...props});
 	const [clients] = useClient();
 	const [activites] = useActivite();
 	const [zones] = useZone();
@@ -267,48 +258,26 @@ const AbonnementForm = (props) => {
 };
 
 export const AbonnementAdd = (props) => {
-	const dispatch = useDispatch();
 	const [pavillons] = useNotUsedPavillon();
-
-	const handleSubmit = async (values) => {
-		try {
-			const response = await addAbonnement(values);
-			dispatch(appendAbonnement(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
 
 	return (
 		<AbonnementForm
 			title='Ajouter un Abonnement'
 			button='Ajouter'
-			handleSubmit={handleSubmit}
+			onSubmit={props.onSubmit}
 			pavillons={pavillons}
 		/>
 	);
 };
 
 export const AbonnementEdit = (props) => {
-	const dispatch = useDispatch();
 	const [pavillons] = useNotUsedPavillon();
-
-	const handleSubmit = async (values) => {
-		try {
-			const response = await editAbonnement(props.abonnement.id, values);
-			dispatch(updateAbonnement(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
 
 	return (
 		<AbonnementForm
 			title='Modifier un Abonnement'
 			button='Modifier'
-			handleSubmit={handleSubmit}
+			onSubmit={props.onSubmit}
 			abonnement={props.abonnement}
 			pavillons={pavillons.concat(props.abonnement.pavillon)}
 		/>

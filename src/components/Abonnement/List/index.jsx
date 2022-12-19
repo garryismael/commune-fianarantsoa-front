@@ -1,8 +1,10 @@
 import {
+	Alert,
 	Box,
 	Button,
 	Modal,
 	Paper,
+	Snackbar,
 	Table,
 	TableBody,
 	TableCell,
@@ -18,17 +20,23 @@ import { style } from "../../../constants";
 import { columnsAbonnement } from "../../../constants/table";
 import useAbonnement from "../../../hooks/abonnement";
 import useModal from "../../../hooks/modal";
+import useNotification from "../../../hooks/notification";
 import {
+	appendAbonnement,
 	removeAbonnement,
 	updateAbonnement,
 } from "../../../redux/abonnementSlice";
 import { appendTransaction } from "../../../redux/transactionSlice";
-import { deleteAbonnement } from "../../../services/abonnement";
+import {
+	addAbonnement,
+	deleteAbonnement,
+	editAbonnement,
+} from "../../../services/abonnement";
 import { addTransaction } from "../../../services/transaction";
+import confirm from "../../../utils/confirm-dialog";
 import TablePaginationActions from "../../Pagination";
 import { AbonnementAdd, AbonnementEdit } from "../Form";
 import TransactionForm from "../TransactionForm";
-import confirm from "../../../utils/confirm-dialog";
 
 const AbonnementList = () => {
 	const [page, setPage] = useState(0);
@@ -41,6 +49,8 @@ const AbonnementList = () => {
 		handleOpenTransactionForm,
 		handleCloseTransactionForm,
 	] = useModal();
+	const { open, handleClose, notification, setSuccess, setError } =
+		useNotification();
 	const [abonnements] = useAbonnement();
 	const dispatch = useDispatch();
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -67,24 +77,22 @@ const AbonnementList = () => {
 		try {
 			await deleteAbonnement(id);
 			dispatch(removeAbonnement(id));
+			setSuccess("Suppression avec succès");
 		} catch (errors) {
+			setError("Suppression abonnement échouée");
 			console.error(errors);
 		}
 	};
 
 	const handleDelete = async (row) => {
-		if (
-			await confirm(
-				`Voulez vous vraiment supprimer l'abonnement de ${row.client.nom} dans la zone ${row.zone.nom}?`,
-				{
-					okLabel: "Supprimer",
-					cancelLabel: "Annuler",
-					proceed: () => handleOk(row.id),
-				},
-			)
-		) {
-			console.log("OK");
-		}
+		await confirm(
+			`Voulez vous vraiment supprimer l'abonnement de ${row.client.nom} dans la zone ${row.zone.nom}?`,
+			{
+				okLabel: "Supprimer",
+				cancelLabel: "Annuler",
+				proceed: () => handleOk(row.id),
+			},
+		);
 	};
 
 	const openTransaction = async (row) => {
@@ -92,13 +100,51 @@ const AbonnementList = () => {
 		handleOpenTransactionForm();
 	};
 
-	const handleAddTransaction = async (values) => {
+	const handleSubmitTransaction = async (values) => {
 		try {
 			const response = await addTransaction(values);
 			dispatch(appendTransaction(response.data));
 			dispatch(updateAbonnement(response.data.abonnement));
 			handleCloseTransactionForm();
+			setSuccess("Ajout transaction avec succès!");
 		} catch (errors) {
+			setError("Ajout transaction échoué. Ressayez!");
+			console.error(errors);
+		}
+	};
+
+	const handleAddTransaction = async (values) => {
+		await confirm(
+			`Voulez vous vraiment ajouter une transaction pour ${abonnement.client.nom}?`,
+			{
+				okLabel: "Ajouter",
+				cancelLabel: "Annuler",
+				color: "primary",
+				proceed: async () => await handleSubmitTransaction(values),
+			},
+		);
+	};
+
+	const handleEditSubmit = async (values) => {
+		try {
+			const response = await editAbonnement(abonnement.id, values);
+			dispatch(updateAbonnement(response.data));
+			handleCloseEdit();
+			setSuccess("Modification abonnement avec succès");
+		} catch (errors) {
+			setError("Modification abonnement échouée");
+			console.error(errors);
+		}
+	};
+
+	const handleAddSubmit = async (values) => {
+		try {
+			const response = await addAbonnement(values);
+			dispatch(appendAbonnement(response.data));
+			handleCloseAdd();
+			setSuccess("Ajout abonnement avec succès");
+		} catch (errors) {
+			setError("Ajout abonnement échoué");
 			console.error(errors);
 		}
 	};
@@ -221,7 +267,10 @@ const AbonnementList = () => {
 				aria-labelledby='modal-edit-title'
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<AbonnementAdd handleClose={handleCloseAdd} />
+					<AbonnementAdd
+						handleClose={handleCloseAdd}
+						onSubmit={handleAddSubmit}
+					/>
 				</Box>
 			</Modal>
 			<Modal
@@ -233,6 +282,7 @@ const AbonnementList = () => {
 					<AbonnementEdit
 						abonnement={abonnement}
 						handleClose={handleCloseEdit}
+						onSubmit={handleEditSubmit}
 					/>
 				</Box>
 			</Modal>
@@ -249,6 +299,19 @@ const AbonnementList = () => {
 					/>
 				</Box>
 			</Modal>
+			<Snackbar
+				open={open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+				<Alert
+					onClose={handleClose}
+					severity={notification.severity}
+					variant='filled'
+					sx={{ width: "100%" }}>
+					{notification.message}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 };
