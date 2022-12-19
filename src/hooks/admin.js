@@ -33,7 +33,7 @@ export const useAdminForm = (data) => {
 		adresse: data?.adresse,
 		email: data?.email,
 		contact: data?.contact,
-		est_admin: data?.est_admin,
+		est_admin: data?.est_admin || false,
 		mot_de_passe: "",
 	});
 
