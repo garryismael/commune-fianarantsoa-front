@@ -9,10 +9,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import { useDispatch } from "react-redux";
 import { useAdminEditForm, useAdminForm } from "../../../hooks/admin";
-import { appendAdmin, updateAdmin } from "../../../redux/adminSlice";
-import { addAdmin, editAdmin } from "../../../services/admin";
 
 import "./index.css";
 
@@ -101,87 +98,73 @@ const CommonFields = (props) => {
 };
 
 export const AdminAdd = (props) => {
-	const dispatch = useDispatch();
 
-	const onSubmit = async (values) => {
-		try {
-			const response = await addAdmin(values);
-			dispatch(appendAdmin(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
-	const formik = useAdminForm({ ...props, onSubmit });
+	const formik = useAdminForm({ ...props });
 
 	return (
-		<div className='admin'>
-			<Card sx={{ width: "500px", margin: "auto" }}>
-				<CardHeader title='Ajouter un utilisateur' />
-				<CardContent>
-					<form className='admin-form' onSubmit={formik.handleSubmit}>
-						<CommonFields formik={formik} />
-						<TextField
-							id='mot_de_passe'
-							name='mot_de_passe'
-							label='Mot de passe'
-							value={formik.values.mot_de_passe}
-							onChange={formik.handleChange}
-							error={
-								formik.touched.mot_de_passe &&
-								Boolean(formik.errors.mot_de_passe)
-							}
-							variant='outlined'
-							helperText={
-								formik.touched.mot_de_passe &&
-								formik.errors.mot_de_passe
-							}
-						/>
-						<Button
-							variant='contained'
-							className='button-form'
-							type='submit'>
-							Ajouter
-						</Button>
-					</form>
-				</CardContent>
-			</Card>
-		</div>
+		<>
+			<div className='admin'>
+				<Card sx={{ width: "500px", margin: "auto" }}>
+					<CardHeader title='Ajouter un utilisateur' />
+					<CardContent>
+						<form
+							className='admin-form'
+							onSubmit={formik.handleSubmit}>
+							<CommonFields formik={formik} />
+							<TextField
+								id='mot_de_passe'
+								name='mot_de_passe'
+								label='Mot de passe'
+								type="password"
+								value={formik.values.mot_de_passe}
+								onChange={formik.handleChange}
+								error={
+									formik.touched.mot_de_passe &&
+									Boolean(formik.errors.mot_de_passe)
+								}
+								variant='outlined'
+								helperText={
+									formik.touched.mot_de_passe &&
+									formik.errors.mot_de_passe
+								}
+							/>
+							<Button
+								variant='contained'
+								className='button-form'
+								type='submit'>
+								Ajouter
+							</Button>
+						</form>
+					</CardContent>
+				</Card>
+			</div>
+		</>
 	);
 };
 
 export const AdminEdit = (props) => {
-	const dispatch = useDispatch();
-
-	const onSubmit = async (values) => {
-		try {
-			const response = await editAdmin(props.utilisateur.id, values);
-			dispatch(updateAdmin(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
-	const formik = useAdminEditForm({ ...props, onSubmit });
+	const formik = useAdminEditForm({ ...props });
 
 	return (
-		<div className='admin'>
-			<Card sx={{ width: "500px", margin: "auto" }}>
-				<CardHeader title='Modifier un utilisateur' />
-				<CardContent>
-					<form className='admin-form' onSubmit={formik.handleSubmit}>
-						<CommonFields formik={formik} />
-						<Button
-							variant='contained'
-							className='button-form'
-							type='submit'>
-							Modifier
-						</Button>
-					</form>
-				</CardContent>
-			</Card>
-		</div>
+		<>
+			<div className='admin'>
+				<Card sx={{ width: "500px", margin: "auto" }}>
+					<CardHeader title='Modifier un utilisateur' />
+					<CardContent>
+						<form
+							className='admin-form'
+							onSubmit={formik.handleSubmit}>
+							<CommonFields formik={formik} />
+							<Button
+								variant='contained'
+								className='button-form'
+								type='submit'>
+								Modifier
+							</Button>
+						</form>
+					</CardContent>
+				</Card>
+			</div>
+		</>
 	);
 };

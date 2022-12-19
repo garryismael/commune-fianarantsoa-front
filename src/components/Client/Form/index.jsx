@@ -5,16 +5,10 @@ import {
 	CardHeader,
 	TextField,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { useClientForm } from "../../../hooks/client";
-import { appendClient, updateClient } from "../../../redux/clientSlice";
-import { addClient, editClient } from "../../../services/client";
 
 const ClientForm = (props) => {
-	const formik = useClientForm({
-		client: props.client,
-		onSubmit: props.handleSubmit,
-	});
+	const formik = useClientForm({ ...props });
 
 	return (
 		<div className='admin'>
@@ -94,51 +88,22 @@ const ClientForm = (props) => {
 };
 
 export const ClientAdd = (props) => {
-	const dispatch = useDispatch();
-
-	const handleSubmit = async (values) => {
-		try {
-			const response = await addClient({
-				nom: values.nom,
-				prenom: values.prenom,
-				adresse: values.adresse,
-				contact: values.contact,
-			});
-			dispatch(appendClient(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	return (
 		<ClientForm
 			title='Ajouter un client'
 			button='Ajouter'
-			handleSubmit={handleSubmit}
+			onSubmit={props.onSubmit}
 		/>
 	);
 };
 
 export const ClientEdit = (props) => {
-	const dispatch = useDispatch();
-
-	const handleSubmit = async (values) => {
-		try {
-			const response = await editClient(props.client.id, values);
-			dispatch(updateClient(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	return (
 		<ClientForm
 			title='Modifier un client'
 			client={props.client}
 			button='Modifier'
-			handleSubmit={handleSubmit}
+			onSubmit={props.onSubmit}
 		/>
 	);
 };

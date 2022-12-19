@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const abonnementValidationSchema = yup.object({
+const commonSchemas = {
 	frais: yup
 		.number("Entrer votre nom")
 		.min(0, "Le frais doit avoir une valeur positive.")
@@ -9,10 +9,6 @@ export const abonnementValidationSchema = yup.object({
 		.number("Entrer votre prénom")
 		.min(0, "Ce champ doit avoir une valeur positive.")
 		.required("Le mois à payer est requis"),
-	client_id: yup
-		.string("Entre votre adresse")
-		.min(1, "Le client est invalide.")
-		.required("Le client est requis"),
 	activite_id: yup
 		.string("Entrer votre activité")
 		.min(1, "L'activité est invalide.")
@@ -33,4 +29,16 @@ export const abonnementValidationSchema = yup.object({
 		.string("Entre votre pavillon")
 		.min(1, "Le pavillon est invalide.")
 		.required("Le pavillon est requis"),
+};
+
+export const abonnementValidationSchema = yup.object({
+	...commonSchemas,
+	client_id: yup
+		.string("Entre votre adresse")
+		.min(1, "Le client est invalide.")
+		.required("Le client est requis"),
+});
+
+export const abonnementClientValidationSchema = yup.object({
+	...commonSchemas,
 });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setClients } from "../redux/clientSlice";
 import { getClientAbonnements, getClients } from "../services/client";
@@ -31,28 +31,20 @@ const useClient = () => {
 export const useClientAbonnement = (id) => {
 	const [abonnements, setAbonnements] = useState([]);
 
-	const reload = async () => {
+	const fetchData = useCallback(async () => {
 		try {
 			const response = await getClientAbonnements(id);
 			setAbonnements(response.data);
 		} catch (errors) {
 			console.error(errors);
 		}
-	};
-
-	useEffect(() => {
-		const fetch_data = async () => {
-			try {
-				const response = await getClientAbonnements(id);
-				setAbonnements(response.data);
-			} catch (errors) {
-				console.error(errors);
-			}
-		};
-		fetch_data();
 	}, [id]);
 
-	return [abonnements, setAbonnements, reload];
+	useEffect(() => {
+		fetchData();
+	}, [fetchData, id]);
+
+	return {abonnements, setAbonnements, fetchData};
 };
 
 export const useClientForm = (args) => {

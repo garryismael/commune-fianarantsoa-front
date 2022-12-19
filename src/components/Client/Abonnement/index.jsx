@@ -1,8 +1,10 @@
 import {
+	Alert,
 	Box,
 	Button,
 	Modal,
 	Paper,
+	Snackbar,
 	Table,
 	TableBody,
 	TableCell,
@@ -19,8 +21,14 @@ import { style } from "../../../constants";
 import { columnsClientAbonnement } from "../../../constants/table";
 import { useClientAbonnement } from "../../../hooks/client";
 import useModal from "../../../hooks/modal";
+import useNotification from "../../../hooks/notification";
 import { removeAbonnement } from "../../../redux/abonnementSlice";
-import { deleteAbonnement } from "../../../services/abonnement";
+import {
+	addAbonnement,
+	deleteAbonnement,
+	editAbonnement,
+} from "../../../services/abonnement";
+import confirm from "../../../utils/confirm-dialog";
 import {
 	AbonnementClientAdd,
 	AbonnementClientEdit,
@@ -29,6 +37,8 @@ import TablePaginationActions from "../../Pagination";
 import "./index.css";
 
 const ClientAbonnement = () => {
+	const { open, handleClose, notification, setError, setSuccess } =
+		useNotification();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [abonnement, setAbonnement] = useState();
@@ -37,8 +47,7 @@ const ClientAbonnement = () => {
 	const client = location.state.client;
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
 	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
-
-	const [abonnements, , reload] = useClientAbonnement(client.id);
+	const {abonnements, fetchData } = useClientAbonnement(client.id);
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
@@ -60,15 +69,50 @@ const ClientAbonnement = () => {
 		handleOpenEdit();
 	};
 
-	const handleDelete = async (id) => {
-		if (window.confirm("Voulez vous vraiment supprimer?")) {
-			try {
-				await deleteAbonnement(id);
-				dispatch(removeAbonnement(id));
-				await reload();
-			} catch (errors) {
-				console.error(errors);
-			}
+	const handleOk = async (id) => {
+		try {
+			await deleteAbonnement(id);
+			await fetchData();
+			dispatch(removeAbonnement(id));
+			setSuccess("Suppression avec succès");
+		} catch (errors) {
+			setError("Suppression échouée");
+			console.error(errors);
+		}
+	};
+
+	const handleDelete = async (row) => {
+		await confirm(
+			`Voulez vous vraiment supprimer l'abonnement de ${client.nom} dans la zone ${row.zone.nom}?`,
+			{
+				okLabel: "Supprimer",
+				cancelLabel: "Annuler",
+				proceed: () => handleOk(row.id),
+			},
+		);
+	};
+
+	const handleAddSubmit = async (values) => {
+		try {
+			await addAbonnement(values);
+			await fetchData();
+			handleCloseAdd();
+			setSuccess("Ajout avec succès");
+		} catch (errors) {
+			setError("Ajout échoué");
+			console.error(errors);
+		}
+	};
+
+	const handleEditSubmit = async (values) => {
+		try {
+			await editAbonnement(abonnement.id, values);
+			await fetchData();
+			handleCloseEdit();
+			setSuccess("Modification avec succès");
+		} catch (errors) {
+			setError("Modification échouée");
+			console.error(errors);
 		}
 	};
 
@@ -127,8 +171,9 @@ const ClientAbonnement = () => {
 									<TableCell component='th' scope='row'>
 										{row.id}
 									</TableCell>
-									<TableCell>{row.frais}</TableCell>
+									<TableCell>{row.frais} Ar</TableCell>
 									<TableCell>{row.mois_a_payer}</TableCell>
+									<TableCell>{row.frais * row.mois_a_payer} Ar</TableCell>
 									<TableCell>{row.partition.nom}</TableCell>
 									<TableCell>
 										{row.activite.categorie_activite.nom}
@@ -147,7 +192,7 @@ const ClientAbonnement = () => {
 											<i
 												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
 												onClick={() =>
-													handleDelete(row.id)
+													handleDelete(row)
 												}></i>
 										</div>
 									</TableCell>
@@ -198,8 +243,8 @@ const ClientAbonnement = () => {
 				<Box sx={style}>
 					<AbonnementClientAdd
 						handleClose={handleCloseAdd}
-						reload={reload}
 						client={client}
+						onSubmit={handleAddSubmit}
 					/>
 				</Box>
 			</Modal>
@@ -211,12 +256,25 @@ const ClientAbonnement = () => {
 				<Box sx={style}>
 					<AbonnementClientEdit
 						abonnement={abonnement}
-						handleClose={handleCloseEdit}
-						reload={reload}
 						client={client}
+						handleClose={handleCloseEdit}
+						onSubmit={handleEditSubmit}
 					/>
 				</Box>
 			</Modal>
+			<Snackbar
+				open={open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+				<Alert
+					onClose={handleClose}
+					severity={notification.severity}
+					variant='filled'
+					sx={{ width: "100%" }}>
+					{notification.message}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 };

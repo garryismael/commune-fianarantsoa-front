@@ -1,7 +1,9 @@
 import {
+	Alert,
 	Button,
 	Modal,
 	Paper,
+	Snackbar,
 	Table,
 	TableBody,
 	TableCell,
@@ -19,13 +21,20 @@ import { style } from "../../../constants";
 import { columnsClient } from "../../../constants/table";
 import useClient from "../../../hooks/client";
 import useModal from "../../../hooks/modal";
-import { removeClient } from "../../../redux/clientSlice";
-import { deleteClient } from "../../../services/client";
+import {
+	appendClient,
+	removeClient,
+	updateClient,
+} from "../../../redux/clientSlice";
+import { addClient, deleteClient, editClient } from "../../../services/client";
+import confirm from "../../../utils/confirm-dialog";
 import TablePaginationActions from "../../Pagination";
 import { ClientAdd, ClientEdit } from "../Form";
-import confirm from "../../../utils/confirm-dialog";
+import useNotification from "../../../hooks/notification";
 
 const ClientList = () => {
+	const { open, handleClose, notification, setError, setSuccess } =
+		useNotification();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
@@ -49,21 +58,19 @@ const ClientList = () => {
 		try {
 			await deleteClient(id);
 			dispatch(removeClient(id));
+			setSuccess("Suppression avec succès");
 		} catch (errors) {
+			setSuccess("Suppression échouée");
 			console.error(errors);
 		}
 	};
 
 	const handleDelete = async (row) => {
-		if (
-			await confirm(`Voulez vous vraiment supprimer le client ${row.nom}?`, {
-				okLabel: "Supprimer",
-				cancelLabel: "Annuler",
-				proceed: () => handleOk(row.id),
-			})
-		) {
-			console.log("OK");
-		}
+		await confirm(`Voulez vous vraiment supprimer le client ${row.nom}?`, {
+			okLabel: "Supprimer",
+			cancelLabel: "Annuler",
+			proceed: () => handleOk(row.id),
+		});
 	};
 
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -77,6 +84,35 @@ const ClientList = () => {
 	const handleChangeRowsPerPage = (event) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
+	};
+
+	const handleAddSubmit = async (values) => {
+		try {
+			const response = await addClient({
+				nom: values.nom,
+				prenom: values.prenom,
+				adresse: values.adresse,
+				contact: values.contact,
+			});
+			dispatch(appendClient(response.data));
+			handleCloseAdd();
+			setSuccess("Ajout client avec succès");
+		} catch (errors) {
+			setError("Ajout client échoué");
+			console.error(errors);
+		}
+	};
+
+	const handleEditSubmit = async (values) => {
+		try {
+			const response = await editClient(client.id, values);
+			dispatch(updateClient(response.data));
+			handleCloseEdit();
+			setSuccess("Modification avec succès");
+		} catch (errors) {
+			setError("Suppression échoué");
+			console.error(errors);
+		}
 	};
 
 	return (
@@ -192,7 +228,10 @@ const ClientList = () => {
 				aria-labelledby='modal-add-title'
 				aria-describedby='modal-add-description'>
 				<Box sx={style}>
-					<ClientAdd handleClose={handleCloseAdd} />
+					<ClientAdd
+						handleClose={handleCloseAdd}
+						onSubmit={handleAddSubmit}
+					/>
 				</Box>
 			</Modal>
 			<Modal
@@ -201,9 +240,26 @@ const ClientList = () => {
 				aria-labelledby='modal-edit-title'
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<ClientEdit client={client} handleClose={handleCloseEdit} />
+					<ClientEdit
+						client={client}
+						handleClose={handleCloseEdit}
+						onSubmit={handleEditSubmit}
+					/>
 				</Box>
 			</Modal>
+			<Snackbar
+				open={open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+				<Alert
+					onClose={handleClose}
+					severity={notification.severity}
+					variant='filled'
+					sx={{ width: "100%" }}>
+					{notification.message}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 };

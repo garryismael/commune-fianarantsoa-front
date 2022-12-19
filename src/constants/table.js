@@ -125,6 +125,10 @@ export const columnsClientAbonnement = [
 		label: "Mois à payer",
 	},
 	{
+		id: "total_a_payer",
+		label: "Total à payer",
+	},
+	{
 		id: "partition",
 		label: "Partition",
 	},

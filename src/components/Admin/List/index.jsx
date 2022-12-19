@@ -1,4 +1,4 @@
-import { Button, Modal, TableHead } from "@mui/material";
+import { Alert, Button, Modal, Snackbar, TableHead } from "@mui/material";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -15,8 +15,12 @@ import { style } from "../../../constants";
 import { columnsAdmin } from "../../../constants/table";
 import useAdmin from "../../../hooks/admin";
 import useModal from "../../../hooks/modal";
-import { removeAdmin } from "../../../redux/adminSlice";
-import { deleteAdmin } from "../../../services/admin";
+import {
+	appendAdmin,
+	removeAdmin,
+	updateAdmin,
+} from "../../../redux/adminSlice";
+import { addAdmin, deleteAdmin, editAdmin } from "../../../services/admin";
 import TablePaginationActions from "../../Pagination";
 
 import confirm from "../../../utils/confirm-dialog";
@@ -26,8 +30,11 @@ import {
 } from "../../../validations/admin-form";
 import { AdminAdd, AdminEdit } from "../Form";
 import "./index.css";
+import useNotification from "../../../hooks/notification";
 
 export default function AdminList() {
+	const { open, handleClose, notification, setError, setSuccess } =
+		useNotification();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [user, setUser] = useState();
@@ -46,20 +53,44 @@ export default function AdminList() {
 		try {
 			await deleteAdmin(id);
 			dispatch(removeAdmin(id));
-		} catch (errors) {
-			console.error(errors);
+			setSuccess("Suppression avec succès");
+		} catch {
+			setError("Suppression non réussi");
 		}
 	};
 
 	const handleDelete = async (row) => {
-		if (
-			await confirm(`Voulez vous vraiment supprimer l'utilisateur ${row.nom}?`, {
+		await confirm(
+			`Voulez vous vraiment supprimer l'utilisateur ${row.nom}?`,
+			{
 				okLabel: "Supprimer",
 				cancelLabel: "Annuler",
 				proceed: () => handleOk(row.id),
-			})
-		) {
-			console.log("OK");
+			},
+		);
+	};
+
+	const handleAddSubmit = async (values) => {
+		try {
+			const response = await addAdmin(values);
+			dispatch(appendAdmin(response.data));
+			handleCloseAdd();
+			setSuccess("Ajout avec succès");
+		} catch (errors) {
+			setError("Ajout non réussi");
+			console.error(errors);
+		}
+	};
+
+	const handleEditSubmit = async (values) => {
+		try {
+			const response = await editAdmin(user.id, values);
+			dispatch(updateAdmin(response.data));
+			handleCloseEdit();
+			setSuccess("Modification avec succès");
+		} catch (errors) {
+			setError("Modification non réussi");
+			console.error(errors);
 		}
 	};
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -182,6 +213,7 @@ export default function AdminList() {
 					<AdminAdd
 						validationSchema={adminValidationSchema}
 						handleClose={handleCloseAdd}
+						onSubmit={handleAddSubmit}
 					/>
 				</Box>
 			</Modal>
@@ -195,9 +227,23 @@ export default function AdminList() {
 						utilisateur={user}
 						validationSchema={adminEditValidationSchema}
 						handleClose={handleCloseEdit}
+						onSubmit={handleEditSubmit}
 					/>
 				</Box>
 			</Modal>
+			<Snackbar
+				open={open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+				<Alert
+					onClose={handleClose}
+					severity={notification.severity}
+					variant='filled'
+					sx={{ width: "100%" }}>
+					{notification.message}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 }
