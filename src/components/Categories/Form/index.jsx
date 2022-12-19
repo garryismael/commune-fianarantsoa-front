@@ -5,17 +5,8 @@ import {
 	CardHeader,
 	TextField,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { categorieForm } from "../../../constants/form";
 import useForm from "../../../hooks/form";
-import {
-	appendCategorieActivite,
-	updateCategorieActivite,
-} from "../../../redux/categorieActiviteSlice";
-import {
-	addCategorieActivite,
-	editCategorieActivite,
-} from "../../../services/categorieActivite";
 import { getValidationSchema } from "../../../validations/common-form";
 import "./index.css";
 
@@ -55,50 +46,22 @@ const CategorieActiviteForm = (props) => {
 	);
 };
 export const CategorieActiviteAdd = (props) => {
-	const dispatch = useDispatch();
-
-	const onSubmit = async (values) => {
-		try {
-			const response = await addCategorieActivite(values);
-			dispatch(appendCategorieActivite(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	return (
 		<CategorieActiviteForm
 			title='Ajouter une Catégorie '
 			button='Ajouter'
-			onSubmit={onSubmit}
+			onSubmit={props.onSubmit}
 		/>
 	);
 };
 
 export const CategorieActiviteEdit = (props) => {
-	const dispatch = useDispatch();
-
-	const onSubmit = async (values) => {
-		try {
-			const response = await editCategorieActivite(
-				props.categorie_activite.id,
-				values,
-			);
-			dispatch(updateCategorieActivite(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
-    console.log(props.categorie_activite);
 	return (
 		<CategorieActiviteForm
 			title='Modifier une catégorie'
 			button='Modifier'
 			data={props.categorie_activite}
-			handleSubmit={onSubmit}
+			onSubmit={props.onSubmit}
 		/>
 	);
 };

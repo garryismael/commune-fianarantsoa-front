@@ -5,13 +5,10 @@ import {
 	CardHeader,
 	TextField,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
-import useForm from "../../../hooks/form";
-import { appendZone, updateZone } from "../../../redux/zoneSlice";
-import { addZone, editZone } from "../../../services/zone";
-import "./index.css";
-import { getValidationSchema } from "../../../validations/common-form";
 import { zoneForm } from "../../../constants/form";
+import useForm from "../../../hooks/form";
+import { getValidationSchema } from "../../../validations/common-form";
+import "./index.css";
 
 const ZoneForm = (props) => {
 	const validationSchema = getValidationSchema(zoneForm);
@@ -48,46 +45,22 @@ const ZoneForm = (props) => {
 	);
 };
 export const ZoneAdd = (props) => {
-	const dispatch = useDispatch();
-
-	const onSubmit = async (values) => {
-		try {
-			const response = await addZone(values);
-			dispatch(appendZone(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	return (
 		<ZoneForm
 			title='Ajouter une zone'
 			button='Ajouter'
-			onSubmit={onSubmit}
+			onSubmit={props.onSubmit}
 		/>
 	);
 };
 
 export const ZoneEdit = (props) => {
-	const dispatch = useDispatch();
-
-	const onSubmit = async (values) => {
-		try {
-			const response = await editZone(props.zone.id, values);
-			dispatch(updateZone(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	return (
 		<ZoneForm
 			title='Modifier une zone'
 			button='Modifier'
 			data={props.zone}
-			onSubmit={onSubmit}
+			onSubmit={props.onSubmit}
 		/>
 	);
 };

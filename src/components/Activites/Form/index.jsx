@@ -10,11 +10,8 @@ import {
 	Select,
 	TextField,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { useActiviteForm } from "../../../hooks/activite";
 import useCategorieActivite from "../../../hooks/categorieActivite";
-import { appendActivite, updateActivite } from "../../../redux/activiteSlice";
-import { addActivite, editActivite } from "../../../services/activites";
 import "./index.css";
 
 const ActiviteForm = (props) => {
@@ -25,7 +22,9 @@ const ActiviteForm = (props) => {
 			<Card sx={{ width: "500px", margin: "auto" }}>
 				<CardHeader title={props.title} />
 				<CardContent>
-					<form className='activite-form' onSubmit={formik.handleSubmit}>
+					<form
+						className='activite-form'
+						onSubmit={formik.handleSubmit}>
 						<TextField
 							id='nom'
 							label='Nom'
@@ -82,46 +81,22 @@ const ActiviteForm = (props) => {
 	);
 };
 export const ActiviteAdd = (props) => {
-	const dispatch = useDispatch();
-
-	const onSubmit = async (values) => {
-		try {
-			const response = await addActivite(values);
-			dispatch(appendActivite(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	return (
 		<ActiviteForm
 			title='Ajouter une activité'
 			button='Ajouter'
-			onSubmit={onSubmit}
+			onSubmit={props.onSubmit}
 		/>
 	);
 };
 
 export const ActiviteEdit = (props) => {
-	const dispatch = useDispatch();
-
-	const onSubmit = async (values) => {
-		try {
-			const response = await editActivite(props.activite.id, values);
-			dispatch(updateActivite(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	return (
 		<ActiviteForm
 			title='Modifier une activité'
 			button='Modifier'
 			activite={props.activite}
-			onSubmit={onSubmit}
+			onSubmit={props.onSubmit}
 		/>
 	);
 };

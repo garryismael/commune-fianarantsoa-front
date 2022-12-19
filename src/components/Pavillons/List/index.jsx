@@ -1,7 +1,9 @@
 import {
+	Alert,
 	Button,
 	Modal,
 	Paper,
+	Snackbar,
 	Table,
 	TableBody,
 	TableCell,
@@ -17,14 +19,25 @@ import { useDispatch } from "react-redux";
 import { style } from "../../../constants";
 import { columnsPavillon } from "../../../constants/table";
 import useModal from "../../../hooks/modal";
+import useNotification from "../../../hooks/notification";
 import usePavillon from "../../../hooks/pavillon";
-import { removePavillon } from "../../../redux/pavillonSlice";
-import { deletePavillon } from "../../../services/pavillons";
+import {
+	appendPavillon,
+	removePavillon,
+	updatePavillon,
+} from "../../../redux/pavillonSlice";
+import {
+	addPavillon,
+	deletePavillon,
+	editPavillon,
+} from "../../../services/pavillons";
+import confirm from "../../../utils/confirm-dialog";
 import TablePaginationActions from "../../Pagination";
 import { PavillonAdd, PavillonEdit } from "../Form";
-import confirm from "../../../utils/confirm-dialog";
 
 const PavillonList = () => {
+	const { open, handleClose, notification, setError, setSuccess } =
+		useNotification();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
@@ -43,21 +56,22 @@ const PavillonList = () => {
 		try {
 			await deletePavillon(id);
 			dispatch(removePavillon(id));
+			setSuccess("Suppression avec succès");
 		} catch (errors) {
+			setError("Suppression échouée");
 			console.error(errors);
 		}
 	};
 
 	const handleDelete = async (row) => {
-		if (
-			await confirm(`Voulez vous vraiment supprimer le pavillon ${row.numero}?`, {
+		await confirm(
+			`Voulez vous vraiment supprimer le pavillon ${row.numero}?`,
+			{
 				okLabel: "Supprimer",
 				cancelLabel: "Annuler",
 				proceed: () => handleOk(row.id),
-			})
-		) {
-			console.log("OK");
-		}
+			},
+		);
 	};
 
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -71,6 +85,30 @@ const PavillonList = () => {
 	const handleChangeRowsPerPage = (event) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
+	};
+
+	const handleAddPavillon = async (values) => {
+		try {
+			const response = await addPavillon(values);
+			dispatch(appendPavillon(response.data));
+			handleCloseAdd();
+			setSuccess("Ajout avec succès");
+		} catch (errors) {
+			setError("Ajout échoué");
+			console.error(errors);
+		}
+	};
+
+	const handleEditSubmit = async (values) => {
+		try {
+			const response = await editPavillon(pavillon.id, values);
+			dispatch(updatePavillon(response.data));
+			handleCloseEdit();
+			setSuccess("Modification avec succès");
+		} catch (errors) {
+			setError("Modification échouée");
+			console.error(errors);
+		}
 	};
 
 	return (
@@ -175,7 +213,10 @@ const PavillonList = () => {
 				aria-labelledby='modal-add-title'
 				aria-describedby='modal-add-description'>
 				<Box sx={style}>
-					<PavillonAdd handleClose={handleCloseAdd} />
+					<PavillonAdd
+						handleClose={handleCloseAdd}
+						onSubmit={handleAddPavillon}
+					/>
 				</Box>
 			</Modal>
 			<Modal
@@ -187,9 +228,23 @@ const PavillonList = () => {
 					<PavillonEdit
 						pavillon={pavillon}
 						handleClose={handleCloseEdit}
+						onSubmit={handleEditSubmit}
 					/>
 				</Box>
 			</Modal>
+			<Snackbar
+				open={open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+				<Alert
+					onClose={handleClose}
+					severity={notification.severity}
+					variant='filled'
+					sx={{ width: "100%" }}>
+					{notification.message}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 };

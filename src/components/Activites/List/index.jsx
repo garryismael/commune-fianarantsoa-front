@@ -1,7 +1,9 @@
 import {
+	Alert,
 	Button,
 	Modal,
 	Paper,
+	Snackbar,
 	Table,
 	TableBody,
 	TableCell,
@@ -18,13 +20,24 @@ import { style } from "../../../constants";
 import { columnsActivite } from "../../../constants/table";
 import useActivite from "../../../hooks/activite";
 import useModal from "../../../hooks/modal";
-import { removeActivite } from "../../../redux/activiteSlice";
-import { deleteActivite } from "../../../services/activites";
+import useNotification from "../../../hooks/notification";
+import {
+	appendActivite,
+	removeActivite,
+	updateActivite,
+} from "../../../redux/activiteSlice";
+import {
+	addActivite,
+	deleteActivite,
+	editActivite,
+} from "../../../services/activites";
+import confirm from "../../../utils/confirm-dialog";
 import TablePaginationActions from "../../Pagination";
 import { ActiviteAdd, ActiviteEdit } from "../Form";
-import confirm from "../../../utils/confirm-dialog";
 
 const ActiviteList = () => {
+	const { open, handleClose, notification, setError, setSuccess } =
+		useNotification();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
@@ -43,24 +56,22 @@ const ActiviteList = () => {
 		try {
 			await deleteActivite(id);
 			dispatch(removeActivite(id));
+			setSuccess("Suppression avec succès");
 		} catch (errors) {
+			setError("Suppression échouée");
 			console.error(errors);
 		}
 	};
 
 	const handleDelete = async (row) => {
-		if (
-			await confirm(
-				`Voulez vous vraiment supprimer la l'activité ${row.nom}?`,
-				{
-					okLabel: "Supprimer",
-					cancelLabel: "Annuler",
-					proceed: () => handleOk(row.id),
-				},
-			)
-		) {
-			console.log("OK");
-		}
+		await confirm(
+			`Voulez vous vraiment supprimer la l'activité ${row.nom}?`,
+			{
+				okLabel: "Supprimer",
+				cancelLabel: "Annuler",
+				proceed: () => handleOk(row.id),
+			},
+		);
 	};
 
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -76,6 +87,29 @@ const ActiviteList = () => {
 		setPage(0);
 	};
 
+	const onAddSubmit = async (values) => {
+		try {
+			const response = await addActivite(values);
+			dispatch(appendActivite(response.data));
+			handleCloseAdd();
+			setSuccess("Ajout avec succès")
+		} catch (errors) {
+			setError("Ajout échoué");
+			console.error(errors);
+		}
+	};
+
+	const onEditSubmit = async (values) => {
+		try {
+			const response = await editActivite(activite.id, values);
+			dispatch(updateActivite(response.data));
+			handleCloseEdit();
+			setSuccess("Modification avec succès")
+		} catch (errors) {
+			setError("Modification échouée");
+			console.error(errors);
+		}
+	};
 	return (
 		<>
 			<div>
@@ -182,7 +216,10 @@ const ActiviteList = () => {
 				aria-labelledby='modal-add-title'
 				aria-describedby='modal-add-description'>
 				<Box sx={style}>
-					<ActiviteAdd handleClose={handleCloseAdd} />
+					<ActiviteAdd
+						handleClose={handleCloseAdd}
+						onSubmit={onAddSubmit}
+					/>
 				</Box>
 			</Modal>
 			<Modal
@@ -194,9 +231,23 @@ const ActiviteList = () => {
 					<ActiviteEdit
 						activite={activite}
 						handleClose={handleCloseEdit}
+						onSubmit={onEditSubmit}
 					/>
 				</Box>
 			</Modal>
+			<Snackbar
+				open={open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+				<Alert
+					onClose={handleClose}
+					severity={notification.severity}
+					variant='filled'
+					sx={{ width: "100%" }}>
+					{notification.message}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 };

@@ -1,7 +1,9 @@
 import {
+	Alert,
 	Button,
 	Modal,
 	Paper,
+	Snackbar,
 	Table,
 	TableBody,
 	TableCell,
@@ -17,14 +19,17 @@ import { useDispatch } from "react-redux";
 import { style } from "../../../constants";
 import { columnsZone } from "../../../constants/table";
 import useModal from "../../../hooks/modal";
+import useNotification from "../../../hooks/notification";
 import useZone from "../../../hooks/zone";
-import { removeZone } from "../../../redux/zoneSlice";
-import { deleteZone } from "../../../services/zone";
+import { appendZone, removeZone, updateZone } from "../../../redux/zoneSlice";
+import { addZone, deleteZone, editZone } from "../../../services/zone";
+import confirm from "../../../utils/confirm-dialog";
 import TablePaginationActions from "../../Pagination";
 import { ZoneAdd, ZoneEdit } from "../Form";
-import confirm from "../../../utils/confirm-dialog";
 
 const ZoneList = () => {
+	const { open, handleClose, notification, setError, setSuccess } =
+		useNotification();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
@@ -43,24 +48,19 @@ const ZoneList = () => {
 		try {
 			await deleteZone(id);
 			dispatch(removeZone(id));
+			setSuccess("Suppression avec succès");
 		} catch (errors) {
+			setError("Suppression échouée");
 			console.error(errors);
 		}
 	};
 
 	const handleDelete = async (row) => {
-		if (
-			await confirm(
-				`Voulez vous vraiment supprimer la zone ${row.nom}?`,
-				{
-					okLabel: "Supprimer",
-					cancelLabel: "Annuler",
-					proceed: () => handleOk(row.id),
-				},
-			)
-		) {
-			console.log("OK");
-		}
+		await confirm(`Voulez vous vraiment supprimer la zone ${row.nom}?`, {
+			okLabel: "Supprimer",
+			cancelLabel: "Annuler",
+			proceed: () => handleOk(row.id),
+		});
 	};
 
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -74,6 +74,30 @@ const ZoneList = () => {
 	const handleChangeRowsPerPage = (event) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
+	};
+
+	const onAddZone = async (values) => {
+		try {
+			const response = await addZone(values);
+			dispatch(appendZone(response.data));
+			handleCloseAdd();
+			setSuccess("Ajout avec succès");
+		} catch (errors) {
+			setError("Ajout échoué");
+			console.error(errors);
+		}
+	};
+
+	const onEditZone = async (values) => {
+		try {
+			const response = await editZone(zone.id, values);
+			dispatch(updateZone(response.data));
+			handleCloseEdit();
+			setSuccess("Modification avec succès");
+		} catch (errors) {
+			setError("Modification échouée");
+			console.error(errors);
+		}
 	};
 
 	return (
@@ -178,7 +202,10 @@ const ZoneList = () => {
 				aria-labelledby='modal-add-title'
 				aria-describedby='modal-add-description'>
 				<Box sx={style}>
-					<ZoneAdd handleClose={handleCloseAdd} />
+					<ZoneAdd
+						handleClose={handleCloseAdd}
+						onSubmit={onAddZone}
+					/>
 				</Box>
 			</Modal>
 			<Modal
@@ -187,9 +214,26 @@ const ZoneList = () => {
 				aria-labelledby='modal-edit-title'
 				aria-describedby='modal-edit-description'>
 				<Box sx={style}>
-					<ZoneEdit zone={zone} handleClose={handleCloseEdit} />
+					<ZoneEdit
+						zone={zone}
+						handleClose={handleCloseEdit}
+						onSubmit={onEditZone}
+					/>
 				</Box>
 			</Modal>
+			<Snackbar
+				open={open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+				<Alert
+					onClose={handleClose}
+					severity={notification.severity}
+					variant='filled'
+					sx={{ width: "100%" }}>
+					{notification.message}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 };

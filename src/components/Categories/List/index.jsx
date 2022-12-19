@@ -1,7 +1,9 @@
 import {
+	Alert,
 	Button,
 	Modal,
 	Paper,
+	Snackbar,
 	Table,
 	TableBody,
 	TableCell,
@@ -18,11 +20,20 @@ import { style } from "../../../constants";
 import { columnsCategorieActivite } from "../../../constants/table";
 import useZone from "../../../hooks/categorieActivite";
 import useModal from "../../../hooks/modal";
-import { removeCategorieActivite } from "../../../redux/categorieActiviteSlice";
-import { deleteCategorieActivite } from "../../../services/categorieActivite";
+import useNotification from "../../../hooks/notification";
+import {
+	appendCategorieActivite,
+	removeCategorieActivite,
+	updateCategorieActivite,
+} from "../../../redux/categorieActiviteSlice";
+import {
+	addCategorieActivite,
+	deleteCategorieActivite,
+	editCategorieActivite,
+} from "../../../services/categorieActivite";
+import confirm from "../../../utils/confirm-dialog";
 import TablePaginationActions from "../../Pagination";
 import { CategorieActiviteAdd, CategorieActiviteEdit } from "../Form";
-import confirm from "../../../utils/confirm-dialog";
 
 const CategorieActiviteList = () => {
 	const [page, setPage] = useState(0);
@@ -33,6 +44,8 @@ const CategorieActiviteList = () => {
 
 	const [categorieActivites] = useZone();
 	const dispatch = useDispatch();
+	const { open, handleClose, notification, setError, setSuccess } =
+		useNotification();
 
 	const onEdit = (row) => {
 		setCategorieActivite(row);
@@ -43,24 +56,22 @@ const CategorieActiviteList = () => {
 		try {
 			await deleteCategorieActivite(id);
 			dispatch(removeCategorieActivite(id));
+			setSuccess("Suppression avec succès");
 		} catch (errors) {
+			setError("Suppression échouée");
 			console.error(errors);
 		}
 	};
 
 	const handleDelete = async (row) => {
-		if (
-			await confirm(
-				`Voulez vous vraiment supprimer la catégorie d'activité ${row.nom}?`,
-				{
-					okLabel: "Supprimer",
-					cancelLabel: "Annuler",
-					proceed: () => handleOk(row.id),
-				},
-			)
-		) {
-			console.log("OK");
-		}
+		await confirm(
+			`Voulez vous vraiment supprimer la catégorie d'activité ${row.nom}?`,
+			{
+				okLabel: "Supprimer",
+				cancelLabel: "Annuler",
+				proceed: () => handleOk(row.id),
+			},
+		);
 	};
 
 	// Avoid a layout jump when reaching the last page with empty rows.
@@ -76,6 +87,33 @@ const CategorieActiviteList = () => {
 	const handleChangeRowsPerPage = (event) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
+	};
+
+	const onAddSubmit = async (values) => {
+		try {
+			const response = await addCategorieActivite(values);
+			dispatch(appendCategorieActivite(response.data));
+			handleCloseAdd();
+			setSuccess("Ajout avec succès");
+		} catch (errors) {
+			setError("Ajout échoué");
+			console.error(errors);
+		}
+	};
+
+	const onEditSubmit = async (values) => {
+		try {
+			const response = await editCategorieActivite(
+				categorieActivite.id,
+				values,
+			);
+			dispatch(updateCategorieActivite(response.data));
+			handleCloseEdit();
+			setSuccess("Modification avec succès");
+		} catch (errors) {
+			setError("Modification échouée");
+			console.error(errors);
+		}
 	};
 
 	return (
@@ -180,7 +218,10 @@ const CategorieActiviteList = () => {
 				aria-labelledby='modal-add-title'
 				aria-describedby='modal-add-description'>
 				<Box sx={style}>
-					<CategorieActiviteAdd handleClose={handleCloseAdd} />
+					<CategorieActiviteAdd
+						handleClose={handleCloseAdd}
+						onSubmit={onAddSubmit}
+					/>
 				</Box>
 			</Modal>
 			<Modal
@@ -192,9 +233,23 @@ const CategorieActiviteList = () => {
 					<CategorieActiviteEdit
 						categorie_activite={categorieActivite}
 						handleClose={handleCloseEdit}
+						onSubmit={onEditSubmit}
 					/>
 				</Box>
 			</Modal>
+			<Snackbar
+				open={open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+				<Alert
+					onClose={handleClose}
+					severity={notification.severity}
+					variant='filled'
+					sx={{ width: "100%" }}>
+					{notification.message}
+				</Alert>
+			</Snackbar>
 		</>
 	);
 };

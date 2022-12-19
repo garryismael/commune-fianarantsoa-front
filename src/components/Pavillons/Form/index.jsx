@@ -6,10 +6,7 @@ import {
 	TextField,
 } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
 import { usePavillonForm } from "../../../hooks/pavillon";
-import { appendPavillon, updatePavillon } from "../../../redux/pavillonSlice";
-import { addPavillon, editPavillon } from "../../../services/pavillons";
 import "./index.css";
 
 const PavillonForm = (props) => {
@@ -52,46 +49,22 @@ const PavillonForm = (props) => {
 };
 
 export const PavillonAdd = (props) => {
-	const dispatch = useDispatch();
-
-	const onSubmit = async (values) => {
-		try {
-			const response = await addPavillon(values);
-			dispatch(appendPavillon(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	return (
 		<PavillonForm
 			title='Ajouter un pavillon'
 			button='Ajouter'
-			onSubmit={onSubmit}
+			onSubmit={props.onSubmit}
 		/>
 	);
 };
 
 export const PavillonEdit = (props) => {
-	const dispatch = useDispatch();
-
-	const onSubmit = async (values) => {
-		try {
-			const response = await editPavillon(props.pavillon.id, values);
-			dispatch(updatePavillon(response.data));
-			props.handleClose();
-		} catch (errors) {
-			console.error(errors);
-		}
-	};
-
 	return (
 		<PavillonForm
 			title='Modifier un pavillon'
 			button='Modifier'
 			pavillon={props.pavillon}
-			onSubmit={onSubmit}
+			onSubmit={props.onSubmit}
 		/>
 	);
 };
