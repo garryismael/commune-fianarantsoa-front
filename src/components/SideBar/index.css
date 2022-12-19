@@ -95,8 +95,10 @@
 	color: var(--blue);
 }
 
+
 #sidebar .side-menu li a .bx,
-#sidebar .side-menu li a .fas {
+#sidebar .side-menu li a .fas,
+#sidebar .side-menu li div.logout .bx {
 	min-width: calc(60px - ((4px + 6px) * 2));
 	display: flex;
 	justify-content: center;
