@@ -38,10 +38,6 @@ function Topbar() {
 			</form>
 			<input type='checkbox' id='switch-mode' hidden onChange={onSwitch}/>
 			<label htmlFor='switch-mode' className='switch-mode'></label>
-			<Link to='#' className='notification'>
-				<i className='bx bxs-bell'></i>
-				<span className='num'>8</span>
-			</Link>
 			<Link to='#' className='profile'>
 				<img src={PeopleImg} alt='' />
 			</Link>

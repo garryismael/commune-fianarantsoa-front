@@ -15,7 +15,6 @@ li {
 :root {
 	--poppins: "Poppins", sans-serif;
 	--lato: "Lato", sans-serif;
-
 	--light: #f9f9f9;
 	--blue: #3c91e6;
 	--light-blue: #cfe8ff;
@@ -42,4 +41,13 @@ body.dark {
 body {
 	background: var(--grey);
 	overflow-x: hidden;
+}
+
+.table-data {
+    background: var(--light);
+	border-radius: 20px !important;
+	padding-left: 24px !important;
+	padding-right: 24px !important;
+	padding-top: 24px !important;
+	box-shadow: none !important;
 }

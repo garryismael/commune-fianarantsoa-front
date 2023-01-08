@@ -117,9 +117,13 @@ export default function AdminList() {
 					Ajouter
 				</Button>
 
-				<TableContainer component={Paper}>
+				<TableContainer
+					component={Paper}
+					className="table-data">
 					<Table
-						sx={{ minWidth: 500 }}
+						sx={{
+							minWidth: 500,
+						}}
 						aria-label='custom pagination table'>
 						<TableHead>
 							<TableRow>
