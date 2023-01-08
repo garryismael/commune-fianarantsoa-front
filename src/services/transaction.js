@@ -5,7 +5,7 @@ export const getTransactions = async () => {
 };
 
 export const getRecentsTransaction = async () => {
-	return await axios.get("transactions/recents");
+	return await axios.get("transactions/all/recents");
 }
 
 export const addTransaction = async (data) => {
