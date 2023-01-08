@@ -4,6 +4,10 @@ export const getTransactions = async () => {
 	return await axios.get("transactions");
 };
 
+export const getRecentsTransaction = async () => {
+	return await axios.get("transactions/recents");
+}
+
 export const addTransaction = async (data) => {
 	return await axios.post("transactions", data);
 };

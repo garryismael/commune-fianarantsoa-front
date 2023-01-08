@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import PeopleImg from "../../assets/img/people.png";
 import useStats from "../../hooks/stats";
+import { useRecentTransaction } from "../../hooks/transaction";
 import "./index.css";
 
 function Home() {
 	const [stats] = useStats();
+	const [transactions] = useRecentTransaction();
 	return (
 		<>
 			<div className='head-title'>
@@ -64,74 +65,32 @@ function Home() {
 					<table>
 						<thead>
 							<tr>
+								<th>Client</th>
 								<th>Utilisateur</th>
-								<th>Nom Client</th>
 								<th>Numéro pavillon</th>
 								<th>Date Transaction</th>
 								<th>Est vérifié</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>
-									<img src={PeopleImg} alt='' />
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td>
-									<span className='status completed'>
-										Completed
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<img src={PeopleImg} alt='' />
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td>
-									<span className='status pending'>
-										Pending
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<img src={PeopleImg} alt='' />
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td>
-									<span className='status process'>
-										Process
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<img src={PeopleImg} alt='' />
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td>
-									<span className='status pending'>
-										Pending
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<img src={PeopleImg} alt='' />
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td>
-									<span className='status completed'>
-										Completed
-									</span>
-								</td>
-							</tr>
+							{transactions.map((transaction) => (
+								<tr key={transaction.id}>
+									<td>
+										{transaction.abonnement.client.nom}{" "}
+										{transaction.abonnement.client.prenom}
+									</td>
+									<td>{transaction.utilisateur.nom}</td>
+									<td>
+										{transaction.abonnement.pavillon.numero}
+									</td>
+									<td>{transaction.date}</td>
+									<td className={transaction.est_verifie ? "status completed" : "status pending"}>
+										{transaction.est_verifie
+											? "Vérifié"
+											: "En Cours"}
+									</td>
+								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>

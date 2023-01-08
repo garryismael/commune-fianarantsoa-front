@@ -1,8 +1,11 @@
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setTransactions } from "../redux/transactionSlice";
-import { getTransactions } from "../services/transaction";
+import {
+	getRecentsTransaction,
+	getTransactions,
+} from "../services/transaction";
 import { transactionAbonnementValidationSchema } from "../validations/transaction-form";
 
 const useTransaction = () => {
@@ -26,6 +29,24 @@ const useTransaction = () => {
 	};
 
 	return [transactions, setData];
+};
+
+export const useRecentTransaction = () => {
+	const [data, setData] = useState([]);
+
+	useEffect(() => {
+		const fetch_data = async () => {
+			try {
+				const response = await getRecentsTransaction();
+				setData(response.data);
+			} catch (errors) {
+				console.error(errors);
+			}
+		};
+		fetch_data();
+	}, [data]);
+
+	return [data, setData];
 };
 
 export const useTransactionForm = (args) => {
