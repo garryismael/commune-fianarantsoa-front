@@ -8,19 +8,15 @@ import {
 	TableFooter,
 	TableHead,
 	TablePagination,
-	TableRow
+	TableRow,
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { columnsTransaction } from "../../../constants/table";
 import useTransaction from "../../../hooks/transaction";
-import {
-	setTransactions
-} from "../../../redux/transactionSlice";
-import {
-	bulkUpdateTransaction
-} from "../../../services/transaction";
+import { setTransactions } from "../../../redux/transactionSlice";
+import { bulkUpdateTransaction } from "../../../services/transaction";
 import TablePaginationActions from "../../Pagination";
 import "./index.css";
 
@@ -124,10 +120,7 @@ const TransactionList = () => {
 											? "Vérifié"
 											: "En Cours"}
 									</TableCell>
-									<TableCell>
-										{row.abonnement.frais * row.total_mois}{" "}
-										Ar
-									</TableCell>
+									<TableCell>{row.total_frais} Ar</TableCell>
 								</TableRow>
 							))}
 
