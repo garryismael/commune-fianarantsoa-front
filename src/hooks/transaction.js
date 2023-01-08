@@ -44,7 +44,7 @@ export const useRecentTransaction = () => {
 			}
 		};
 		fetch_data();
-	}, [data]);
+	}, []);
 
 	return [data, setData];
 };
