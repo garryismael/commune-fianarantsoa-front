@@ -7,11 +7,25 @@ import {
 	GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { useState } from "react";
+import { Stack } from "@mui/system";
 
 export const Toolbar = ({ setFilterButtonEl }) => (
 	<GridToolbarContainer>
 		<GridToolbarFilterButton ref={setFilterButtonEl} />
 	</GridToolbarContainer>
+);
+
+export const Actions = ({ onEdit, onDelete }) => (
+	<Stack direction='row' spacing={2}>
+		<i
+			className='fas fa-edit fa-lg blue-color cursor-pointer'
+			onClick={onEdit}
+		/>
+		<i
+			className='fas fa-trash-alt fa-lg red-color cursor-pointer'
+			onClick={onDelete}
+		/>
+	</Stack>
 );
 
 const DataTable = (props) => {

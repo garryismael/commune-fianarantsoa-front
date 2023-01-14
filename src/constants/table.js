@@ -158,7 +158,6 @@ export const columnsClientAbonnement = [
 	},
 ];
 
-
 export const columnsPavillon = [
 	{
 		id: "id",
@@ -183,14 +182,13 @@ export const columnsActivite = [
 		label: "Nom",
 	},
 	{
-		id: 'categorie',
-		label: "Catégorie"
+		id: "categorie",
+		label: "Catégorie",
 	},
 	{
 		id: "actions",
 		label: "Actions",
 	},
-	
 ];
 
 export const columnsCategorieActivite = [
@@ -206,7 +204,6 @@ export const columnsCategorieActivite = [
 		id: "actions",
 		label: "Actions",
 	},
-	
 ];
 export const columnsZone = [
 	{
@@ -221,22 +218,18 @@ export const columnsZone = [
 		id: "actions",
 		label: "Actions",
 	},
-	
 ];
-export const columnsPartition = [
+export const commonColumns = (renderCell) => [
+	{ field: "id", headerName: "Id", flex: 1 },
+	{ field: "nom", headerName: "Nom", flex: 1 },
 	{
-		id: "id",
-		label: "Id",
+		field: "action",
+		headerName: "Actions",
+		flex: 1,
+		sortable: false,
+		disableClickEventBubbling: true,
+		renderCell,
 	},
-	{
-		id: "nom",
-		label: "Nom",
-	},
-	{
-		id: "actions",
-		label: "Actions",
-	},
-	
 ];
 export const columnsTransaction = [
 	{
@@ -260,8 +253,8 @@ export const columnsTransaction = [
 		label: "Date",
 	},
 	{
-		id: 'verification',
-		label: 'Status'
+		id: "verification",
+		label: "Status",
 	},
 	{
 		id: "total",

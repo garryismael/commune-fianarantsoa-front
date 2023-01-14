@@ -1,8 +1,9 @@
-import { Alert, Button, Modal, Snackbar, Stack } from "@mui/material";
+import { Alert, Button, Modal, Snackbar } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { style } from "../../../constants";
+import { commonColumns } from "../../../constants/table";
 import useModal from "../../../hooks/modal";
 import useNotification from "../../../hooks/notification";
 import usePartition from "../../../hooks/partition";
@@ -17,7 +18,7 @@ import {
 	editPartition,
 } from "../../../services/partition";
 import confirmWrapper from "../../../utils/confirm-dialog";
-import DataTable from "../../DataTable";
+import DataTable, { Actions } from "../../DataTable";
 import { PartitionAdd, PartitionEdit } from "../Form";
 
 const PartitionList = () => {
@@ -65,50 +66,25 @@ const PartitionList = () => {
 		}
 	};
 
-	const columns = [
-		{ field: "id", headerName: "ID", flex: 1 },
-		{ field: "nom", headerName: "Nom", flex: 1 },
-		{
-			field: "action",
-			headerName: "Actions",
-			flex: 1,
-			sortable: false,
-			disableClickEventBubbling: true,
-
-			renderCell: (params) => {
-				const onEdit = () => {
-					const row = params.row;
-					setPartition(row);
-					handleOpenEdit();
-				};
-				const onDelete = async () => {
-					const row = params.row;
-					await confirmWrapper(
-						`Voulez vous vraiment supprimer la partition ${row.nom}?`,
-						{
-							okLabel: "Supprimer",
-							cancelLabel: "Annuler",
-							proceed: () => handleOk(row.id),
-						},
-					);
-				};
-
-				return (
-					<Stack direction='row' spacing={2}>
-						<i
-							className='fas fa-edit fa-lg blue-color cursor-pointer'
-							onClick={onEdit}
-						/>
-
-						<i
-							className='fas fa-trash-alt fa-lg red-color cursor-pointer'
-							onClick={onDelete}
-						/>
-					</Stack>
-				);
-			},
-		},
-	];
+	const renderCell = (params) => {
+		const onEdit = () => {
+			const row = params.row;
+			setPartition(row);
+			handleOpenEdit();
+		};
+		const onDelete = async () => {
+			const row = params.row;
+			await confirmWrapper(
+				`Voulez vous vraiment supprimer la partition ${row.nom}?`,
+				{
+					okLabel: "Supprimer",
+					cancelLabel: "Annuler",
+					proceed: () => handleOk(row.id),
+				},
+			);
+		};
+		return <Actions onEdit={onEdit} onDelete={onDelete} />;
+	};
 
 	return (
 		<>
@@ -121,7 +97,7 @@ const PartitionList = () => {
 			</Button>
 			<DataTable
 				rows={partitions}
-				columns={columns}
+				columns={commonColumns(renderCell)}
 				pageSize={pageSize}
 				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
 			/>
