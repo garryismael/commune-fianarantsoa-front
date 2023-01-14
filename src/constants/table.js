@@ -1,4 +1,13 @@
-import { getCategorieName } from "../utils/data-grid";
+import {
+	getActiviteName,
+	getCategorieName,
+	getFullName,
+	getObjectName,
+	getPartitionName,
+	getPavillonNumber,
+	getTypeInstallationName,
+	getZoneName,
+} from "../utils/data-grid";
 
 const columnActions = (renderCell) => ({
 	field: "action",
@@ -72,54 +81,54 @@ export const columnsClient = [
 	},
 ];
 
-export const columnsAbonnement = [
+export const columnsAbonnement = (renderCell) => [
+	{ field: "id", headerName: "Id", flex: 1 },
 	{
-		id: "id",
-		label: "Id",
+		field: "client",
+		headerName: "Client",
+		valueGetter: getFullName,
+		flex: 1,
+	},
+	{ field: "frais", headerName: "Frais", flex: 1 },
+	{ field: "mois_a_payer", headerName: "Mois à payer", flex: 1 },
+	{
+		field: "partition",
+		headerName: "Partition",
+		valueGetter: getPartitionName,
+		flex: 1,
 	},
 	{
-		id: "nom",
-		label: "Nom",
+		field: "activite2",
+		headerName: "Categorie",
+		valueGetter: getCategorieName,
+		flex: 1,
 	},
 	{
-		id: "prenom",
-		label: "Prénoms",
+		field: "activite",
+		headerName: "Activité",
+		valueGetter: getActiviteName,
+		flex: 1,
 	},
 	{
-		id: "frais",
-		label: "Frais",
+		field: "type_installation",
+		headerName: "Type Installation",
+		valueGetter: getTypeInstallationName,
+		flex: 1,
 	},
 	{
-		id: "mois_a_payer",
-		label: "Mois à payer",
+		field: "zone",
+		headerName: "Zone",
+		valueGetter: getZoneName,
+		flex: 1,
 	},
 	{
-		id: "partition",
-		label: "Partition",
+		field: "pavillon",
+		headerName: "N°PAV",
+		valueGetter: getPavillonNumber,
+		flex: 1,
 	},
 	{
-		id: "categorie",
-		label: "Categorie",
-	},
-	{
-		id: "activite",
-		label: "Activité",
-	},
-	{
-		id: "type_installation",
-		label: "Type Installation",
-	},
-	{
-		id: "zone",
-		label: "Zone",
-	},
-	{
-		id: "pavillon",
-		label: "N°PAV",
-	},
-	{
-		id: "actions",
-		label: "Actions",
+		...columnActions(renderCell),
 	},
 ];
 
@@ -184,7 +193,7 @@ export const columnsActivite = (renderCell) => [
 	{
 		field: "categorie",
 		headerName: "Categorie",
-		valueGetter: getCategorieName,
+		valueGetter: getObjectName,
 		flex: 1,
 	},
 	{
