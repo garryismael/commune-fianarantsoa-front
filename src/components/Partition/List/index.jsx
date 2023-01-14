@@ -41,7 +41,7 @@ const PartitionList = () => {
 		}
 	};
 
-	const [pageSize, setPageSize] = useState(5);
+	
 	const onAddSubmit = async (values) => {
 		try {
 			const response = await addPartition(values);
@@ -67,13 +67,14 @@ const PartitionList = () => {
 	};
 
 	const renderCell = (params) => {
+		const row = params.row;
+		
 		const onEdit = () => {
-			const row = params.row;
 			setPartition(row);
 			handleOpenEdit();
 		};
+
 		const onDelete = async () => {
-			const row = params.row;
 			await confirmWrapper(
 				`Voulez vous vraiment supprimer la partition ${row.nom}?`,
 				{
@@ -98,8 +99,6 @@ const PartitionList = () => {
 			<DataTable
 				rows={partitions}
 				columns={commonColumns(renderCell)}
-				pageSize={pageSize}
-				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
 			/>
 			<Modal
 				open={openAdd}

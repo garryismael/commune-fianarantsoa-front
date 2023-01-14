@@ -2,12 +2,12 @@ import { DataGrid, frFR } from "@mui/x-data-grid";
 
 import "./index.css";
 
+import { Stack } from "@mui/system";
 import {
 	GridToolbarContainer,
 	GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { useState } from "react";
-import { Stack } from "@mui/system";
 
 export const Toolbar = ({ setFilterButtonEl }) => (
 	<GridToolbarContainer>
@@ -29,6 +29,7 @@ export const Actions = ({ onEdit, onDelete }) => (
 );
 
 const DataTable = (props) => {
+	const [pageSize, setPageSize] = useState(5);
 	const [filterButtonEl, setFilterButtonEl] = useState(null);
 
 	return (
@@ -49,6 +50,8 @@ const DataTable = (props) => {
 					},
 				}}
 				rowsPerPageOptions={[5, 10, 20]}
+				pageSize={pageSize}
+				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
 			/>
 		</div>
 	);
