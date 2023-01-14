@@ -1,3 +1,13 @@
+const columnActions = (renderCell) => ({
+	field: "action",
+	headerName: "Actions",
+	flex: 1,
+	sortable: false,
+	filterable: false,
+	disableClickEventBubbling: true,
+	renderCell,
+});
+
 export const columnsAdmin = [
 	{
 		id: "id",
@@ -223,12 +233,7 @@ export const commonColumns = (renderCell) => [
 	{ field: "id", headerName: "Id", flex: 1 },
 	{ field: "nom", headerName: "Nom", flex: 1 },
 	{
-		field: "action",
-		headerName: "Actions",
-		flex: 1,
-		sortable: false,
-		disableClickEventBubbling: true,
-		renderCell,
+		...columnActions(renderCell),
 	},
 ];
 export const columnsTransaction = [
