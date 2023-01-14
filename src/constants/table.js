@@ -170,18 +170,11 @@ export const columnsClientAbonnement = [
 	},
 ];
 
-export const columnsPavillon = [
+export const columnsPavillon = (renderCell) => [
+	{ field: "id", headerName: "Id", flex: 1 },
+	{ field: "numero", headerName: "Numéro", flex: 1 },
 	{
-		id: "id",
-		label: "Id",
-	},
-	{
-		id: "numero",
-		label: "Numero",
-	},
-	{
-		id: "actions",
-		label: "Actions",
+		...columnActions(renderCell),
 	},
 ];
 
@@ -192,7 +185,7 @@ export const columnsActivite = (renderCell) => [
 		field: "categorie",
 		headerName: "Categorie",
 		valueGetter: getCategorieName,
-		flex: 1
+		flex: 1,
 	},
 	{
 		...columnActions(renderCell),
