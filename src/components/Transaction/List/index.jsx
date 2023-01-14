@@ -27,8 +27,8 @@ const TransactionList = () => {
 
 	const onChange = async (e) => {
 		const value = e.target.value;
-		setEstVerifie(value);
 		await updateData(value);
+		setEstVerifie(value);
 	};
 
 	const handleValidate = async () => {
