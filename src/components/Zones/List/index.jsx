@@ -1,48 +1,27 @@
-import {
-	Alert,
-	Button,
-	Modal,
-	Paper,
-	Snackbar,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableFooter,
-	TableHead,
-	TablePagination,
-	TableRow,
-} from "@mui/material";
+import { Alert, Button, Modal, Snackbar } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { style } from "../../../constants";
-import { columnsZone } from "../../../constants/table";
+import { commonColumns } from "../../../constants/table";
 import useModal from "../../../hooks/modal";
 import useNotification from "../../../hooks/notification";
 import useZone from "../../../hooks/zone";
 import { appendZone, removeZone, updateZone } from "../../../redux/zoneSlice";
 import { addZone, deleteZone, editZone } from "../../../services/zone";
 import confirm from "../../../utils/confirm-dialog";
-import TablePaginationActions from "../../Pagination";
+import DataTable, { Actions } from "../../DataTable";
 import { ZoneAdd, ZoneEdit } from "../Form";
 
 const ZoneList = () => {
 	const { open, handleClose, notification, setError, setSuccess } =
 		useNotification();
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
 	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
 	const [zone, setZone] = useState();
 
 	const [zones] = useZone();
 	const dispatch = useDispatch();
-
-	const onEdit = (row) => {
-		setZone(row);
-		handleOpenEdit();
-	};
 
 	const handleOk = async (id) => {
 		try {
@@ -53,27 +32,6 @@ const ZoneList = () => {
 			setError("Suppression échouée");
 			console.error(errors);
 		}
-	};
-
-	const handleDelete = async (row) => {
-		await confirm(`Voulez vous vraiment supprimer la zone ${row.nom}?`, {
-			okLabel: "Supprimer",
-			cancelLabel: "Annuler",
-			proceed: () => handleOk(row.id),
-		});
-	};
-
-	// Avoid a layout jump when reaching the last page with empty rows.
-	const emptyRows =
-		page > 0 ? Math.max(0, (1 + page) * rowsPerPage - zones.length) : 0;
-
-	const handleChangePage = (event, newPage) => {
-		setPage(newPage);
-	};
-
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-		setPage(0);
 	};
 
 	const onAddZone = async (values) => {
@@ -100,6 +58,27 @@ const ZoneList = () => {
 		}
 	};
 
+	const renderCell = (params) => {
+		const row = params.row;
+
+		const onEdit = () => {
+			setZone(row);
+			handleOpenEdit();
+		};
+
+		const onDelete = async () => {
+			await confirm(
+				`Voulez vous vraiment supprimer la zone ${row.nom}?`,
+				{
+					okLabel: "Supprimer",
+					cancelLabel: "Annuler",
+					proceed: () => handleOk(row.id),
+				},
+			);
+		};
+		return <Actions onEdit={onEdit} onDelete={onDelete} />;
+	};
+
 	return (
 		<>
 			<div>
@@ -110,90 +89,7 @@ const ZoneList = () => {
 					onClick={handleOpenAdd}>
 					Ajouter
 				</Button>
-
-				<TableContainer component={Paper} className="table-data">
-					<Table
-						sx={{ minWidth: 500 }}
-						aria-label='custom pagination table'>
-						<TableHead>
-							<TableRow>
-								{columnsZone.map((column) => (
-									<TableCell
-										key={column.id}
-										align={column.align}
-										style={{ minWidth: column.minWidth }}>
-										{column.label}
-									</TableCell>
-								))}
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{(rowsPerPage > 0
-								? zones.slice(
-										page * rowsPerPage,
-										page * rowsPerPage + rowsPerPage,
-								  )
-								: zones
-							).map((row) => (
-								<TableRow key={row.id}>
-									<TableCell component='th' scope='row'>
-										{row.id}
-									</TableCell>
-									<TableCell>{row.nom}</TableCell>
-
-									<TableCell>
-										<div className='actions'>
-											<i
-												className='fas fa-edit fa-lg blue-color cursor-pointer'
-												onClick={() => onEdit(row)}
-											/>
-
-											<i
-												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
-												onClick={() =>
-													handleDelete(row)
-												}
-											/>
-										</div>
-									</TableCell>
-								</TableRow>
-							))}
-
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 53 * emptyRows }}>
-									<TableCell colSpan={6} />
-								</TableRow>
-							)}
-						</TableBody>
-						<TableFooter>
-							<TableRow>
-								<TablePagination
-									rowsPerPageOptions={[
-										5,
-										10,
-										25,
-										{ label: "All", value: -1 },
-									]}
-									colSpan={5}
-									count={zones.length}
-									rowsPerPage={rowsPerPage}
-									page={page}
-									SelectProps={{
-										inputProps: {
-											"aria-label": "lignes par page",
-										},
-										native: true,
-									}}
-									onPageChange={handleChangePage}
-									onRowsPerPageChange={
-										handleChangeRowsPerPage
-									}
-									ActionsComponent={TablePaginationActions}
-								/>
-							</TableRow>
-						</TableFooter>
-					</Table>
-				</TableContainer>
+				<DataTable rows={zones} columns={commonColumns(renderCell)} />
 			</div>
 
 			<Modal
