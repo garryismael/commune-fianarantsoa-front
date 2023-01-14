@@ -1,4 +1,5 @@
 import {
+	totalFrais,
 	getActiviteName,
 	getCategorieName,
 	getFullName,
@@ -49,6 +50,12 @@ export const columnsAbonnement = (renderCell) => [
 	{ field: "frais", headerName: "Frais", flex: 1 },
 	{ field: "mois_a_payer", headerName: "Mois à payer", flex: 1 },
 	{
+		field: "total_a_payer",
+		headerName: "Total à payer",
+		renderCell: totalFrais,
+		flex: 1 
+	},
+	{
 		field: "partition",
 		headerName: "Partition",
 		valueGetter: getPartitionName,
@@ -84,56 +91,56 @@ export const columnsAbonnement = (renderCell) => [
 		valueGetter: getPavillonNumber,
 		flex: 1,
 	},
-	{
-		...columnActions(renderCell),
-	},
+	{ ...columnActions(renderCell) },
 ];
 
-export const columnsClientAbonnement = [
+export const columnsClientAbonnement = (renderCell) => [
+	{ field: "id", headerName: "Id", flex: 1 },
 	{
-		id: "id",
-		label: "Id",
+		field: "total_a_payer",
+		headerName: "Total à payer",
+		renderCell: totalFrais,
+		flex: 1 
+	},
+	{ field: "frais", headerName: "Frais", flex: 1 },
+	{ field: "mois_a_payer", headerName: "Mois à payer", flex: 1 },
+	{
+		field: "partition",
+		headerName: "Partition",
+		valueGetter: getPartitionName,
+		flex: 1,
 	},
 	{
-		id: "frais",
-		label: "Frais",
+		field: "activite2",
+		headerName: "Categorie",
+		valueGetter: getCategorieName,
+		flex: 1,
 	},
 	{
-		id: "mois_a_payer",
-		label: "Mois à payer",
+		field: "activite",
+		headerName: "Activité",
+		valueGetter: getActiviteName,
+		flex: 1,
 	},
 	{
-		id: "total_a_payer",
-		label: "Total à payer",
+		field: "type_installation",
+		headerName: "Type Installation",
+		valueGetter: getTypeInstallationName,
+		flex: 1,
 	},
 	{
-		id: "partition",
-		label: "Partition",
+		field: "zone",
+		headerName: "Zone",
+		valueGetter: getZoneName,
+		flex: 1,
 	},
 	{
-		id: "categorie",
-		label: "Categorie",
+		field: "pavillon",
+		headerName: "N°PAV",
+		valueGetter: getPavillonNumber,
+		flex: 1,
 	},
-	{
-		id: "activite",
-		label: "Activité",
-	},
-	{
-		id: "type_installation",
-		label: "Type Installation",
-	},
-	{
-		id: "zone",
-		label: "Zone",
-	},
-	{
-		id: "pavillon",
-		label: "N°PAV",
-	},
-	{
-		id: "actions",
-		label: "Actions",
-	},
+	{ ...columnActions(renderCell) },
 ];
 
 export const columnsPavillon = (renderCell) => [

@@ -1,19 +1,4 @@
-import {
-	Alert,
-	Box,
-	Button,
-	Modal,
-	Paper,
-	Snackbar,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableFooter,
-	TableHead,
-	TablePagination,
-	TableRow,
-} from "@mui/material";
+import { Alert, Box, Button, Modal, Snackbar } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
@@ -33,41 +18,19 @@ import {
 	AbonnementClientAdd,
 	AbonnementClientEdit,
 } from "../../Abonnement/ClientForm";
-import TablePaginationActions from "../../Pagination";
+import DataTable, { Actions } from "../../DataTable";
 import "./index.css";
 
 const ClientAbonnement = () => {
 	const { open, handleClose, notification, setError, setSuccess } =
 		useNotification();
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [abonnement, setAbonnement] = useState();
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const client = location.state.client;
 	const [openAdd, handleOpenAdd, handleCloseAdd] = useModal();
 	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
-	const {abonnements, fetchData } = useClientAbonnement(client.id);
-
-	// Avoid a layout jump when reaching the last page with empty rows.
-	const emptyRows =
-		page > 0
-			? Math.max(0, (1 + page) * rowsPerPage - abonnements.length)
-			: 0;
-
-	const handleChangePage = (event, newPage) => {
-		setPage(newPage);
-	};
-
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-		setPage(0);
-	};
-
-	const onEdit = (row) => {
-		setAbonnement(row);
-		handleOpenEdit();
-	};
+	const { abonnements, fetchData } = useClientAbonnement(client.id);
 
 	const handleOk = async (id) => {
 		try {
@@ -79,17 +42,6 @@ const ClientAbonnement = () => {
 			setError("Suppression échouée");
 			console.error(errors);
 		}
-	};
-
-	const handleDelete = async (row) => {
-		await confirm(
-			`Voulez vous vraiment supprimer l'abonnement de ${client.nom} dans la zone ${row.zone.nom}?`,
-			{
-				okLabel: "Supprimer",
-				cancelLabel: "Annuler",
-				proceed: () => handleOk(row.id),
-			},
-		);
 	};
 
 	const handleAddSubmit = async (values) => {
@@ -115,6 +67,29 @@ const ClientAbonnement = () => {
 			console.error(errors);
 		}
 	};
+
+	const renderCell = (params) => {
+		const row = params.row;
+
+		const onEdit = () => {
+			setAbonnement(row);
+			handleOpenEdit();
+		};
+
+		const onDelete = async () => {
+			await confirm(
+				`Voulez vous vraiment supprimer l'abonnement de ${client.nom} dans la zone ${row.zone.nom}?`,
+				{
+					okLabel: "Supprimer",
+					cancelLabel: "Annuler",
+					proceed: () => handleOk(row.id),
+				},
+			);
+		};
+		return <Actions onEdit={onEdit} onDelete={onDelete} />;
+	};
+
+	
 
 	return (
 		<>
@@ -143,97 +118,10 @@ const ClientAbonnement = () => {
 					Ajouter
 				</Button>
 
-				<TableContainer component={Paper}>
-					<Table
-						sx={{ minWidth: 500 }}
-						aria-label='custom pagination table'>
-						<TableHead>
-							<TableRow>
-								{columnsClientAbonnement.map((column) => (
-									<TableCell
-										key={column.id}
-										align={column.align}
-										style={{ minWidth: column.minWidth }}>
-										{column.label}
-									</TableCell>
-								))}
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{(rowsPerPage > 0
-								? abonnements.slice(
-										page * rowsPerPage,
-										page * rowsPerPage + rowsPerPage,
-								  )
-								: abonnements
-							).map((row) => (
-								<TableRow key={row.id}>
-									<TableCell component='th' scope='row'>
-										{row.id}
-									</TableCell>
-									<TableCell>{row.frais} Ar</TableCell>
-									<TableCell>{row.mois_a_payer}</TableCell>
-									<TableCell>{row.frais * row.mois_a_payer} Ar</TableCell>
-									<TableCell>{row.partition.nom}</TableCell>
-									<TableCell>
-										{row.activite.categorie_activite.nom}
-									</TableCell>
-									<TableCell>{row.activite.nom}</TableCell>
-									<TableCell>
-										{row.type_installation.nom}
-									</TableCell>
-									<TableCell>{row.zone.nom}</TableCell>
-									<TableCell>{row.pavillon.numero}</TableCell>
-									<TableCell>
-										<div className='actions'>
-											<i
-												className='fas fa-edit fa-lg blue-color cursor-pointer'
-												onClick={() => onEdit(row)}></i>
-											<i
-												className='fas fa-trash-alt fa-lg red-color cursor-pointer'
-												onClick={() =>
-													handleDelete(row)
-												}></i>
-										</div>
-									</TableCell>
-								</TableRow>
-							))}
-
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 53 * emptyRows }}>
-									<TableCell colSpan={6} />
-								</TableRow>
-							)}
-						</TableBody>
-						<TableFooter>
-							<TableRow>
-								<TablePagination
-									rowsPerPageOptions={[
-										5,
-										10,
-										25,
-										{ label: "All", value: -1 },
-									]}
-									colSpan={5}
-									count={abonnements.length}
-									rowsPerPage={rowsPerPage}
-									page={page}
-									SelectProps={{
-										inputProps: {
-											"aria-label": "lignes par page",
-										},
-										native: true,
-									}}
-									onPageChange={handleChangePage}
-									onRowsPerPageChange={
-										handleChangeRowsPerPage
-									}
-									ActionsComponent={TablePaginationActions}
-								/>
-							</TableRow>
-						</TableFooter>
-					</Table>
-				</TableContainer>
+				<DataTable
+					rows={abonnements}
+					columns={columnsClientAbonnement(renderCell)}
+				/>
 			</div>
 			<Modal
 				open={openAdd}
