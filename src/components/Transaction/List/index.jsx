@@ -15,15 +15,19 @@ import {
 import DataTable from "../../DataTable";
 import "./index.css";
 
+export const EnCours = () => <i className='bx bx-hourglass bx-sm' />;
+
+export const Verifie = () => <i className='bx bx-check bx-sm' />;
+
 const TransactionList = () => {
 	const [estVerifie, setEstVerifie] = useState(false);
 	const [selectionModel, setSelectionModel] = useState([]);
 	const [transactions, setData] = useTransaction();
 
-	const updateData = async(value) => {
+	const updateData = async (value) => {
 		const response = await getTransactions(value);
 		setData(response.data);
-	}
+	};
 
 	const onChange = async (e) => {
 		const value = e.target.value;
@@ -32,8 +36,16 @@ const TransactionList = () => {
 	};
 
 	const handleValidate = async () => {
-		const response = await bulkUpdateTransaction({ ids: selectionModel }, estVerifie);
+		const response = await bulkUpdateTransaction(
+			{ ids: selectionModel },
+			estVerifie,
+		);
 		setData(response.data);
+	};
+
+	const renderCell = (params) => {
+		const row = params.row;
+		return row.est_verifie ? <Verifie /> : <EnCours />;
 	};
 
 	return (
@@ -65,7 +77,7 @@ const TransactionList = () => {
 				</div>
 				<DataTable
 					rows={transactions}
-					columns={columnsTransaction}
+					columns={columnsTransaction(renderCell)}
 					checkboxSelection={!estVerifie}
 					onSelectionModelChange={(newSelectionModel) => {
 						setSelectionModel(newSelectionModel);

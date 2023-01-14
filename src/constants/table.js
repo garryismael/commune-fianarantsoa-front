@@ -177,7 +177,7 @@ export const commonColumns = (renderCell) => [
 	},
 ];
 
-export const columnsTransaction = [
+export const columnsTransaction = (renderCell) => [
 	{ field: "id", headerName: "Id", flex: 1 },
 	{
 		field: "client",
@@ -207,6 +207,7 @@ export const columnsTransaction = [
 		headerName: "Verification",
 		valueGetter: getVerificationLabel,
 		flex: 1,
+		renderCell
 	},
 	{
 		field: "total_frais",
