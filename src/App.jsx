@@ -15,12 +15,14 @@ import Home from "./pages/Home";
 import LoginPage from "./pages/Login";
 import SettingsPage from "./pages/Settings";
 import TransactionPage from "./pages/Transaction";
+import ChangePassword from "./components/Auth/ChangePassword";
+import SendEmail from "./components/Auth/SendEmail";
 
 function App() {
 	return (
 		<Routes>
 			<Route path='/' element={<Guard />}>
-				<Route path="/" element={<Home />} />
+				<Route path='/' element={<Home />} />
 				<Route path='admins' element={<AdminList />} />
 				<Route path='/clients' element={<ClientPage />}>
 					<Route index element={<ClientList />} />
@@ -30,15 +32,21 @@ function App() {
 					/>
 				</Route>
 				<Route path='/abonnements' element={<AbonnementList />} />
-				<Route path='/pavillons'  element={<PavillonList />} />
-				<Route path='/activites'  element={<ActiviteList />} />
-				<Route path='/categorieActivite'  element={<CategorieActiviteList />} />
-				<Route path='/zone'  element={<ZoneList />} />
-				<Route path='/partitions'  element={<PartitionList />} />
+				<Route path='/pavillons' element={<PavillonList />} />
+				<Route path='/activites' element={<ActiviteList />} />
+				<Route
+					path='/categorieActivite'
+					element={<CategorieActiviteList />}
+				/>
+				<Route path='/zone' element={<ZoneList />} />
+				<Route path='/partitions' element={<PartitionList />} />
 				<Route path='/transactions' element={<TransactionPage />} />
 				<Route path='/settings' element={<SettingsPage />} />
 			</Route>
 			<Route path='login' element={<LoginPage />} />
+			<Route path='changePassword/:token' element={<ChangePassword />} />
+			<Route path='sendEmail' element={<SendEmail />} />
+			<Route />
 		</Routes>
 	);
 }
