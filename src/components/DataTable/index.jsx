@@ -33,7 +33,7 @@ const DataTable = (props) => {
 	const [filterButtonEl, setFilterButtonEl] = useState(null);
 
 	return (
-		<div style={{ height: 430, width: "100%" }}>
+		<div style={{ height: 431, width: "100%" }}>
 			<DataGrid
 				{...props}
 				className='data-table'
