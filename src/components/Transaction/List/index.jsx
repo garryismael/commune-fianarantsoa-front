@@ -10,35 +10,33 @@ import { useDispatch } from "react-redux";
 import { columnsTransaction } from "../../../constants/table";
 import useTransaction from "../../../hooks/transaction";
 import { setTransactions } from "../../../redux/transactionSlice";
-import { bulkUpdateTransaction, getTransactions } from "../../../services/transaction";
+import {
+	bulkUpdateTransaction,
+	getTransactions,
+} from "../../../services/transaction";
 import DataTable from "../../DataTable";
 import "./index.css";
 
 const TransactionList = () => {
 	const [checkboxSelection, setCheckboxSelection] = useState(false);
-	const [ids, setIds] = useState([]);
-	const [transactions, setData] = useTransaction();
+	const [selectionModel, setSelectionModel] = useState([]);
+	const [transactions, setTransactions] = useTransaction();
 	const dispatch = useDispatch();
+
+	const setData = async() => {
+		const response = await getTransactions(checkboxSelection);
+		setTransactions(response.data);
+	}
 
 	const onChange = async () => {
 		setCheckboxSelection(!checkboxSelection);
-		const response = await getTransactions(checkboxSelection);
-		setData(response.data);
-	};
-
-	const handleCheck = (e) => {
-		if (e.target.checked) {
-			setIds((values) => values.concat(e.target.value));
-		} else {
-			setIds((values) =>
-				values.filter((value) => value !== e.target.value),
-			);
-		}
+		await setData();
 	};
 
 	const handleValidate = async () => {
-		const response = await bulkUpdateTransaction({ ids });
+		const response = await bulkUpdateTransaction({ ids: selectionModel });
 		dispatch(setTransactions(response.data));
+		await setData();
 	};
 
 	return (
@@ -68,7 +66,15 @@ const TransactionList = () => {
 						</Button>
 					) : null}
 				</div>
-				<DataTable rows={transactions} columns={columnsTransaction} checkboxSelection={checkboxSelection}/>
+				<DataTable
+					rows={transactions}
+					columns={columnsTransaction}
+					checkboxSelection={checkboxSelection}
+					onSelectionModelChange={(newSelectionModel) => {
+						setSelectionModel(newSelectionModel);
+					}}
+					selectionModel={selectionModel}
+				/>
 			</div>
 		</>
 	);
