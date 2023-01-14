@@ -19,37 +19,14 @@ const columnActions = (renderCell) => ({
 	renderCell,
 });
 
-export const columnsAdmin = [
-	{
-		id: "id",
-		label: "Id",
-	},
-	{
-		id: "nom",
-		label: "Nom",
-		minWidth: 30,
-	},
-	{
-		id: "prenom",
-		label: "Prénoms",
-		minWidth: 30,
-	},
-	{
-		id: "adresse",
-		label: "Adresse",
-	},
-	{
-		id: "email",
-		label: "Email",
-	},
-	{
-		id: "contact",
-		label: "Contact",
-	},
-	{
-		id: "actions",
-		label: "Actions",
-	},
+export const columnsAdmin = (renderCell) => [
+	{ field: "id", headerName: "Id", flex: 1 },
+	{ field: "nom", headerName: "Nom", flex: 1 },
+	{ field: "prenom", headerName: "Prénom", flex: 1 },
+	{ field: "email", headerName: "E-mail", flex: 1 },
+	{ field: "adresse", headerName: "Adresse", flex: 1 },
+	{ field: "contact", headerName: "Contact", flex: 1 },
+	{ ...columnActions(renderCell) },
 ];
 
 export const columnsClient = (renderCell) => [

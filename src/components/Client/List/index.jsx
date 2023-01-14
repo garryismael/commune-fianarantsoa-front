@@ -42,7 +42,7 @@ const ClientList = () => {
 	const [openEdit, handleOpenEdit, handleCloseEdit] = useModal();
 	const [client, setClient] = useState();
 
-	const [admins] = useClient();
+	const [clients] = useClient();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -129,7 +129,7 @@ const ClientList = () => {
 					Ajouter
 				</Button>
 
-				<DataTable rows={admins} columns={columnsClient(renderCell)} />
+				<DataTable rows={clients} columns={columnsClient(renderCell)} />
 			</div>
 
 			<Modal
