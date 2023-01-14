@@ -116,7 +116,7 @@ const AbonnementList = () => {
 	const renderCell = (params) => {
 		const row = params.row;
 
-		const openTransaction = async (row) => {
+		const openTransaction = async () => {
 			setAbonnement(row);
 			handleOpenTransactionForm();
 		};

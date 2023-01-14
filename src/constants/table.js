@@ -1,13 +1,17 @@
 import {
-	totalFrais,
+	getAbonnementClientFullName,
+	getAbonnementPavillonNumber,
 	getActiviteName,
 	getCategorieName,
-	getFullName,
+	getClientFullName,
 	getObjectName,
 	getPartitionName,
 	getPavillonNumber,
 	getTypeInstallationName,
+	getUserFullName,
+	getVerificationLabel,
 	getZoneName,
+	totalFrais,
 } from "../utils/data-grid";
 
 const columnActions = (renderCell) => ({
@@ -44,7 +48,7 @@ export const columnsAbonnement = (renderCell) => [
 	{
 		field: "client",
 		headerName: "Client",
-		valueGetter: getFullName,
+		valueGetter: getClientFullName,
 		flex: 1,
 	},
 	{ field: "frais", headerName: "Frais", flex: 1 },
@@ -52,8 +56,8 @@ export const columnsAbonnement = (renderCell) => [
 	{
 		field: "total_a_payer",
 		headerName: "Total à payer",
-		renderCell: totalFrais,
-		flex: 1 
+		valueGetter: totalFrais,
+		flex: 1,
 	},
 	{
 		field: "partition",
@@ -99,8 +103,8 @@ export const columnsClientAbonnement = (renderCell) => [
 	{
 		field: "total_a_payer",
 		headerName: "Total à payer",
-		renderCell: totalFrais,
-		flex: 1 
+		valueGetter: totalFrais,
+		flex: 1,
 	},
 	{ field: "frais", headerName: "Frais", flex: 1 },
 	{ field: "mois_a_payer", headerName: "Mois à payer", flex: 1 },
@@ -165,34 +169,6 @@ export const columnsActivite = (renderCell) => [
 	},
 ];
 
-export const columnsCategorieActivite = [
-	{
-		id: "id",
-		label: "Id",
-	},
-	{
-		id: "nom",
-		label: "Nom",
-	},
-	{
-		id: "actions",
-		label: "Actions",
-	},
-];
-export const columnsZone = [
-	{
-		id: "id",
-		label: "Id",
-	},
-	{
-		id: "nom",
-		label: "Nom",
-	},
-	{
-		id: "actions",
-		label: "Actions",
-	},
-];
 export const commonColumns = (renderCell) => [
 	{ field: "id", headerName: "Id", flex: 1 },
 	{ field: "nom", headerName: "Nom", flex: 1 },
@@ -200,33 +176,41 @@ export const commonColumns = (renderCell) => [
 		...columnActions(renderCell),
 	},
 ];
+
 export const columnsTransaction = [
+	{ field: "id", headerName: "Id", flex: 1 },
 	{
-		id: "id",
-		label: "id",
+		field: "client",
+		headerName: "Client",
+		valueGetter: getAbonnementClientFullName,
+		flex: 1,
 	},
 	{
-		client: "client",
-		label: "Client",
+		field: "pavillon",
+		headerName: "N°PAV",
+		valueGetter: getAbonnementPavillonNumber,
+		flex: 1,
 	},
 	{
-		id: "pavillon",
-		label: "Numéro pavillon",
+		field: "utilisateur",
+		headerName: "Utilisateur",
+		valueGetter: getUserFullName,
+		flex: 1,
 	},
 	{
-		id: "utilisateur",
-		label: "Utilisateur",
+		field: "date",
+		headerName: "Date",
+		flex: 1,
 	},
 	{
-		id: "date",
-		label: "Date",
+		field: "verification",
+		headerName: "Verification",
+		valueGetter: getVerificationLabel,
+		flex: 1,
 	},
 	{
-		id: "verification",
-		label: "Status",
-	},
-	{
-		id: "total",
-		label: "Total",
+		field: "total_frais",
+		headerName: "Total",
+		flex: 1,
 	},
 ];

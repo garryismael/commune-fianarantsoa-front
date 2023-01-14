@@ -1,46 +1,29 @@
 import {
 	Button,
-	Paper,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableFooter,
-	TableHead,
-	TablePagination,
-	TableRow,
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Select,
 } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { columnsTransaction } from "../../../constants/table";
 import useTransaction from "../../../hooks/transaction";
 import { setTransactions } from "../../../redux/transactionSlice";
-import { bulkUpdateTransaction } from "../../../services/transaction";
-import TablePaginationActions from "../../Pagination";
+import { bulkUpdateTransaction, getTransactions } from "../../../services/transaction";
+import DataTable from "../../DataTable";
 import "./index.css";
 
 const TransactionList = () => {
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
-	const [transactions] = useTransaction();
+	const [checkboxSelection, setCheckboxSelection] = useState(false);
 	const [ids, setIds] = useState([]);
-
+	const [transactions, setData] = useTransaction();
 	const dispatch = useDispatch();
 
-	// Avoid a layout jump when reaching the last page with empty rows.
-	const emptyRows =
-		page > 0
-			? Math.max(0, (1 + page) * rowsPerPage - transactions.length)
-			: 0;
-
-	const handleChangePage = (event, newPage) => {
-		setPage(newPage);
-	};
-
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-		setPage(0);
+	const onChange = async () => {
+		setCheckboxSelection(!checkboxSelection);
+		const response = await getTransactions(checkboxSelection);
+		setData(response.data);
 	};
 
 	const handleCheck = (e) => {
@@ -62,103 +45,30 @@ const TransactionList = () => {
 		<>
 			<div>
 				<div className='transaction-btn'>
-					<Button
-						variant='contained'
-						type='button'
-						sx={{ marginBottom: "10px" }}
-						onClick={handleValidate}>
-						Valider
-					</Button>
+					<FormControl size='small'>
+						<InputLabel id='status-label'>Status</InputLabel>
+						<Select
+							id='status'
+							labelId='status-label'
+							value={checkboxSelection}
+							autoWidth
+							onChange={onChange}
+							label='Status'>
+							<MenuItem value={true}>en cours</MenuItem>
+							<MenuItem value={false}>vérifié</MenuItem>
+						</Select>
+					</FormControl>
+
+					{checkboxSelection ? (
+						<Button
+							variant='contained'
+							type='button'
+							onClick={handleValidate}>
+							Valider
+						</Button>
+					) : null}
 				</div>
-
-				<TableContainer component={Paper} className="table-data">
-					<Table
-						sx={{ minWidth: 500 }}
-						aria-label='custom pagination table'>
-						<TableHead>
-							<TableRow>
-								<TableCell key={-1}></TableCell>
-								{columnsTransaction.map((column) => (
-									<TableCell
-										key={column.id}
-										align={column.align}
-										style={{ minWidth: column.minWidth }}>
-										{column.label}
-									</TableCell>
-								))}
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{(rowsPerPage > 0
-								? transactions.slice(
-										page * rowsPerPage,
-										page * rowsPerPage + rowsPerPage,
-								  )
-								: transactions
-							).map((row) => (
-								<TableRow key={row.id}>
-									<TableCell>
-										<Checkbox
-											value={row.id}
-											onChange={handleCheck}
-										/>
-									</TableCell>
-									<TableCell component='th' scope='row'>
-										{row.id}
-									</TableCell>
-									<TableCell component='th' scope='row'>
-										{row.abonnement.client.nom}{" "}
-										{row.abonnement.client.prenom}
-									</TableCell>
-									<TableCell>
-										{row.abonnement.pavillon.numero}
-									</TableCell>
-									<TableCell>{row.utilisateur.nom}</TableCell>
-									<TableCell>{row.date}</TableCell>
-									<TableCell>
-										{row.est_verifie
-											? "Vérifié"
-											: "En Cours"}
-									</TableCell>
-									<TableCell>{row.total_frais} Ar</TableCell>
-								</TableRow>
-							))}
-
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 53 * emptyRows }}>
-									<TableCell colSpan={6} />
-								</TableRow>
-							)}
-						</TableBody>
-						<TableFooter>
-							<TableRow>
-								<TablePagination
-									rowsPerPageOptions={[
-										5,
-										10,
-										25,
-										{ label: "All", value: -1 },
-									]}
-									colSpan={5}
-									count={transactions.length}
-									rowsPerPage={rowsPerPage}
-									page={page}
-									SelectProps={{
-										inputProps: {
-											"aria-label": "lignes par page",
-										},
-										native: true,
-									}}
-									onPageChange={handleChangePage}
-									onRowsPerPageChange={
-										handleChangeRowsPerPage
-									}
-									ActionsComponent={TablePaginationActions}
-								/>
-							</TableRow>
-						</TableFooter>
-					</Table>
-				</TableContainer>
+				<DataTable rows={transactions} columns={columnsTransaction} checkboxSelection={checkboxSelection}/>
 			</div>
 		</>
 	);

@@ -1,7 +1,7 @@
 import axios from "../utils/axios";
 
-export const getTransactions = async () => {
-	return await axios.get("transactions");
+export const getTransactions = async (status = false) => {
+	return await axios.get(`transactions/?status=${status}`);
 };
 
 export const getRecentsTransaction = async () => {
