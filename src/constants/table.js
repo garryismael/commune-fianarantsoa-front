@@ -1,3 +1,5 @@
+import { getCategorieName } from "../utils/data-grid";
+
 const columnActions = (renderCell) => ({
 	field: "action",
 	headerName: "Actions",
@@ -182,22 +184,18 @@ export const columnsPavillon = [
 		label: "Actions",
 	},
 ];
-export const columnsActivite = [
+
+export const columnsActivite = (renderCell) => [
+	{ field: "id", headerName: "Id", flex: 1 },
+	{ field: "nom", headerName: "Nom", flex: 1 },
 	{
-		id: "id",
-		label: "Id",
+		field: "categorie",
+		headerName: "Categorie",
+		valueGetter: getCategorieName,
+		flex: 1
 	},
 	{
-		id: "nom",
-		label: "Nom",
-	},
-	{
-		id: "categorie",
-		label: "Catégorie",
-	},
-	{
-		id: "actions",
-		label: "Actions",
+		...columnActions(renderCell),
 	},
 ];
 

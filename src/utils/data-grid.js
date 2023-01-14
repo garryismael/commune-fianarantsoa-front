@@ -1,0 +1,1 @@
+export const getCategorieName = (params) =>  params.row.nom;
