@@ -15,10 +15,6 @@ import {
 import DataTable from "../../DataTable";
 import "./index.css";
 
-export const EnCours = () => <i className='bx bx-hourglass bx-sm' />;
-
-export const Verifie = () => <i className='bx bx-check bx-sm' />;
-
 const TransactionList = () => {
 	const [estVerifie, setEstVerifie] = useState(false);
 	const [selectionModel, setSelectionModel] = useState([]);
@@ -41,11 +37,6 @@ const TransactionList = () => {
 			estVerifie,
 		);
 		setData(response.data);
-	};
-
-	const renderCell = (params) => {
-		const row = params.row;
-		return row.est_verifie ? <Verifie /> : <EnCours />;
 	};
 
 	return (
@@ -77,7 +68,7 @@ const TransactionList = () => {
 				</div>
 				<DataTable
 					rows={transactions}
-					columns={columnsTransaction(renderCell)}
+					columns={columnsTransaction}
 					checkboxSelection={!estVerifie}
 					onSelectionModelChange={(newSelectionModel) => {
 						setSelectionModel(newSelectionModel);

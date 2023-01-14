@@ -9,9 +9,8 @@ import {
 	getPavillonNumber,
 	getTypeInstallationName,
 	getUserFullName,
-	getVerificationLabel,
 	getZoneName,
-	totalFrais,
+	totalFrais
 } from "../utils/data-grid";
 
 const columnActions = (renderCell) => ({
@@ -177,7 +176,7 @@ export const commonColumns = (renderCell) => [
 	},
 ];
 
-export const columnsTransaction = (renderCell) => [
+export const columnsTransaction = [
 	{ field: "id", headerName: "Id", flex: 1 },
 	{
 		field: "client",
@@ -201,13 +200,6 @@ export const columnsTransaction = (renderCell) => [
 		field: "date",
 		headerName: "Date",
 		flex: 1,
-	},
-	{
-		field: "verification",
-		headerName: "Verification",
-		valueGetter: getVerificationLabel,
-		flex: 1,
-		renderCell
 	},
 	{
 		field: "total_frais",
