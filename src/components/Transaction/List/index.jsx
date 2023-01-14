@@ -57,7 +57,7 @@ const TransactionList = () => {
 						</Select>
 					</FormControl>
 
-					{!estVerifie ? (
+					{!estVerifie && transactions.length > 0 ? (
 						<Button
 							variant='contained'
 							type='button'
@@ -69,7 +69,7 @@ const TransactionList = () => {
 				<DataTable
 					rows={transactions}
 					columns={columnsTransaction}
-					checkboxSelection={!estVerifie}
+					checkboxSelection={!estVerifie && transactions.length > 0}
 					onSelectionModelChange={(newSelectionModel) => {
 						setSelectionModel(newSelectionModel);
 					}}
