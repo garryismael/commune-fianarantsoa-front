@@ -31,8 +31,30 @@ import {
 import { AdminAdd, AdminEdit } from "../Form";
 import "./index.css";
 import useNotification from "../../../hooks/notification";
+import {
+	DataGrid,
+	GridToolbarContainer,
+	GridToolbarFilterButton,
+} from "@mui/x-data-grid";
+import { useDemoData } from "@mui/x-data-grid-generator";
+
+const VISIBLE_FIELDS = ["id", "nom", "prenom", "adresse", "email", "contact"];
+
+const CustomToolbar = ({ setFilterButtonEl }) => (
+	<GridToolbarContainer>
+		<GridToolbarFilterButton ref={setFilterButtonEl} />
+	</GridToolbarContainer>
+);
 
 export default function AdminList() {
+	const { data } = useDemoData({
+		dataSet: "Employee",
+		visibleFields: VISIBLE_FIELDS,
+		rowLength: 100,
+	});
+
+	const [filterButtonEl, setFilterButtonEl] = React.useState(null);
+
 	const { open, handleClose, notification, setError, setSuccess } =
 		useNotification();
 	const [page, setPage] = useState(0);
@@ -117,9 +139,21 @@ export default function AdminList() {
 					Ajouter
 				</Button>
 
-				<TableContainer
-					component={Paper}
-					className="table-data">
+				<DataGrid
+					{...data}
+					components={{
+						Toolbar: CustomToolbar,
+					}}
+					componentsProps={{
+						panel: {
+							anchorEl: filterButtonEl,
+						},
+						toolbar: {
+							setFilterButtonEl,
+						},
+					}}
+				/>
+				<TableContainer component={Paper} className='table-data'>
 					<Table
 						sx={{
 							minWidth: 500,
