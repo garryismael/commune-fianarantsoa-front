@@ -6,10 +6,8 @@ import {
 	Select,
 } from "@mui/material";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { columnsTransaction } from "../../../constants/table";
 import useTransaction from "../../../hooks/transaction";
-import { setTransactions } from "../../../redux/transactionSlice";
 import {
 	bulkUpdateTransaction,
 	getTransactions,
@@ -18,25 +16,24 @@ import DataTable from "../../DataTable";
 import "./index.css";
 
 const TransactionList = () => {
-	const [checkboxSelection, setCheckboxSelection] = useState(false);
+	const [estVerifie, setEstVerifie] = useState(false);
 	const [selectionModel, setSelectionModel] = useState([]);
-	const [transactions, setTransactions] = useTransaction();
-	const dispatch = useDispatch();
+	const [transactions, setData] = useTransaction();
 
-	const setData = async() => {
-		const response = await getTransactions(checkboxSelection);
-		setTransactions(response.data);
+	const updateData = async(value) => {
+		const response = await getTransactions(value);
+		setData(response.data);
 	}
 
-	const onChange = async () => {
-		setCheckboxSelection(!checkboxSelection);
-		await setData();
+	const onChange = async (e) => {
+		const value = e.target.value;
+		setEstVerifie(value);
+		await updateData(value);
 	};
 
 	const handleValidate = async () => {
-		const response = await bulkUpdateTransaction({ ids: selectionModel });
-		dispatch(setTransactions(response.data));
-		await setData();
+		const response = await bulkUpdateTransaction({ ids: selectionModel }, estVerifie);
+		setData(response.data);
 	};
 
 	return (
@@ -48,16 +45,16 @@ const TransactionList = () => {
 						<Select
 							id='status'
 							labelId='status-label'
-							value={checkboxSelection}
+							value={estVerifie}
 							autoWidth
 							onChange={onChange}
 							label='Status'>
-							<MenuItem value={true}>en cours</MenuItem>
-							<MenuItem value={false}>vérifié</MenuItem>
+							<MenuItem value={false}>en cours</MenuItem>
+							<MenuItem value={true}>vérifié</MenuItem>
 						</Select>
 					</FormControl>
 
-					{checkboxSelection ? (
+					{!estVerifie ? (
 						<Button
 							variant='contained'
 							type='button'
@@ -69,7 +66,7 @@ const TransactionList = () => {
 				<DataTable
 					rows={transactions}
 					columns={columnsTransaction}
-					checkboxSelection={checkboxSelection}
+					checkboxSelection={!estVerifie}
 					onSelectionModelChange={(newSelectionModel) => {
 						setSelectionModel(newSelectionModel);
 					}}
