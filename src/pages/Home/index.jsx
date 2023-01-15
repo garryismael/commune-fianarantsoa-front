@@ -50,7 +50,7 @@ function Home() {
 					<i className='bx bxs-dollar-circle'></i>
 					<span className='text'>
 						<h3>Ar {stats?.money || 0}</h3>
-						<p>Total Transaction</p>
+						<p>Recettes</p>
 					</span>
 				</li>
 			</ul>
