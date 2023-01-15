@@ -5,4 +5,13 @@
 	padding-right: 24px !important;
 	padding-top: 24px !important;
 	box-shadow: none !important;
+	border: none!important;
+}
+
+.MuiTablePagination-root {
+	color: var(--dark)!important;
+}
+
+.MuiTablePagination-actions button{
+	color: var(--dark)!important;
 }
