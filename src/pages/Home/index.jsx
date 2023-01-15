@@ -59,8 +59,6 @@ function Home() {
 				<div className='order'>
 					<div className='head'>
 						<h3>Transactions Récentes</h3>
-						<i className='bx bx-search'></i>
-						<i className='bx bx-filter'></i>
 					</div>
 					<table>
 						<thead>
@@ -97,8 +95,6 @@ function Home() {
 				<div className='todo'>
 					<div className='head'>
 						<h3>Todos</h3>
-						<i className='bx bx-plus'></i>
-						<i className='bx bx-filter'></i>
 					</div>
 					<ul className='todo-list'>
 						<li className='completed'>
