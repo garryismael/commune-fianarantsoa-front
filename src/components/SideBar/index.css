@@ -82,7 +82,8 @@
 	overflow-x: hidden;
 }
 
-#sidebar.hide .side-menu li a {
+#sidebar.hide .side-menu li a,
+#sidebar.hide .side-menu li div {
 	width: calc(48px - (4px * 2));
 	transition: width 0.3s ease;
 }
