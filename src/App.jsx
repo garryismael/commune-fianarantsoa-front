@@ -44,7 +44,7 @@ function App() {
 				<Route path='/settings' element={<SettingsPage />} />
 			</Route>
 			<Route path='login' element={<LoginPage />} />
-			<Route path='changePassword/:token' element={<ChangePassword />} />
+			<Route path='reset-password/:token' element={<ChangePassword />} />
 			<Route path='sendEmail' element={<SendEmail />} />
 			<Route />
 		</Routes>

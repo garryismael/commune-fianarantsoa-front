@@ -33,13 +33,13 @@ const LoginPage = () => {
 							type='password'
 							onChange={(e) => setPassword(e.target.value)}
 						/>
-						<Link to='/sendEmail' className="send-email">mot de passe oublié ?</Link>
 						<Button
 							variant='contained'
 							className='button-login'
 							type='submit'>
 							Se connecter
 						</Button>
+						<Link to='/sendEmail' className="send-email">mot de passe oublié ?</Link>
 					</form>
 				</CardContent>
 			</Card>
