@@ -58,7 +58,7 @@ function Home() {
 			<div className='table-data'>
 				<div className='order'>
 					<div className='head'>
-						<h3>Transaction Récente</h3>
+						<h3>Transactions Récentes</h3>
 						<i className='bx bx-search'></i>
 						<i className='bx bx-filter'></i>
 					</div>
