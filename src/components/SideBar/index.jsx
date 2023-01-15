@@ -1,14 +1,14 @@
 import CategoryIcon from "@mui/icons-material/Category";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import PaymentsIcon from '@mui/icons-material/Payments';
+import PaymentsIcon from "@mui/icons-material/Payments";
 import PeopleIcon from "@mui/icons-material/People";
 import RepartitionIcon from "@mui/icons-material/Repartition";
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from "@mui/icons-material/Settings";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import { Link, NavLink } from "react-router-dom";
 import useLogout from "../../hooks/logout";
@@ -62,7 +62,7 @@ function Sidebar() {
 					<NavLink
 						to='/transactions'
 						className={({ isActive }) => `${isActive && "active"}`}>
-						<PaymentsIcon/>
+						<PaymentsIcon />
 						<span className='text'>Transactions</span>
 					</NavLink>
 				</li>
@@ -112,13 +112,13 @@ function Sidebar() {
 					<NavLink
 						to='/settings'
 						className={({ isActive }) => `${isActive && "active"}`}>
-						<SettingsIcon/>
+						<SettingsIcon />
 						<span className='text'>Paramètres</span>
 					</NavLink>
 				</li>
 				<li>
 					<div className='logout cursor-pointer'>
-						<ExitToAppIcon/>
+						<ExitToAppIcon />
 						<span className='text' onClick={se_connecter}>
 							Se déconnecter
 						</span>
