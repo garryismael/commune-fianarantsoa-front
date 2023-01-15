@@ -6,8 +6,8 @@ import TextField from "@mui/material/TextField";
 import React from "react";
 import useLogin from "../../hooks/login";
 
-import "./index.css";
 import { Link } from "react-router-dom";
+import "./index.css";
 
 const LoginPage = () => {
 	const [setEmail, setPassword, loginUser] = useLogin();
@@ -15,7 +15,7 @@ const LoginPage = () => {
 	return (
 		<div className='login'>
 			<Card sx={{ width: "500px", margin: "auto" }}>
-				<CardHeader title='Se connecter' />
+				<CardHeader title='Se connecter' className="card-header"/>
 				<CardContent>
 					<form className='login-form' onSubmit={loginUser}>
 						<TextField

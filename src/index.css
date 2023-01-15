@@ -71,3 +71,9 @@ body {
 .status.pending {
 	background: var(--orange);
 }
+
+.card-header {
+	background: var(--orange);
+	color: var(--light);
+	margin-bottom: 24px;
+}
