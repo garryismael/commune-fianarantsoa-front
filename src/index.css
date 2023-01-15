@@ -77,3 +77,11 @@ body {
 	color: var(--light);
 	margin-bottom: 24px;
 }
+
+.data-table-header {
+	color: var(--dark);
+}
+
+.data-table-row {
+	color: var(--dark);
+}

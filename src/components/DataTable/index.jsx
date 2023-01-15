@@ -52,6 +52,7 @@ const DataTable = (props) => {
 				rowsPerPageOptions={[5, 10, 20]}
 				pageSize={pageSize}
 				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+				getRowClassName={(params) => `data-table-row`}
 			/>
 		</div>
 	);
