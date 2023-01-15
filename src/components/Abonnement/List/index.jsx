@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Modal, Snackbar } from "@mui/material";
+import { Alert, Box, Button, Modal, Snackbar, Tooltip } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { style } from "../../../constants";
@@ -24,18 +24,25 @@ import { AbonnementAdd, AbonnementEdit } from "../Form";
 import TransactionForm from "../TransactionForm";
 
 const Actions = ({ openTransaction, onEdit, onDelete }) => (
-	<div className="actions">
-		<i
-			className='bx bx-add-to-queue cursor-pointer bx-sm'
-			onClick={openTransaction}
-		/>
-		<i
-			className='fas fa-edit fa-lg blue-color cursor-pointer'
-			onClick={onEdit}/>
-		<i
-			className='fas fa-trash-alt fa-lg red-color cursor-pointer'
-			onClick={onDelete}
-		/>
+	<div className='actions'>
+		<Tooltip title='Ajouter une transaction'>
+			<i
+				className='bx bx-add-to-queue cursor-pointer bx-sm'
+				onClick={openTransaction}
+			/>
+		</Tooltip>
+		<Tooltip title='Modifier'>
+			<i
+				className='fas fa-edit fa-lg blue-color cursor-pointer'
+				onClick={onEdit}
+			/>
+		</Tooltip>
+		<Tooltip title='Supprimer'>
+			<i
+				className='fas fa-trash-alt fa-lg red-color cursor-pointer'
+				onClick={onDelete}
+			/>
+		</Tooltip>
 	</div>
 );
 

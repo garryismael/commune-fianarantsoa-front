@@ -2,12 +2,12 @@ import { DataGrid, frFR } from "@mui/x-data-grid";
 
 import "./index.css";
 
-import { Stack } from "@mui/system";
 import {
 	GridToolbarContainer,
 	GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { useState } from "react";
+import { Tooltip } from "recharts";
 
 export const Toolbar = ({ setFilterButtonEl }) => (
 	<GridToolbarContainer>
@@ -16,16 +16,20 @@ export const Toolbar = ({ setFilterButtonEl }) => (
 );
 
 export const Actions = ({ onEdit, onDelete }) => (
-	<Stack direction='row' spacing={2}>
-		<i
-			className='fas fa-edit fa-lg blue-color cursor-pointer'
-			onClick={onEdit}
-		/>
-		<i
-			className='fas fa-trash-alt fa-lg red-color cursor-pointer'
-			onClick={onDelete}
-		/>
-	</Stack>
+	<div className='actions'>
+		<Tooltip title='Modifier'>
+			<i
+				className='fas fa-edit fa-lg blue-color cursor-pointer'
+				onClick={onEdit}
+			/>
+		</Tooltip>
+		<Tooltip title='Supprimer'>
+			<i
+				className='fas fa-trash-alt fa-lg red-color cursor-pointer'
+				onClick={onDelete}
+			/>
+		</Tooltip>
+	</div>
 );
 
 const DataTable = (props) => {
