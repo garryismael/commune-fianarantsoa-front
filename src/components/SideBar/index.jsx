@@ -117,7 +117,7 @@ function Sidebar() {
 					</NavLink>
 				</li>
 				<li>
-					<div className='logout'>
+					<div className='logout cursor-pointer'>
 						<ExitToAppIcon/>
 						<span className='text' onClick={se_connecter}>
 							Se déconnecter
