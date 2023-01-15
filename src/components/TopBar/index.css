@@ -1,4 +1,7 @@
 #content nav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	height: 56px;
 	background: var(--light);
 	padding: 0 24px;
@@ -12,6 +15,7 @@
 	left: 0;
 	z-index: 1000;
 }
+
 #content nav::before {
 	content: '';
 	position: absolute;
@@ -119,4 +123,11 @@
 }
 #content nav #switch-mode:checked + .switch-mode::before {
 	left: calc(100% - (25px - 4px) - 2px);
+}
+
+#content .content-right,
+#content .content-left {
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
